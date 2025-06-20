@@ -50,32 +50,53 @@ const Bookings = () => {
 
             <div className="form-group">
               <label className="form-label">Date</label>
-              <input
-                type="date"
-                value={bookingDate}
-                onChange={(e) => setBookingDate(e.target.value)}
-                className="form-input"
-              />
+              <div className="input-wrapper">
+                <input
+                  type="date"
+                  value={bookingDate}
+                  onChange={(e) => setBookingDate(e.target.value)}
+                  className="form-input"
+                  id="booking-date"
+                  placeholder=" "
+                />
+                {!bookingDate && (
+                  <span className="custom-placeholder">Select date</span>
+                )}
+              </div>
             </div>
 
             <div className="form-row">
               <div className="form-group">
                 <label className="form-label">Start Time</label>
-                <input
-                  type="time"
-                  value={startTime}
-                  onChange={(e) => setStartTime(e.target.value)}
-                  className="form-input"
-                />
+                <div className="input-wrapper">
+                  <input
+                    type="time"
+                    value={startTime}
+                    onChange={(e) => setStartTime(e.target.value)}
+                    className="form-input"
+                    id="start-time"
+                    placeholder=" "
+                  />
+                  {!startTime && (
+                    <span className="custom-placeholder">Select start time</span>
+                  )}
+                </div>
               </div>
               <div className="form-group">
                 <label className="form-label">End Time</label>
-                <input
-                  type="time"
-                  value={endTime}
-                  onChange={(e) => setEndTime(e.target.value)}
-                  className="form-input"
-                />
+                <div className="input-wrapper">
+                  <input
+                    type="time"
+                    value={endTime}
+                    onChange={(e) => setEndTime(e.target.value)}
+                    className="form-input"
+                    id="end-time"
+                    placeholder=" "
+                  />
+                  {!endTime && (
+                    <span className="custom-placeholder">Select end time</span>
+                  )}
+                </div>
               </div>
             </div>
 

@@ -1,42 +1,3 @@
-/* Force visibility in light mode - debugging styles */
-:root {
-  /* Light theme colors */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8fafc;
-  --bg-tertiary: #f1f5f9;
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-tertiary: #64748b;
-  --border-primary: #d1d5db;
-  --border-secondary: #9ca3af;
-  --accent-primary: #0d9488;
-  --accent-secondary: #ef4444;
-  --accent-blue: #3b82f6;
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-}
-
-[data-theme="dark"] {
-  /* Dark theme colors */
-  --bg-primary: #0f172a;
-  --bg-secondary: #1e293b;
-  --bg-tertiary: #334155;
-  --text-primary: #f8fafc;
-  --text-secondary: #cbd5e1;
-  --text-tertiary: #94a3b8;
-  --border-primary: #475569;
-  --border-secondary: #64748b;
-  --accent-primary: #14b8a6;
-  --accent-secondary: #f87171;
-  --accent-blue: #60a5fa;
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.4), 0 8px 10px -6px rgb(0 0 0 / 0.4);
-}
-
 .bookings-container {
   padding: 4rem 0;
   background: var(--bg-secondary);
@@ -98,7 +59,7 @@
 .form-title {
   font-size: 1.5rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary, #1f2937); /* Fallback for light mode */
   margin-bottom: 2rem;
 }
 
@@ -110,7 +71,7 @@
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary, #1f2937); /* Fallback for light mode */
   font-size: 0.875rem;
 }
 
@@ -122,86 +83,100 @@
   border: 2px solid var(--border-primary);
   border-radius: 0.75rem;
   background: var(--bg-secondary);
-  color: var(--text-primary);
   transition: all 0.3s ease;
   font-size: 0.95rem;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  box-sizing: border-box;
-  outline: none;
+  /* Explicit color definitions for better contrast */
+  color: var(--text-primary, #1f2937); /* Fallback for light mode */
 }
 
-/* Enhanced border styles for better visibility */
-.form-input {
-  border: 2px solid var(--border-primary);
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+/* Light mode specific styles */
+@media (prefers-color-scheme: light) {
+  .form-input,
+  .form-select,
+  .form-textarea {
+    color: #1f2937; /* Dark text for light backgrounds */
+    background: #f9fafb; /* Light background */
+  }
+  
+  .form-input::placeholder,
+  .form-textarea::placeholder {
+    color: #6b7280; /* Gray placeholder text */
+  }
+  
+  .form-title,
+  .form-label {
+    color: #1f2937; /* Dark text for titles and labels */
+  }
 }
 
-.form-select {
-  border: 2px solid var(--border-primary);
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right 1rem center;
-  background-size: 16px;
-  padding-right: 3rem;
+/* Dark mode specific styles */
+@media (prefers-color-scheme: dark) {
+  .form-input,
+  .form-select,
+  .form-textarea {
+    color: #f9fafb; /* Light text for dark backgrounds */
+    background: #374151; /* Dark background */
+  }
+  
+  .form-input::placeholder,
+  .form-textarea::placeholder {
+    color: #9ca3af; /* Light gray placeholder text */
+  }
+  
+  .form-title,
+  .form-label {
+    color: #f9fafb; /* Light text for titles and labels */
+  }
 }
 
-.form-textarea {
-  border: 2px solid var(--border-primary);
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-  resize: vertical;
-  min-height: 120px;
+/* Alternative approach: Use data attributes or classes for theme switching */
+/* If you're using a theme switcher with data attributes */
+[data-theme="light"] .form-input,
+[data-theme="light"] .form-select,
+[data-theme="light"] .form-textarea {
+  color: #1f2937 !important;
+  background: #f9fafb !important;
 }
 
-/* Hover effects for inputs */
-.form-input:hover,
-.form-select:hover,
-.form-textarea:hover {
-  border-color: var(--border-secondary);
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.15);
+[data-theme="light"] .form-input::placeholder,
+[data-theme="light"] .form-textarea::placeholder {
+  color: #6b7280 !important;
 }
 
-/* Focus styles with enhanced borders */
+[data-theme="light"] .form-title,
+[data-theme="light"] .form-label {
+  color: #1f2937 !important;
+}
+
+[data-theme="dark"] .form-input,
+[data-theme="dark"] .form-select,
+[data-theme="dark"] .form-textarea {
+  color: #f9fafb !important;
+  background: #374151 !important;
+}
+
+[data-theme="dark"] .form-input::placeholder,
+[data-theme="dark"] .form-textarea::placeholder {
+  color: #9ca3af !important;
+}
+
+[data-theme="dark"] .form-title,
+[data-theme="dark"] .form-label {
+  color: #f9fafb !important;
+}
+
 .form-input:focus,
 .form-select:focus,
 .form-textarea:focus {
   outline: none;
   border-color: var(--accent-primary);
-  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1), inset 0 1px 3px rgba(0, 0, 0, 0.1);
-  background: var(--bg-primary) !important;
-  color: var(--text-primary) !important;
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+  background: var(--bg-primary);
 }
 
-/* Placeholder styling */
-.form-input::placeholder,
-.form-textarea::placeholder {
-  color: var(--text-tertiary) !important;
-  opacity: 1;
-}
-
-/* Additional webkit fixes for input visibility */
-.form-input::-webkit-input-placeholder,
-.form-textarea::-webkit-input-placeholder {
-  color: var(--text-tertiary) !important;
-}
-
-.form-input::-moz-placeholder,
-.form-textarea::-moz-placeholder {
-  color: var(--text-tertiary) !important;
-  opacity: 1;
-}
-
-.form-input:-ms-input-placeholder,
-.form-textarea:-ms-input-placeholder {
-  color: var(--text-tertiary) !important;
-}
-
-.form-input:-moz-placeholder,
-.form-textarea:-moz-placeholder {
-  color: var(--text-tertiary) !important;
-  opacity: 1;
+.form-textarea {
+  resize: vertical;
+  min-height: 120px;
 }
 
 .form-row {
@@ -210,8 +185,7 @@
   gap: 1rem;
 }
 
-.submit-btn,
-.btn {
+.submit-btn {
   width: 100%;
   background: linear-gradient(135deg, var(--accent-secondary), #dc2626);
   color: white;
@@ -225,19 +199,10 @@
   box-shadow: var(--shadow-md);
 }
 
-.submit-btn:hover,
-.btn:hover {
+.submit-btn:hover {
   background: linear-gradient(135deg, #dc2626, #b91c1c);
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, var(--accent-primary), #0f766e);
-}
-
-.btn-primary:hover {
-  background: linear-gradient(135deg, #0f766e, #0d5c55);
 }
 
 .sidebar {
@@ -407,29 +372,6 @@
 .facility-price {
   color: var(--accent-primary);
   font-weight: 600;
-}
-
-/* Force input icons to use the correct color in both themes */
-.form-input[type="date"],
-.form-input[type="time"] {
-  color-scheme: light dark;
-  accent-color: var(--accent-primary);
-}
-
-/* For Chrome, Edge, Safari: */
-.form-input[type="date"]::-webkit-calendar-picker-indicator,
-.form-input[type="time"]::-webkit-calendar-picker-indicator {
-  filter: invert(0.5) sepia(1) saturate(5) hue-rotate(160deg);
-  /* This will tint the icon to your accent color, adjust as needed */
-  opacity: 0.8;
-  cursor: pointer;
-}
-
-/* For Firefox: */
-.form-input[type="date"],
-.form-input[type="time"] {
-  /* Firefox uses accent-color for the icon */
-  accent-color: var(--accent-primary);
 }
 
 @media (max-width: 1024px) {
