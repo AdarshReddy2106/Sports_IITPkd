@@ -406,4 +406,59 @@
   .help-card {
     padding: 1.5rem;
   }
+
+  /* Enhanced mobile form input visibility */
+  .form-input,
+  .form-select,
+  .form-textarea {
+    border: 2px solid #d1d5db; /* More visible light gray border */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow for definition */
+  }
+
+  /* Light mode mobile borders */
+  @media (prefers-color-scheme: light) {
+    .form-input,
+    .form-select,
+    .form-textarea {
+      border-color: #d1d5db;
+      background: #ffffff;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  /* Dark mode mobile borders */
+  @media (prefers-color-scheme: dark) {
+    .form-input,
+    .form-select,
+    .form-textarea {
+      border-color: #6b7280;
+      background: #374151;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  /* Data attribute support for mobile */
+  [data-theme="light"] .form-input,
+  [data-theme="light"] .form-select,
+  [data-theme="light"] .form-textarea {
+    border-color: #d1d5db !important;
+    background: #ffffff !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  [data-theme="dark"] .form-input,
+  [data-theme="dark"] .form-select,
+  [data-theme="dark"] .form-textarea {
+    border-color: #6b7280 !important;
+    background: #374151 !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  /* Focus states for mobile */
+  .form-input:focus,
+  .form-select:focus,
+  .form-textarea:focus {
+    border-color: #0d9488 !important;
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.2), 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+  }
 }
