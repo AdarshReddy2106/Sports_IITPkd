@@ -113,10 +113,11 @@ const Bookings = () => {
 
             <div className="form-group">
               <label className="form-label">Additional Notes</label>
-              <textarea
+              <input
+                type="text"
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                className="form-textarea"
+                className="form-input"
                 placeholder="Any additional requirements or notes"
               />
             </div>
