@@ -620,18 +620,44 @@ p {
     color: var(--text-primary);
   }
   .mobile-navbar-toggle {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0.5rem;
-    display: flex;
-    align-items: center;
+    padding: 0.75rem;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(30,41,59,0.6); /* Match theme toggle */
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s, border 0.2s;
+  margin-left: 1rem;
+  color: var(--text-primary);
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none;
+}
+
+.mobile-navbar-toggle:hover,
+.mobile-navbar-toggle:focus {
+  background: rgba(255,255,255,0.08);
+  border: 1.5px solid #fff;
+}
+  .hamburger {
+    position: relative;
+    width: 28px;
+    height: 3px;
+    background: #fff;
+    border-radius: 2px;
+    display: block;
+    transition: all 0.3s;
+    /* Add this to ensure the middle line is always visible */
+    min-height: 3px;
+    min-width: 28px;
   }
   .hamburger,
   .hamburger::before,
   .hamburger::after {
     display: block;
-    background: var(--text-primary);
+    background: #fff;
     height: 3px;
     width: 28px;
     border-radius: 2px;
@@ -639,31 +665,37 @@ p {
     transition: all 0.3s;
     content: '';
   }
-  .hamburger {
-    position: relative;
-  }
   .hamburger::before,
   .hamburger::after {
     content: '';
     position: absolute;
     left: 0;
+    width: 28px;
+    height: 3px;
+    background: #fff;
+    border-radius: 2px;
+    transition: all 0.3s;
   }
   .hamburger::before {
-    top: -8px;
+    top: -9px;
   }
   .hamburger::after {
-    top: 8px;
+    top: 9px;
   }
   .hamburger.open {
     background: transparent;
   }
   .hamburger.open::before {
-    transform: rotate(45deg) translate(5px, 5px);
     top: 0;
+    transform: rotate(45deg);
+    background: #fff;
+    box-shadow: 0 0 8px 2px rgba(0,0,0,0.35);
   }
   .hamburger.open::after {
-    transform: rotate(-45deg) translate(5px, -5px);
     top: 0;
+    transform: rotate(-45deg);
+    background: #fff;
+    box-shadow: 0 0 8px 2px rgba(0,0,0,0.35);
   }
   .mobile-navbar-menu {
     display: none;
