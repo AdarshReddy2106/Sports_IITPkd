@@ -7,6 +7,7 @@ import Gallery from './pages/Gallery';
 import Calendar from './pages/Calendar';``
 import Bookings from './pages/Bookings';
 import Contact from './pages/Contact';
+import Footer from './components/Footer';
 
 // Theme Context
 const ThemeContext = createContext();
@@ -54,6 +55,9 @@ const ThemeProvider = ({ children }) => {
 const EliteSportsCouncil = () => {
   const [currentPage, setCurrentPage] = useState('home');
 
+  // Make setCurrentPage available globally for Footer
+  window.setCurrentPage = setCurrentPage;
+
   const renderPage = () => {
     switch (currentPage) {
       case 'home':
@@ -85,6 +89,7 @@ const EliteSportsCouncil = () => {
         <main className="fade-in">
           {renderPage()}
         </main>
+        <Footer />
       </div>
     </ThemeProvider>
   );
