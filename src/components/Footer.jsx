@@ -49,7 +49,7 @@ const Footer = () => {
       <div className="footer-bottom">
         <span>&copy;2025 Transparent. All rights reserved</span>
         <span className="footer-bottom-links">
-          <button onClick={() => navTo("privacy")}>Privacy Policy</button>
+          <button onClick={() => navTo("privacypolicy")}>Privacy Policy</button>
           <span className="footer-bottom-divider" />
           <button onClick={() => navTo("terms")}>Terms & Conditions</button>
         </span>

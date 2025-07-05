@@ -8,7 +8,7 @@ import Calendar from './pages/Calendar';``
 import Bookings from './pages/Bookings';
 import Contact from './pages/Contact';
 import Footer from './components/Footer';
-
+import PrivacyPolicy from './components/privacypolicy';
 // Theme Context
 const ThemeContext = createContext();
 
@@ -72,6 +72,8 @@ const EliteSportsCouncil = () => {
         return <Bookings />;
       case 'contact':
         return <Contact />;
+        case 'privacypolicy':  
+      return <PrivacyPolicy />;
       default:
         return <Home setCurrentPage={setCurrentPage} />;
     }
