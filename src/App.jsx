@@ -4,12 +4,13 @@ import MobileNav from './components/MobileNav';
 import Home from './pages/Home';
 import About from './pages/About';
 import Gallery from './pages/Gallery';
-import Calendar from './pages/Calendar';``
+import Calendar from './pages/Calendar';
 import Bookings from './pages/Bookings';
 import Contact from './pages/Contact';
 import Footer from './components/Footer';
 import PrivacyPolicy from './components/privacypolicy';
-// Theme Context
+import BikePreloader from './components/bikePreloader';
+// Theme Context (keep your existing code)
 const ThemeContext = createContext();
 
 export const useTheme = () => {
@@ -54,6 +55,16 @@ const ThemeProvider = ({ children }) => {
 
 const EliteSportsCouncil = () => {
   const [currentPage, setCurrentPage] = useState('home');
+  const [isLoading, setIsLoading] = useState(true); // ADD THIS LINE
+
+  // ADD THIS useEffect FOR LOADING TIMER
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 3000); // 3 seconds loading time
+
+    return () => clearTimeout(timer);
+  }, []);
 
   // Make setCurrentPage available globally for Footer
   window.setCurrentPage = setCurrentPage;
@@ -72,8 +83,8 @@ const EliteSportsCouncil = () => {
         return <Bookings />;
       case 'contact':
         return <Contact />;
-        case 'privacypolicy':  
-      return <PrivacyPolicy />;
+      case 'privacypolicy':  
+        return <PrivacyPolicy />;
       default:
         return <Home setCurrentPage={setCurrentPage} />;
     }
@@ -82,16 +93,22 @@ const EliteSportsCouncil = () => {
   return (
     <ThemeProvider>
       <div className="min-h-screen transition-all duration-300">
-        <div className="md:hidden">
-          <MobileNav currentPage={currentPage} setCurrentPage={setCurrentPage} />
+        {/* ADD THIS LINE - Animated Bike Preloader */}
+        <BikePreloader isVisible={isLoading} />
+        
+        {/* WRAP YOUR EXISTING CONTENT IN THIS DIV WITH OPACITY TRANSITION */}
+        <div style={{ opacity: isLoading ? 0 : 1, transition: 'opacity 0.5s ease-in' }}>
+          <div className="md:hidden">
+            <MobileNav currentPage={currentPage} setCurrentPage={setCurrentPage} />
+          </div>
+          <div className="hidden md:block">
+            <Navigation currentPage={currentPage} setCurrentPage={setCurrentPage} />
+          </div>
+          <main className="fade-in">
+            {renderPage()}
+          </main>
+          <Footer />
         </div>
-        <div className="hidden md:block">
-          <Navigation currentPage={currentPage} setCurrentPage={setCurrentPage} />
-        </div>
-        <main className="fade-in">
-          {renderPage()}
-        </main>
-        <Footer />
       </div>
     </ThemeProvider>
   );
