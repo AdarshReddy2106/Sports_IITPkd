@@ -7,6 +7,11 @@ function Contact() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
   const [status, setStatus] = useState('');
 
+  // Dynamic API URL based on environment
+  const API_URL = process.env.NODE_ENV === 'production' 
+    ? 'https://contactapi-iit.vercel.app/api/contact'  // Your deployed backend URL
+    : 'http://localhost:2030/api/contact';
+
   const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -15,8 +20,7 @@ function Contact() {
     e.preventDefault();
     setStatus('Sending...');
     try {
-      // Fixed: Make sure URL points to your backend server on port 2030
-      const res = await fetch('http://localhost:2030/api/contact', {
+      const res = await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -24,7 +28,7 @@ function Contact() {
       const data = await res.json();
       if (res.ok) {
         setStatus('Message sent!');
-        setForm({ name: '', email: '', subject: '', message: '' }); // Fixed: reset subject field too
+        setForm({ name: '', email: '', subject: '', message: '' });
       } else {
         setStatus(data.error || 'Failed to send.');
       }
@@ -33,7 +37,6 @@ function Contact() {
       setStatus('Failed to send.');
     }
   };
-
 
   return (
     <div className="contact-container">

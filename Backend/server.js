@@ -4,9 +4,13 @@ const contactApi = require('./api/contact');
 
 const app = express();
 
-// Enable CORS for all routes
+// Enable CORS for all routes - Updated to handle multiple origins
 app.use(cors({
-  origin: 'http://localhost:5173', // Your React app's URL
+  origin: [
+    'http://localhost:5173',           // Local development
+    'https://sports-iitpkd.vercel.app', // Your deployed Vercel app
+    'https://contactapi-iit.vercel.app' // Your backend domain (for self-requests)
+  ],
   credentials: true
 }));
 
