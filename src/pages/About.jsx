@@ -11,7 +11,7 @@ const About = () => {
               About Elite Sports <span className="accent">Council</span>
             </h2>
             <p className="about-paragraph">
-              Founded in 2005, Elite Sports Council has been at the forefront of sports development and excellence. Our mission is to provide world-class facilities, expert coaching, and comprehensive programs that empower athletes to achieve their full potential.
+              Founded in 2005, Sports Council IIT Palakkad has been at the forefront of sports development and excellence. Our mission is to provide world-class facilities, expert coaching, and comprehensive programs that empower athletes to achieve their full potential.
             </p>
             <p className="about-paragraph">
               We believe in the transformative power of sports to build character, foster teamwork, and promote healthy lifestyles. Our dedicated team of professionals is committed to creating an inclusive environment where athletes of all ages and skill levels can thrive.

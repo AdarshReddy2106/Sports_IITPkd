@@ -27,7 +27,7 @@ const MobileNav = ({ currentPage, setCurrentPage }) => {
           <div className="logo-icon">
             <span className="logo-text">ESC</span>
           </div>
-          <span className="logo-name">Elite Sports Council</span>
+          <span className="logo-name">Sports Council IIT Palakkad</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <button

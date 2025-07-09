@@ -53,7 +53,7 @@ const ThemeProvider = ({ children }) => {
   );
 };
 
-const EliteSportsCouncil = () => {
+const SportsIITPkd = () => {
   const [currentPage, setCurrentPage] = useState('home');
   const [isLoading, setIsLoading] = useState(true); // ADD THIS LINE
 
@@ -69,8 +69,11 @@ const EliteSportsCouncil = () => {
   // Make setCurrentPage available globally for Footer
   window.setCurrentPage = setCurrentPage;
 
+  
+
   const renderPage = () => {
     switch (currentPage) {
+      
       case 'home':
         return <Home setCurrentPage={setCurrentPage} />;
       case 'about':
@@ -85,6 +88,10 @@ const EliteSportsCouncil = () => {
         return <Contact />;
       case 'privacypolicy':  
         return <PrivacyPolicy />;
+      case 'login':
+        return <Login setCurrentPage={setCurrentPage} />;
+      case 'signup':
+        return <Signup setCurrentPage={setCurrentPage} />;
       default:
         return <Home setCurrentPage={setCurrentPage} />;
     }
@@ -114,4 +121,4 @@ const EliteSportsCouncil = () => {
   );
 };
 
-export default EliteSportsCouncil;
+export default SportsIITPkd;

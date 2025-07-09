@@ -1,6 +1,7 @@
 import React from 'react';
 import { CheckCircle, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../App';
+import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/clerk-react';
 
 const Navigation = ({ currentPage, setCurrentPage }) => {
   const { isDark, toggleTheme } = useTheme();
@@ -13,7 +14,7 @@ const Navigation = ({ currentPage, setCurrentPage }) => {
             <div className="logo-icon">
               <CheckCircle size={20} />
             </div>
-            <span>Elite Sports Council</span>
+            <span>Sports Council IIT Palakkad</span>
           </div>
           <div className="nav-links">
             {['Home', 'About', 'Gallery', 'Calendar', 'Bookings', 'Contact'].map((item) => (
@@ -25,6 +26,19 @@ const Navigation = ({ currentPage, setCurrentPage }) => {
                 {item}
               </button>
             ))}
+            
+            {/* Clerk Auth UI */}
+            <SignedOut>
+              <SignInButton mode="modal">
+                <button className="nav-link">
+                  Sign In
+                </button>
+              </SignInButton>
+            </SignedOut>
+            <SignedIn>
+              <UserButton afterSignOutUrl="/" />
+            </SignedIn>
+            
             <button onClick={toggleTheme} className="theme-toggle">
               {isDark ? <Sun size={20} /> : <Moon size={20} />}
             </button>

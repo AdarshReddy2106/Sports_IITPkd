@@ -32,7 +32,7 @@ const Footer = () => {
             <ul>
               <li>1489w Fluton ste, STE<br />2D Chicago, IL 63867.</li>
               <li>+91 9876543210</li>
-              <li>info@elitesports.com</li>
+              <li>info@sports.com</li>
             </ul>
           </div>
           <div>
