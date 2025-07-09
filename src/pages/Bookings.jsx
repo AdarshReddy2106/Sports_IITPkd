@@ -1,14 +1,70 @@
 import React, { useState } from 'react';
 import { Phone, Mail } from 'lucide-react';
 import './Bookings.css';
+import { useUser } from '@clerk/clerk-react';
+import { useEffect } from 'react';
 
 const Bookings = () => {
-  const [selectedFacility, setSelectedFacility] = useState('');
-  const [bookingDate, setBookingDate] = useState('');
-  const [startTime, setStartTime] = useState('');
-  const [endTime, setEndTime] = useState('');
-  const [participants, setParticipants] = useState('');
-  const [notes, setNotes] = useState('');
+  const { user } = useUser();
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    selectedFacility: '',
+    bookingDate: '',
+    startTime: '',
+    endTime: '',
+    participants: '',
+    notes: ''
+  });
+
+  useEffect(() => {
+    if (user) {
+      setForm(prev => ({
+        ...prev,
+        name: user.fullName || '',
+        email: user.primaryEmailAddress?.emailAddress || ''
+      }));
+    }
+  }, [user]);
+
+  const [status, setStatus] = useState('');
+
+  const API_URL = process.env.NODE_ENV === 'production'
+    ? 'https://contactapi-iit.vercel.app/api/contact'
+    : 'http://localhost:2030/api/BookingMail';
+
+  const handleChange = e => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+    setStatus('Booking...');
+    try {
+      const res = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setStatus('Booking Sent! Wait for Confirmation.');
+        setForm({
+          selectedFacility: '',
+          bookingDate: '',
+          startTime: '',
+          endTime: '',
+          participants: '',
+          notes: ''
+        });
+      } else {
+        setStatus(data.error || 'Failed to send.');
+      }
+    } catch (error) {
+      console.error('Fetch error:', error);
+      setStatus('Failed to send.');
+    }
+  };
 
   const facilities = [
     { id: 'swimming', name: 'Olympic Swimming Pool' },
@@ -34,100 +90,109 @@ const Bookings = () => {
         <div className="bookings-content">
           <div className="booking-form-card">
             <h3 className="form-title">Facility Booking</h3>
-            <div className="form-group">
-              <label className="form-label">Select Facility</label>
-              <select
-                value={selectedFacility}
-                onChange={(e) => setSelectedFacility(e.target.value)}
-                className="form-select"
-              >
-                <option value="">Select a facility</option>
-                {facilities.map(facility => (
-                  <option key={facility.id} value={facility.id}>{facility.name}</option>
-                ))}
-              </select>
-            </div>
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label className="form-label">Select Facility</label>
+                <select
+                  name="selectedFacility"
+                  value={form.selectedFacility}
+                  onChange={handleChange}
+                  className="form-select"
+                  required
+                >
+                  <option value="">Select a facility</option>
+                  {facilities.map(facility => (
+                    <option key={facility.id} value={facility.id}>{facility.name}</option>
+                  ))}
+                </select>
+              </div>
 
-            <div className="form-group">
-              <label className="form-label">Date</label>
-              <div className="input-wrapper">
+              <div className="form-group">
+                <label className="form-label">Date</label>
+                <div className="input-wrapper">
+                  <input
+                    type="date"
+                    name="bookingDate"
+                    value={form.bookingDate}
+                    onChange={handleChange}
+                    className="form-input"
+                    required
+                  />
+                  {!form.bookingDate && (
+                    <span className="custom-placeholder">Select date</span>
+                  )}
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label">Start Time</label>
+                  <div className="input-wrapper">
+                    <input
+                      type="time"
+                      name="startTime"
+                      value={form.startTime}
+                      onChange={handleChange}
+                      className="form-input"
+                      required
+                    />
+                    {!form.startTime && (
+                      <span className="custom-placeholder">Select start time</span>
+                    )}
+                  </div>
+                </div>
+                <div className="form-group">
+                  <label className="form-label">End Time</label>
+                  <div className="input-wrapper">
+                    <input
+                      type="time"
+                      name="endTime"
+                      value={form.endTime}
+                      onChange={handleChange}
+                      className="form-input"
+                      required
+                    />
+                    {!form.endTime && (
+                      <span className="custom-placeholder">Select end time</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Number of Participants</label>
                 <input
-                  type="date"
-                  value={bookingDate}
-                  onChange={(e) => setBookingDate(e.target.value)}
+                  type="number"
+                  name="participants"
+                  value={form.participants}
+                  onChange={handleChange}
                   className="form-input"
-                  id="booking-date"
-                  placeholder=" "
+                  placeholder="Enter number of participants"
+                  required
                 />
-                {!bookingDate && (
-                  <span className="custom-placeholder">Select date</span>
-                )}
               </div>
-            </div>
 
-            <div className="form-row">
               <div className="form-group">
-                <label className="form-label">Start Time</label>
-                <div className="input-wrapper">
-                  <input
-                    type="time"
-                    value={startTime}
-                    onChange={(e) => setStartTime(e.target.value)}
-                    className="form-input"
-                    id="start-time"
-                    placeholder=" "
-                  />
-                  {!startTime && (
-                    <span className="custom-placeholder">Select start time</span>
-                  )}
-                </div>
+                <label className="form-label">Additional Notes</label>
+                <input
+                  type="text"
+                  name="notes"
+                  value={form.notes}
+                  onChange={handleChange}
+                  className="form-input"
+                  placeholder="Any additional requirements or notes"
+                />
               </div>
-              <div className="form-group">
-                <label className="form-label">End Time</label>
-                <div className="input-wrapper">
-                  <input
-                    type="time"
-                    value={endTime}
-                    onChange={(e) => setEndTime(e.target.value)}
-                    className="form-input"
-                    id="end-time"
-                    placeholder=" "
-                  />
-                  {!endTime && (
-                    <span className="custom-placeholder">Select end time</span>
-                  )}
-                </div>
-              </div>
-            </div>
 
-            <div className="form-group">
-              <label className="form-label">Number of Participants</label>
-              <input
-                type="number"
-                value={participants}
-                onChange={(e) => setParticipants(e.target.value)}
-                className="form-input"
-                placeholder="Enter number of participants"
-              />
-            </div>
-
-            <div className="form-group">
-              <label className="form-label">Additional Notes</label>
-              <input
-                type="text"
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-                className="form-input"
-                placeholder="Any additional requirements or notes"
-              />
-            </div>
-
-            <button className="submit-btn">
-              Book Now
-            </button>
+              <button className="submit-btn">
+                Book Now
+              </button>
+              {status && <div className="status-message">{status}</div>}
+            </form>
           </div>
 
           <div className="sidebar">
+            {/* ...unchanged contact/booking info sidebar... */}
             <div className="info-card">
               <h3 className="info-title">Booking Information</h3>
               <div className="hours-table">
@@ -144,7 +209,7 @@ const Bookings = () => {
                   <span className="hours-time">8:00 AM - 8:00 PM</span>
                 </div>
               </div>
-              
+
               <h4 className="info-title" style={{ marginTop: '2rem', marginBottom: '1rem' }}>Booking Policies</h4>
               <ul className="policies-list">
                 <li className="policy-item">Bookings must be made at least 24 hours in advance</li>

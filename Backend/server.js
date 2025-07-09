@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const contactApi = require('./api/contact');
-
+const bookingApi = require('./api/BookingMail'); 
 const app = express();
 
 // Enable CORS for all routes - Updated to handle multiple origins
@@ -17,6 +17,7 @@ app.use(cors({
 app.use(express.json());
 
 app.use('/api/contact', contactApi);
+app.use('/api/BookingMail', bookingApi);
 
 app.get('/', (req, res) => {
   res.send('Backend is running');

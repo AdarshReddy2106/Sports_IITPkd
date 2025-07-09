@@ -48,6 +48,7 @@ const Navigation = ({ currentPage, setCurrentPage }) => {
               </button>
             ))}
 
+            {/* Clerk Auth UI */}
             <SignedOut>
               <SignInButton mode="modal">
                 <button className="nav-link">
