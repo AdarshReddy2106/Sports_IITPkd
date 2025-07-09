@@ -1,10 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { CheckCircle, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../App';
-import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/clerk-react';
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+  useUser,
+  useClerk,
+} from '@clerk/clerk-react';
 
 const Navigation = ({ currentPage, setCurrentPage }) => {
   const { isDark, toggleTheme } = useTheme();
+  const { user, isLoaded } = useUser();
+  const { signOut } = useClerk();
+
+  useEffect(() => {
+    if (isLoaded && user) {
+      const email = user?.primaryEmailAddress?.emailAddress || '';
+      if (!email.endsWith('iitpkd.ac.in')) {
+        alert('Access restricted to iitpkd.ac.in emails only');
+        signOut().then(() => {
+          window.location.href = '/';
+        });
+      }
+    }
+  }, [isLoaded, user, signOut]);
 
   return (
     <nav className="hidden md:block">
@@ -26,8 +47,7 @@ const Navigation = ({ currentPage, setCurrentPage }) => {
                 {item}
               </button>
             ))}
-            
-            {/* Clerk Auth UI */}
+
             <SignedOut>
               <SignInButton mode="modal">
                 <button className="nav-link">
@@ -35,10 +55,11 @@ const Navigation = ({ currentPage, setCurrentPage }) => {
                 </button>
               </SignInButton>
             </SignedOut>
+
             <SignedIn>
               <UserButton afterSignOutUrl="/" />
             </SignedIn>
-            
+
             <button onClick={toggleTheme} className="theme-toggle">
               {isDark ? <Sun size={20} /> : <Moon size={20} />}
             </button>
