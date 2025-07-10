@@ -3,7 +3,7 @@ import { supabase } from "./supabase";
 export const createBooking = async (bookingData) => {
   const { data, error } = await supabase
     .from("bookings")
-    .insert([bookingData])
+    .insert([{ ...bookingData, status: 'pending' }])
     .single();
 
   if (error) {
@@ -13,4 +13,3 @@ export const createBooking = async (bookingData) => {
 
   return data;
 };
-

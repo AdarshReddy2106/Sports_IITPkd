@@ -4,6 +4,7 @@ import './Bookings.css';
 import { useUser } from '@clerk/clerk-react';
 import { useEffect } from 'react';
 import { createBooking } from '../../Js/UserBookings';
+import { supabase } from '../../Js/supabase';
 
 const Bookings = () => {
   const { user } = useUser();
@@ -27,6 +28,23 @@ const Bookings = () => {
         email: user.primaryEmailAddress?.emailAddress || ''
       }));
     }
+  }, [user]);
+
+  const [userBookings, setUserBookings] = useState([]);
+
+  const fetchUserBookings = async () => {
+    if (user) {
+      const { data, error } = await supabase
+        .from("bookings")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
+      if (!error) setUserBookings(data);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserBookings();
   }, [user]);
 
   const [status, setStatus] = useState('');
@@ -110,6 +128,17 @@ const Bookings = () => {
 
         <div className="bookings-content">
           <div className="booking-form-card">
+            <div className="user-bookings">
+              <h3>Your Bookings</h3>
+              <ul>
+                {userBookings.map((b, i) => (
+                  <li key={i}>
+                    {b.facility} on {b.date} — <strong>{b.status}</strong>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
             <h3 className="form-title">Facility Booking</h3>
             <form onSubmit={handleSubmit}>
               <div className="form-group">

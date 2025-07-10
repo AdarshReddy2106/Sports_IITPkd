@@ -48,6 +48,15 @@ const Navigation = ({ currentPage, setCurrentPage }) => {
               </button>
             ))}
 
+            {user?.primaryEmailAddress?.emailAddress === '102301018@smail.iitpkd.ac.in' && (
+              <button
+                onClick={() => setCurrentPage('admindashboard')}
+                className={`nav-link ${currentPage === 'admindashboard' ? 'active' : ''}`}
+              >
+                Admin Dashboard
+              </button>
+            )}
+
             {/* Clerk Auth UI */}
             <SignedOut>
               <SignInButton mode="modal">

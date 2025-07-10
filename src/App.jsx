@@ -10,6 +10,7 @@ import Contact from './pages/Contact';
 import Footer from './components/Footer';
 import PrivacyPolicy from './components/privacypolicy';
 import BikePreloader from './components/bikePreloader';
+import AdminDashboard from './pages/AdminDashboard';
 // Theme Context (keep your existing code)
 const ThemeContext = createContext();
 
@@ -88,10 +89,8 @@ const SportsIITPkd = () => {
         return <Contact />;
       case 'privacypolicy':  
         return <PrivacyPolicy />;
-      case 'login':
-        return <Login setCurrentPage={setCurrentPage} />;
-      case 'signup':
-        return <Signup setCurrentPage={setCurrentPage} />;
+      case 'admindashboard':
+        return <AdminDashboard />;
       default:
         return <Home setCurrentPage={setCurrentPage} />;
     }
