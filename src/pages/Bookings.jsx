@@ -21,14 +21,15 @@ const Bookings = () => {
   
 
   useEffect(() => {
-    if (user) {
-      setForm(prev => ({
-        ...prev,
-        name: user.fullName || '',
-        email: user.primaryEmailAddress?.emailAddress || ''
-      }));
-    }
-  }, [user]);
+  if (user?.fullName && user?.primaryEmailAddress?.emailAddress) {
+    setForm(prev => ({
+      ...prev,
+      name: user.fullName,
+      email: user.primaryEmailAddress.emailAddress,
+    }));
+  }
+}, [user?.fullName, user?.primaryEmailAddress]);
+
 
   const [userBookings, setUserBookings] = useState([]);
 
@@ -63,6 +64,7 @@ const Bookings = () => {
         setStatus('Login to Book Facilities');
         return;
   }
+    console.log(form.name)
     setStatus('Booking...');
     try {
       const res = await fetch(API_URL, {
