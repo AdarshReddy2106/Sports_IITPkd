@@ -3,6 +3,7 @@ import { Phone, Mail } from 'lucide-react';
 import './Bookings.css';
 import { useUser } from '@clerk/clerk-react';
 import { useEffect } from 'react';
+import { createBooking } from '../../Js/UserBookings';
 
 const Bookings = () => {
   const { user } = useUser();
@@ -16,6 +17,7 @@ const Bookings = () => {
     participants: '',
     notes: ''
   });
+  
 
   useEffect(() => {
     if (user) {
@@ -39,6 +41,10 @@ const Bookings = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
+      if (!form.name || !form.email) {
+        setStatus('User not logged in or missing info.');
+        return;
+  }
     setStatus('Booking...');
     try {
       const res = await fetch(API_URL, {
@@ -49,30 +55,45 @@ const Bookings = () => {
       const data = await res.json();
       if (res.ok) {
         setStatus('Booking Sent! Wait for Confirmation.');
-        setForm({
+        setForm(prev => ({
+          ...prev,
           selectedFacility: '',
           bookingDate: '',
           startTime: '',
           endTime: '',
           participants: '',
           notes: ''
-        });
+        }));
       } else {
         setStatus(data.error || 'Failed to send.');
       }
     } catch (error) {
       console.error('Fetch error:', error);
-      setStatus('Failed to send.');
     }
+      // Get facility name for database
+      const facilityName = facilities.find(f => f.id === form.selectedFacility)?.name || form.selectedFacility;
+      
+      // Create booking in database
+      const bookingData = {
+        user_id: user?.id,
+        name: form.name,
+        email: form.email,
+        facility: facilityName,
+        date: form.bookingDate,
+        start_time: form.startTime,
+        end_time: form.endTime,
+        participants: form.participants,
+        notes: form.notes
+      };
+      await createBooking(bookingData);
   };
 
   const facilities = [
-    { id: 'swimming', name: 'Olympic Swimming Pool' },
-    { id: 'basketball', name: 'Indoor Basketball Court' },
-    { id: 'fitness', name: 'Fitness Center' },
-    { id: 'tennis', name: 'Tennis Courts' },
-    { id: 'track', name: 'Athletic Track' },
-    { id: 'hall', name: 'Multi-purpose Hall' }
+    { id: 'Badminton', name: 'Badminton Court' },
+    { id: 'Basketball', name: 'Basketball Court' },
+    { id: 'Cricket', name: 'Cricket Field' },
+    { id: 'TableTennis', name: 'Table Tennis Courts' },
+    { id: 'Track', name: 'Athletic Track' },
   ];
 
   return (
@@ -183,8 +204,7 @@ const Bookings = () => {
                   placeholder="Any additional requirements or notes"
                 />
               </div>
-
-              <button className="submit-btn">
+              <button type="submit" className="submit-btn">
                 Book Now
               </button>
               {status && <div className="status-message">{status}</div>}
