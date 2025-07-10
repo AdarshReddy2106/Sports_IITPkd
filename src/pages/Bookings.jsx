@@ -50,7 +50,7 @@ const Bookings = () => {
   const [status, setStatus] = useState('');
 
   const API_URL = process.env.NODE_ENV === 'production'
-    ? 'https://contactapi-iit.vercel.app/api/contact'
+    ? 'https://contactapi-iit.vercel.app/api/BookingMail'
     : 'http://localhost:2030/api/BookingMail';
 
   const handleChange = e => {
@@ -60,7 +60,7 @@ const Bookings = () => {
   const handleSubmit = async e => {
     e.preventDefault();
       if (!form.name || !form.email) {
-        setStatus('User not logged in or missing info.');
+        setStatus('Login to Book Facilities');
         return;
   }
     setStatus('Booking...');
