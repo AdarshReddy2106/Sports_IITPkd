@@ -17,9 +17,6 @@ const AdminDashboard = () => {
     color: "bg-teal-600",
   });
 
-  // Use environment variable for API URL
-  const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://contactapi-iit.vercel.app';
-
   const adminEmails = [
     "102301018@smail.iitpkd.ac.in",
     "122301042@smail.iitpkd.ac.in",
@@ -27,7 +24,6 @@ const AdminDashboard = () => {
   const isAdmin =
     user && adminEmails.includes(user.primaryEmailAddress?.emailAddress);
 
-  // Fetch bookings and events
   useEffect(() => {
     if (!isAdmin) return;
 
@@ -41,13 +37,12 @@ const AdminDashboard = () => {
   };
 
   const fetchEvents = async () => {
-    try {
-      const res = await fetch(`${API_BASE_URL}/events`);
-      const data = await res.json();
-      setEvents(data);
-    } catch {
-      alert("Error fetching events");
-    }
+    const { data, error } = await supabase
+      .from("events")
+      .select("*")
+      .order("date", { ascending: true });
+
+    if (!error) setEvents(data);
   };
 
   const updateStatus = async (id, status) => {
@@ -65,54 +60,32 @@ const AdminDashboard = () => {
   const handleAddEvent = async (e) => {
     e.preventDefault();
 
-    const eventToSave = {
-      ...event,
-      date: event.date, // Already in YYYY-MM-DD format from date input
-    };
+    const { date, startTime, endTime, title, description, color } = event;
 
-    try {
-      const res = await fetch(`${API_BASE_URL}/events`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(eventToSave),
+    const { error } = await supabase.from("events").insert([
+      { date, startTime, endTime, title, description, color },
+    ]);
+
+    if (error) {
+      alert("❌ Failed to add event: " + error.message);
+    } else {
+      alert("✅ Event added successfully");
+      setEvent({
+        date: "",
+        startTime: "",
+        endTime: "",
+        title: "",
+        description: "",
+        color: "bg-teal-600",
       });
-
-      if (res.ok) {
-        alert("✅ Event added successfully");
-
-        // Reset form
-        setEvent({
-          date: "",
-          startTime: "",
-          endTime: "",
-          title: "",
-          description: "",
-          color: "bg-teal-600",
-        });
-
-        // Fetch updated events
-        fetchEvents();
-      } else {
-        alert("❌ Failed to add event");
-      }
-    } catch (err) {
-      alert("Server error: " + err.message);
+      fetchEvents();
     }
   };
 
-  const handleDeleteEvent = async (index) => {
-    try {
-      const res = await fetch(`${API_BASE_URL}/events/${index}`, {
-        method: "DELETE",
-      });
-      if (res.ok) {
-        fetchEvents();
-      } else {
-        alert("Failed to delete event");
-      }
-    } catch {
-      alert("Error deleting event");
-    }
+  const handleDeleteEvent = async (id) => {
+    const { error } = await supabase.from("events").delete().eq("id", id);
+    if (!error) fetchEvents();
+    else alert("Error deleting event: " + error.message);
   };
 
   const handleChange = (e) => {
@@ -189,8 +162,8 @@ const AdminDashboard = () => {
           <p>No events added yet.</p>
         ) : (
           <ul style={{ listStyle: "none", padding: 0 }}>
-            {events.map((ev, index) => (
-              <li key={index} className="event-item">
+            {events.map((ev) => (
+              <li key={ev.id} className="event-item">
                 <div>
                   <strong>{ev.title}</strong>
                   <br />
@@ -198,14 +171,14 @@ const AdminDashboard = () => {
                   <br />
                   <small>{ev.description}</small>
                 </div>
-                <button onClick={() => handleDeleteEvent(index)}>❌</button>
+                <button onClick={() => handleDeleteEvent(ev.id)}>❌</button>
               </li>
             ))}
           </ul>
         )}
       </div>
 
-      {/* 📅 Facility Bookings Full Width */}
+      {/* 📅 Facility Bookings */}
       <div className="facility-bookings">
         <h2>Facility Bookings</h2>
         <table className="booking-table">
