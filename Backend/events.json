@@ -6,5 +6,13 @@
     "title": "opening",
     "description": "test",
     "color": "bg-blue-900"
+  },
+  {
+    "date": "2025-08-01",
+    "startTime": "18:35",
+    "endTime": "18:35",
+    "title": "Freshers",
+    "description": "new",
+    "color": "bg-red-500"
   }
 ]

@@ -5,9 +5,13 @@ import './Calendar.css';
 const Calendar = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [events, setEvents] = useState([]);
+  const [currentDate] = useState(new Date());
+
+  // Use environment variable for API URL
+  const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://contactapi-iit.vercel.app';
 
   useEffect(() => {
-    fetch('http://localhost:2030/events')
+    fetch(`${API_BASE_URL}/events`)
       .then(res => res.json())
       .then(data => setEvents(data))
       .catch(err => console.error('Error fetching events:', err));
@@ -38,40 +42,40 @@ const Calendar = () => {
   const currentMonthName = monthNames[currentMonth.getMonth()];
   const currentYear = currentMonth.getFullYear();
 
+  // Get current date in YYYY-MM-DD format
+  const today = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`;
+
   const days = [];
 
+  // Add empty cells for days before the first day of the month
   for (let i = 0; i < firstDay; i++) {
     days.push(
-      <div key={`empty-${i}`} className="h-12 flex items-center justify-center text-gray-400 text-sm">
+      <div key={`empty-${i}`} className="empty-day">
         •
       </div>
     );
   }
 
+  // Add days of the month
   for (let day = 1; day <= daysInMonth; day++) {
     const fullDate = `${currentYear}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
     const hasEvent = calendarEvents[fullDate];
-    const bgClass =
-      hasEvent === 'teal'
-        ? 'bg-teal-200 dark:bg-teal-700'
-        : hasEvent === 'red'
-        ? 'bg-red-200 dark:bg-red-700'
-        : hasEvent === 'blue'
-        ? 'bg-blue-200 dark:bg-blue-700'
-        : '';
+    const isToday = fullDate === today;
+    
+    // Determine classes
+    let dayClasses = 'calendar-day current-month';
+    
+    if (isToday) {
+      dayClasses += ' today';
+    } else if (hasEvent) {
+      dayClasses += ` has-event ${hasEvent}`;
+    }
 
     days.push(
-      <div
-        key={day}
-        className={`h-12 flex items-center justify-center relative ${bgClass} ${
-          hasEvent ? 'rounded-lg' : ''
-        }`}
-      >
-        <span className={`text-sm font-medium ${hasEvent ? 'text-white' : 'text-gray-900 dark:text-gray-100'}`}>{day}</span>
-        {hasEvent && (
-          <div className={`absolute bottom-1 w-2 h-2 rounded-full ${
-            hasEvent === 'teal' ? 'bg-teal-300' : hasEvent === 'red' ? 'bg-red-300' : 'bg-blue-300'
-          }`} />
+      <div key={day} className={dayClasses}>
+        <span>{day}</span>
+        {hasEvent && !isToday && (
+          <div className={`event-indicator ${hasEvent}`} />
         )}
       </div>
     );
@@ -97,12 +101,18 @@ const Calendar = () => {
         {/* Month Navigation */}
         <div className="calendar-widget">
           <div className="calendar-nav">
-            <button onClick={() => setCurrentMonth(new Date(currentYear, currentMonth.getMonth() - 1))} className="calendar-nav-btn">
-              <ChevronLeft className="w-5 h-5" />
+            <button 
+              onClick={() => setCurrentMonth(new Date(currentYear, currentMonth.getMonth() - 1))} 
+              className="calendar-nav-btn"
+            >
+              <ChevronLeft />
             </button>
             <h3 className="calendar-month-title">{currentMonthName} {currentYear}</h3>
-            <button onClick={() => setCurrentMonth(new Date(currentYear, currentMonth.getMonth() + 1))} className="calendar-nav-btn">
-              <ChevronRight className="w-5 h-5" />
+            <button 
+              onClick={() => setCurrentMonth(new Date(currentYear, currentMonth.getMonth() + 1))} 
+              className="calendar-nav-btn"
+            >
+              <ChevronRight />
             </button>
           </div>
 
@@ -143,15 +153,12 @@ const Calendar = () => {
                       }
                     </p>
                     <p className="event-description">{event.description}</p>
-                    {/* Optional: Uncomment below to show full date */}
-                    {/* <p className="event-date-text">{event.date}</p> */}
                   </div>
                 </div>
               );
             })}
           </div>
         </div>
-
       </div>
     </div>
   );

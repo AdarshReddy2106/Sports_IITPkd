@@ -17,6 +17,9 @@ const AdminDashboard = () => {
     color: "bg-teal-600",
   });
 
+  // Use environment variable for API URL
+  const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://contactapi-iit.vercel.app';
+
   const adminEmails = [
     "102301018@smail.iitpkd.ac.in",
     "122301042@smail.iitpkd.ac.in",
@@ -39,7 +42,7 @@ const AdminDashboard = () => {
 
   const fetchEvents = async () => {
     try {
-      const res = await fetch("http://localhost:2030/events");
+      const res = await fetch(`${API_BASE_URL}/events`);
       const data = await res.json();
       setEvents(data);
     } catch {
@@ -68,7 +71,7 @@ const AdminDashboard = () => {
     };
 
     try {
-      const res = await fetch("http://localhost:2030/events", {
+      const res = await fetch(`${API_BASE_URL}/events`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(eventToSave),
@@ -99,7 +102,7 @@ const AdminDashboard = () => {
 
   const handleDeleteEvent = async (index) => {
     try {
-      const res = await fetch(`http://localhost:2030/events/${index}`, {
+      const res = await fetch(`${API_BASE_URL}/events/${index}`, {
         method: "DELETE",
       });
       if (res.ok) {
