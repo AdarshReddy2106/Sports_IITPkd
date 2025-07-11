@@ -1,0 +1,176 @@
+.admin-panel-container {
+  max-width: 1100px;
+  margin: 3rem auto;
+  padding: 2rem;
+  background: var(--bg-primary, #fff);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.admin-panel-box {
+  flex: 1 1 45%;
+  background-color: var(--box-bg, #f9f9f9);
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+.admin-panel-box h3 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.admin-form input,
+.admin-form textarea,
+.admin-form select {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.admin-form textarea {
+  resize: vertical;
+}
+
+.admin-form button {
+  background: #2563eb;
+  color: white;
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.admin-form button:hover {
+  background: #1d4ed8;
+}
+
+.event-item {
+  background: #fff;
+  padding: 0.8rem;
+  margin-bottom: 0.8rem;
+  border-radius: 8px;
+  box-shadow: 0 0 4px rgba(0,0,0,0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.event-item button {
+  background: #dc2626;
+  color: white;
+  padding: 0.3rem 0.6rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.event-item button:hover {
+  background: #b91c1c;
+}
+@media (max-width: 768px) {
+  .admin-panel-container {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .admin-panel-box {
+    width: 100%;
+    margin-bottom: 2rem;
+  }
+}
+/* Facility Bookings Section */
+.facility-bookings {
+  flex: 1 1 100%;
+  margin-top: 3rem;
+}
+
+/* Heading */
+.facility-bookings h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #111827;
+  text-align: left;
+}
+
+/* Table styling */
+.booking-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  background-color: white;
+}
+
+/* Table header */
+.booking-table th {
+  background-color: #f3f4f6;
+  color: #1f2937;
+  font-weight: 600;
+  text-align: left;
+  padding: 0.75rem 1rem;
+}
+
+/* Table rows */
+.booking-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 0.95rem;
+}
+
+.booking-table tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+.booking-table tr:hover {
+  background-color: #f3f4f6;
+}
+
+/* Action buttons */
+.booking-table button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+/* Accept button */
+.booking-table button:first-child {
+  background-color: #10b981;
+  color: white;
+}
+
+.booking-table button:first-child:hover {
+  background-color: #059669;
+}
+
+/* Reject button */
+.booking-table button:last-child {
+  background-color: #ef4444;
+  color: white;
+  margin-left: 0.5rem;
+}
+
+.booking-table button:last-child:hover {
+  background-color: #dc2626;
+}
+
+/* Disabled state */
+.booking-table button:disabled {
+  background-color: #cbd5e1;
+  cursor: not-allowed;
+}
+.booking-actions {
+  display: flex;
+  gap: 0.5rem;
+}
