@@ -621,8 +621,8 @@ p {
   }
   .mobile-navbar-toggle {
     padding: 0.75rem;
-  border: 1px solid rgba(255,255,255,0.15);
-  background: rgba(30,41,59,0.6); /* Match theme toggle */
+  border: 1px solid var(--text-secondary);
+  background: var(--bg-primary);
   border-radius: 50%;
   cursor: pointer;
   transition: background 0.2s, border 0.2s;
@@ -636,10 +636,9 @@ p {
   box-shadow: none;
 }
 
-.mobile-navbar-toggle:hover,
-.mobile-navbar-toggle:focus {
-  background: rgba(255,255,255,0.08);
-  border: 1.5px solid #fff;
+.mobile-navbar-toggle:hover{
+  background: var(--accent-primary);
+  border: 1.5px solid var(--text-secondary);
 }
   .hamburger {
     position: relative;
@@ -657,7 +656,7 @@ p {
   .hamburger::before,
   .hamburger::after {
     display: block;
-    background: #fff;
+    background: var(--text-primary);
     height: 3px;
     width: 28px;
     border-radius: 2px;
@@ -672,7 +671,7 @@ p {
     left: 0;
     width: 28px;
     height: 3px;
-    background: #fff;
+    background: var(--text-primary);
     border-radius: 2px;
     transition: all 0.3s;
   }
