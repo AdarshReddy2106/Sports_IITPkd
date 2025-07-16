@@ -1,6 +1,48 @@
 import React, { useState } from 'react';
 import { Sun, Moon } from 'lucide-react';
 import { useTheme } from '../App';
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+  useUser,
+  useClerk,
+} from '@clerk/clerk-react';
+
+const ClerkAuth = () => {
+  const { openSignIn } = useClerk();
+  
+  const handleSignInClick = () => {
+    openSignIn(); // Open Clerk sign in modal
+  };
+
+  return (
+    <>
+      <SignedOut>
+        <button 
+          className="mobile-navbar-link"
+          onClick={handleSignInClick}
+          style={{ 
+            width: '100%', 
+            display: 'block',
+            textAlign: 'left',
+            border: 'none',
+            font: 'inherit',
+            cursor: 'pointer'
+          }}
+        >
+          Sign In
+        </button>
+      </SignedOut>
+      <SignedIn>
+        <div className="mobile-navbar-link" style={{ display: 'flex', alignItems: 'center' }}>
+          <UserButton afterSignOutUrl="/" />
+        </div>
+      </SignedIn>
+    </>
+  );
+};
 
 const navLinks = [
   { name: 'Home', key: 'home' },
@@ -58,6 +100,10 @@ const MobileNav = ({ currentPage, setCurrentPage }) => {
             {link.name}
           </button>
         ))}
+        
+        <div className="mobile-navbar-auth">
+          <ClerkAuth />
+        </div>
       </div>
     </nav>
   );

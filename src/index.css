@@ -707,6 +707,16 @@ p {
   .mobile-navbar-menu.show {
     display: flex;
   }
+  .mobile-navbar-auth{
+    border: none;
+    background: none;
+    text-align: left;
+    font-size: 1rem;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-primary);
+    transition: background 0.2s, color 0.2s;
+    cursor: pointer;
+  }
   .mobile-navbar-link {
     padding: 1rem;
     border: none;
