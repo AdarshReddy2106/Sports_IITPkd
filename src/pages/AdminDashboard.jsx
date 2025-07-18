@@ -51,9 +51,7 @@ const AdminDashboard = () => {
       .update({ status })
       .eq("id", id);
     if (!error) {
-      setBookings((prev) =>
-        prev.map((b) => (b.id === id ? { ...b, status } : b))
-      );
+      setBookings((prev) => prev.filter(b => b.id !== id));
     }
   };
 
