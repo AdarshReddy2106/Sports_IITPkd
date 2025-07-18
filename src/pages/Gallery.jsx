@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import './Gallery.css';
 
 const galleryImages = [
-  { id: 1, title: 'Swimming Pool', category: 'Facilities', colorClass: 'teal' },
+  { id: 1, title: 'Cricket Ground', category: 'Facilities', colorClass: 'teal' },  
   { id: 2, title: 'Basketball Court', category: 'Facilities', colorClass: 'blue' },
   { id: 3, title: 'Fitness Center', category: 'Facilities', colorClass: 'red' },
-  { id: 4, title: 'Tennis Courts', category: 'Facilities', colorClass: 'teal' },
+  { id: 4, title: 'Table Tennis', category: 'Facilities', colorClass: 'teal' },      
   { id: 5, title: 'Athletic Track', category: 'Facilities', colorClass: 'blue' },
-  { id: 6, title: 'Multi-purpose Hall', category: 'Facilities', colorClass: 'red' },
+  { id: 6, title: 'Badminton Courts', category: 'Facilities', colorClass: 'red' },   
   { id: 7, title: 'Championship Event', category: 'Events', colorClass: 'teal' },
   { id: 8, title: 'Training Session', category: 'Training', colorClass: 'blue' },
 ];
+
 
 const Gallery = () => {
   const [openCard, setOpenCard] = useState(null);
@@ -59,7 +60,7 @@ const Gallery = () => {
         </div>
       </div>
 
-      {/* -------- popup modal -------- */}
+      {/* ----- popup modal ----- */}
       {openCard && (
         <div className="modal-overlay" onClick={closeModal}>
           <div
