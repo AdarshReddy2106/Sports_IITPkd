@@ -1,0 +1,35 @@
+.logo-slider {
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%;
+    background: #fff;
+    padding: 30px 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.logo-track {
+    display: inline-block;
+    animation: scroll 20s linear infinite;
+    animation-play-state: running;
+}
+
+.logo-slider:hover .logo-track {
+    animation-play-state: paused;
+}
+
+.logo-track img {
+    height: 125px; 
+    margin: 0 30px; 
+    vertical-align: middle;
+    transition: transform 0.3s;
+    cursor: pointer;
+}
+
+.logo-track img:hover {
+    transform: scale(1.1);
+}
+
+@keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
