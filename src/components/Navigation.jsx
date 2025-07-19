@@ -32,9 +32,7 @@ const Navigation = ({ currentPage, setCurrentPage }) => {
       <div className="container">
         <div className="navbar-content">
           <div className="logo">
-            <div className="logo-icon">
-              <CheckCircle size={20} />
-            </div>
+            <img src="/Logos/council.jpg" alt="" className="logo-icon" />
             <span>Sports Council IIT Palakkad</span>
           </div>
           <div className="nav-links">

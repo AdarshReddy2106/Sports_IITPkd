@@ -66,10 +66,8 @@ const MobileNav = ({ currentPage, setCurrentPage }) => {
     <nav className="mobile-navbar">
       <div className="mobile-navbar-header">
         <div className="logo">
-          <div className="logo-icon">
-            <span className="logo-text">ESC</span>
-          </div>
-          <span className="logo-name">Sports Council IIT Palakkad</span>
+            <img src="/Logos/council.jpg" alt="" className="logo-icon" />
+          <span className="logo-name">Sports Council</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <button
