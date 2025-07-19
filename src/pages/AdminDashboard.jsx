@@ -113,7 +113,6 @@ const AdminDashboard = () => {
               placeholder="Start Time"
               value={event.startTime}
               onChange={handleChange}
-              required
             />
             <input
               type="time"
@@ -121,7 +120,6 @@ const AdminDashboard = () => {
               placeholder="End Time"
               value={event.endTime}
               onChange={handleChange}
-              required
             />
           </div>
           <input

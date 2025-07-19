@@ -49,27 +49,27 @@ const About = () => {
       </div>
       <div className="logo-slider">
             <div className="logo-track">
-              <img src="../../src/assets/Logos/1.png" alt="Logo 1" />
-              <img src="../../src/assets/Logos/2.png" alt="Logo 2" />
-              <img src="../../src/assets/Logos/3.png" alt="Logo 3" />
-              <img src="../../src/assets/Logos/4.png" alt="Logo 4" />
-              <img src="../../src/assets/Logos/5.png" alt="Logo 5" />
-              <img src="../../src/assets/Logos/6.png" alt="Logo 6" />
-              <img src="../../src/assets/Logos/7.png" alt="Logo 7" />
-              <img src="../../src/assets/Logos/8.png" alt="Logo 8" />
-              <img src="../../src/assets/Logos/9.png" alt="Logo 9" />
-              <img src="../../src/assets/Logos/10.png" alt="Logo 10" />
+              <img src="/Logos/1.png" alt="Logo 1" />
+              <img src="/Logos/2.png" alt="Logo 2" />
+              <img src="/Logos/3.png" alt="Logo 3" />
+              <img src="/Logos/4.png" alt="Logo 4" />
+              <img src="/Logos/5.png" alt="Logo 5" />
+              <img src="/Logos/6.png" alt="Logo 6" />
+              <img src="/Logos/7.png" alt="Logo 7" />
+              <img src="/Logos/8.png" alt="Logo 8" />
+              <img src="/Logos/9.png" alt="Logo 9" />
+              <img src="/Logos/10.png" alt="Logo 10" />
 
-              <img src="../../src/assets/Logos/1.png" alt="Logo 1" />
-              <img src="../../src/assets/Logos/2.png" alt="Logo 2" />
-              <img src="../../src/assets/Logos/3.png" alt="Logo 3" />
-              <img src="../../src/assets/Logos/4.png" alt="Logo 4" />
-              <img src="../../src/assets/Logos/5.png" alt="Logo 5" />
-              <img src="../../src/assets/Logos/6.png" alt="Logo 6" />
-              <img src="../../src/assets/Logos/7.png" alt="Logo 7" />
-              <img src="../../src/assets/Logos/8.png" alt="Logo 8" />
-              <img src="../../src/assets/Logos/9.png" alt="Logo 9" />
-              <img src="../../src/assets/Logos/10.png" alt="Logo 10" />
+              <img src="/Logos/1.png" alt="Logo 1" />
+              <img src="/Logos/2.png" alt="Logo 2" />
+              <img src="/Logos/3.png" alt="Logo 3" />
+              <img src="/Logos/4.png" alt="Logo 4" />
+              <img src="/Logos/5.png" alt="Logo 5" />
+              <img src="/Logos/6.png" alt="Logo 6" />
+              <img src="/Logos/7.png" alt="Logo 7" />
+              <img src="/Logos/8.png" alt="Logo 8" />
+              <img src="/Logos/9.png" alt="Logo 9" />
+              <img src="/Logos/10.png" alt="Logo 10" />
             </div>
           </div>
     </div>
