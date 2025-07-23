@@ -118,7 +118,7 @@ const BikePreloader = ({ isVisible }) => {
     
     .loading-text {
       position: absolute;
-      bottom: 30%;
+      bottom: 28%;
       left: 50%;
       transform: translateX(-50%);
       color: var(--primary);
