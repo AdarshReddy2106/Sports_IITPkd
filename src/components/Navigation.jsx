@@ -33,7 +33,7 @@ const Navigation = ({ currentPage, setCurrentPage }) => {
         <div className="navbar-content">
           <div className="logo">
             <img src="/Logos/council.jpg" alt="" className="logo-icon" />
-            <span className='logo-name'>Sports Council, IIT Palakkad</span>
+            <span className='logo-name'>Sports Council IIT Palakkad</span>
           </div>
           <div className="nav-links">
             {['Home', 'About', 'Gallery', 'Calendar', 'Bookings', 'Contact'].map((item) => (

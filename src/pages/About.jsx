@@ -9,7 +9,7 @@ const About = () => {
         <div className="about-content">
           <div className="about-text">
             <h2 className="about-title">
-              About Elite Sports <span className="accent">Council</span>
+              About Sports <span className="accent">Council</span>
             </h2>
             <p className="about-paragraph">
               Founded in 2005, Sports Council IIT Palakkad has been at the forefront of sports development and excellence. Our mission is to provide world-class facilities, expert coaching, and comprehensive programs that empower athletes to achieve their full potential.

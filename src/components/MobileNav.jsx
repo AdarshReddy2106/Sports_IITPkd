@@ -67,7 +67,7 @@ const MobileNav = ({ currentPage, setCurrentPage }) => {
       <div className="mobile-navbar-header">
         <div className="logo">
             <img src="/Logos/council.jpg" alt="" className="logo-icon" />
-          <span className="logo-name">Sports Council, IIT Palakkad</span>
+          <span className="logo-name">Sports Council IIT Palakkad</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <button

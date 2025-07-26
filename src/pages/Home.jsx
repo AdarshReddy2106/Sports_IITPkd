@@ -60,7 +60,7 @@ const Home = ({ setCurrentPage }) => {
       <div className="container">
         <h1>Empowering Athletes, Building Champions</h1>
         <p>
-          Your journey to excellence starts here with Elite Sports Council's
+          Your journey to excellence starts here with Sports Council's
           world-class facilities and expert coaching.
         </p>
         <div
