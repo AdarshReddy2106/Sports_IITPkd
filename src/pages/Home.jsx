@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { CheckCircle, MapPin, Users } from 'lucide-react';
+import { CheckCircle, MapPin, Users, Calendar, Clock, ExternalLink, ArrowRight } from 'lucide-react';
+import { supabase } from '../../Js/supabase';
+import './UpcomingEvents.css';
 
 // Build image URLs exactly like in Gallery.jsx (strip spaces, lowercase)
 const makeImages = (title) => {
@@ -63,6 +65,25 @@ const useCounter = (end, duration = 2000, delay = 0) => {
 };
 
 const Home = ({ setCurrentPage }) => {
+  const [upcomingEvents, setUpcomingEvents] = useState([]);
+
+  useEffect(() => {
+    const fetchUpcomingEvents = async () => {
+      const today = new Date().toISOString().split('T')[0];
+      const { data, error } = await supabase
+        .from('events')
+        .select('*')
+        .gte('date', today)
+        .order('date', { ascending: true })
+        .limit(3);
+
+      if (!error && data) {
+        setUpcomingEvents(data);
+      }
+    };
+    fetchUpcomingEvents();
+  }, []);
+
   const facilities = [
     {
       id: 'cricket',
@@ -175,6 +196,27 @@ const Home = ({ setCurrentPage }) => {
       </div>
     </div>
   );
+
+  const formatEventDate = (dateString) => {
+    const eventDate = new Date(dateString);
+    const month = eventDate.toLocaleDateString('en-US', { month: 'short' });
+    const day = eventDate.getDate();
+    return { month, day };
+  };
+
+  const getEventColorClass = (color) => {
+    if (color?.includes('teal')) return 'teal';
+    if (color?.includes('red')) return 'red';
+    return 'blue';
+  };
+
+  const handleEventClick = (event) => {
+    if (event.registrationLink) {
+      window.open(event.registrationLink, '_blank');
+    } else if (event.posterUrl) {
+      window.open(event.posterUrl, '_blank');
+    }
+  };
 
   const WhyChooseUs = () => (
     <div className="section" style={{ background: 'var(--bg-primary)' }}>
@@ -312,10 +354,97 @@ const Home = ({ setCurrentPage }) => {
     </div>
   );
   
+const UpcomingEvents = () => (
+  <section className="upcoming-events-section">
+    <div className="container">
+      <div className="upcoming-events-header">
+        <h2>
+          Upcoming <span className="text-gradient">Events</span>
+        </h2>
+        <p className="upcoming-events-subtitle">
+          Don't miss out on our exciting upcoming events and competitions
+        </p>
+      </div>
+
+      <div className="upcoming-events-grid">
+        {upcomingEvents.length === 0 ? (
+          <div className="no-events">
+            <Calendar size={64} />
+            <h3>No Upcoming Events</h3>
+            <p>Stay tuned for exciting events and competitions!</p>
+          </div>
+        ) : (
+          upcomingEvents.map((event) => {
+            const eventDate = new Date(event.date);
+            const monthNames = [
+              'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
+              'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'
+            ];
+
+            return (
+              <div key={event.id} className="upcoming-event-card">
+                <div className={`event-date-badge ${event.color?.includes('red') ? 'red' : event.color?.includes('teal') ? 'teal' : 'blue'}`}>
+                  <span className="event-month">
+                    {monthNames[eventDate.getMonth()]}
+                  </span>
+                  <span className="event-day">
+                    {eventDate.getDate()}
+                  </span>
+                </div>
+
+                <div className="event_content">
+                  <h3 className="event_title">{event.title}</h3>
+                  
+                  {(event.startTime && event.endTime) && (
+                    <div className="event_time">
+                      <Clock size={16} />
+                      {event.startTime} - {event.endTime}
+                    </div>
+                  )}
+
+                  {event.description && (
+                    <p className="event-description">{event.description}</p>
+                  )}
+
+                  {/* FIXED: Updated event link logic */}
+                  {event.eventLink && (
+                    <div className="event-actions">
+                      <a
+                        href={event.eventLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="event-action-btn"
+                      >
+                        <ExternalLink size={16} />
+                        {event.linkText || "View Details"}
+                      </a>
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })
+        )}
+      </div>
+
+      <div className="events-footer">
+        <button 
+          className="view-all-events-btn"
+          onClick={() => setCurrentPage('calendar')}
+        >
+          View All Events
+          <ArrowRight size={20} />
+        </button>
+      </div>
+    </div>
+  </section>
+);
+
   return (
     <>
       <Hero />
       <Details />
+      <UpcomingEvents />
       <WhyChooseUs />
       <FacilitiesGrid />
     </>

@@ -15,6 +15,8 @@ const AdminDashboard = () => {
     title: "",
     description: "",
     color: "bg-teal-600",
+    eventLink: "", //  field for registrationLink and posterUrl
+    linkText: "View Details", // Optional: custom text for the link
   });
 
   const adminEmails = [
@@ -57,11 +59,19 @@ const AdminDashboard = () => {
 
   const handleAddEvent = async (e) => {
     e.preventDefault();
-
-    const { date, startTime, endTime, title, description, color } = event;
-
+    const { date, startTime, endTime, title, description, color, eventLink, linkText } = event;
+    
     const { error } = await supabase.from("events").insert([
-      { date, startTime, endTime, title, description, color },
+      { 
+        date, 
+        startTime, 
+        endTime, 
+        title, 
+        description, 
+        color,
+        eventLink: eventLink || null,
+        linkText: linkText || "View Details"
+      },
     ]);
 
     if (error) {
@@ -75,6 +85,8 @@ const AdminDashboard = () => {
         title: "",
         description: "",
         color: "bg-teal-600",
+        eventLink: "",
+        linkText: "View Details",
       });
       fetchEvents();
     }
@@ -130,19 +142,37 @@ const AdminDashboard = () => {
             onChange={handleChange}
             required
           />
+
+          <input
+            type="url"
+            name="eventLink"
+            value={event.eventLink}
+            onChange={handleChange}
+            placeholder="Event Link(Form/Poster)"
+          />
+          <input
+            type="text"
+            name="linkText"
+            value={event.linkText}
+            onChange={handleChange}
+            placeholder="Register Now, View Poster, More Info, etc."
+          />
+
           <textarea
             name="description"
             placeholder="Description"
             rows="3"
             value={event.description}
             onChange={handleChange}
-            required
+            // required
           />
+          
           <select
             name="color"
             value={event.color}
             onChange={handleChange}
           >
+
             <option value="bg-teal-600">Teal</option>
             <option value="bg-red-500">Red</option>
             <option value="bg-blue-900">Blue</option>

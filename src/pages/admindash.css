@@ -13,11 +13,11 @@
 
 .admin-panel-box {
     flex: 1 1 45%;
-    background-color: var(--bg-secondary);
+    background-color: var(--bg-primary);
     padding: 1.5rem;
     border-radius: 10px;
     box-shadow: var(--shadow-md);
-    border: 1px solid var(--border-primary);
+    border: 1px solid var(--border-secondary);
     transition: all 0.3s ease;
 }
 
@@ -40,9 +40,9 @@
     width: 100%;
     padding: 0.75rem;
     margin-bottom: 1rem;
-    border: 2px solid var(--border-primary);
+    border: 3px solid black;
     border-radius: 6px;
-    background: var(--bg-primary);
+    background: var(--bg-tertiary);
     color: var(--text-primary);
     transition: all 0.3s ease;
     font-size: 0.95rem;
@@ -97,7 +97,7 @@
 }
 
 .event-item {
-    background: var(--bg-primary);
+    background: var(--bg-secondary);
     padding: 0.8rem;
     margin-bottom: 0.8rem;
     border-radius: 8px;
