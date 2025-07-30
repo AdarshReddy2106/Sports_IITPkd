@@ -47,7 +47,7 @@ const Footer = () => {
         </div>
       </div>
       <div className="footer-bottom">
-        <span>&copy;2025 Transparent. All rights reserved</span>
+        <span>&copy;2025 Sports IIT PKD. All rights reserved</span>
         <span className="footer-bottom-links">
           <button onClick={() => navTo("privacypolicy")}>Privacy Policy</button>
           <span className="footer-bottom-divider" />
