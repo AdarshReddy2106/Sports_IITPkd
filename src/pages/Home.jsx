@@ -1,12 +1,65 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { CheckCircle, MapPin, Users } from 'lucide-react';
-
 
 // Build image URLs exactly like in Gallery.jsx (strip spaces, lowercase)
 const makeImages = (title) => {
   if (!title) return [];
   const slug = title.replace(/\s/g, '').toLowerCase();
   return [1, 2, 3].map((n) => `/uploads/${slug}-${n}.jpg`);
+};
+
+// Counter Hook for animated counting
+const useCounter = (end, duration = 2000, delay = 0) => {
+  const [count, setCount] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const countRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !isVisible) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (countRef.current) {
+      observer.observe(countRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [isVisible]);
+
+  useEffect(() => {
+    if (!isVisible) return;
+
+    const timer = setTimeout(() => {
+      let startTime;
+      const animate = (currentTime) => {
+        if (!startTime) startTime = currentTime;
+        const progress = Math.min((currentTime - startTime) / duration, 1);
+        
+        // Easing function for smooth animation
+        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+        const currentCount = Math.floor(easeOutQuart * end);
+        
+        setCount(currentCount);
+        
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          setCount(end);
+        }
+      };
+      
+      requestAnimationFrame(animate);
+    }, delay);
+
+    return () => clearTimeout(timer);
+  }, [end, duration, delay, isVisible]);
+
+  return [count, countRef, isVisible];
 };
 
 const Home = ({ setCurrentPage }) => {
@@ -89,8 +142,42 @@ const Home = ({ setCurrentPage }) => {
     </div>
   );
 
+  const StatCard = ({ number, text, delay = 0 }) => {
+    const [count, countRef, isVisible] = useCounter(number, 2000, delay);
+    const [isCounting, setIsCounting] = useState(false);
+
+    useEffect(() => {
+      if (isVisible && count < number) {
+        setIsCounting(true);
+        const timer = setTimeout(() => setIsCounting(false), 100);
+        return () => clearTimeout(timer);
+      }
+    }, [count, number, isVisible]);
+
+    return (
+      <div ref={countRef} className="stat-card">
+        <div className={`stat-num ${isCounting ? 'counting' : ''}`}>
+          {count}
+        </div>
+        <div className="stat-text">{text}</div>
+      </div>
+    );
+  };
+
+  const Details = () => (
+    <div className="section" style={{ background: 'var(--bg-primary)' }}>
+      <div className="container">
+        <div className="home-stats">
+          <StatCard number={20} text="Events Conducted" delay={0} />
+          <StatCard number={150} text="Matches Played" delay={0} />
+          <StatCard number={1000} text="No. of Participants" delay={0} />
+        </div>
+      </div>
+    </div>
+  );
+
   const WhyChooseUs = () => (
-    <div className="section" style={{ background: 'var(--light-card)' }}>
+    <div className="section" style={{ background: 'var(--bg-primary)' }}>
       <div className="container">
         <h2 className="section-title">
           Why Choose <span className="text-gradient">Us</span>
@@ -228,6 +315,7 @@ const Home = ({ setCurrentPage }) => {
   return (
     <>
       <Hero />
+      <Details />
       <WhyChooseUs />
       <FacilitiesGrid />
     </>
