@@ -4,33 +4,21 @@ import { useTheme } from '../App'; // Make sure this import path is correct
 const BikePreloader = ({ isVisible }) => {
   const { isDark } = useTheme();
   
+  // Define CSS variables based on the current theme
   const preloaderStyle = {
     '--hue': '223',
     '--bg': isDark ? 'hsl(223, 90%, 10%)' : 'hsl(223, 90%, 90%)',
     '--fg': isDark ? 'hsl(223, 90%, 90%)' : 'hsl(223, 90%, 10%)',
     '--primary': 'hsl(223, 90%, 50%)',
     '--trans-dur': '0.3s',
-    fontSize: 'calc(16px + (32 - 16) * (100vw - 320px)/(2560 - 320))'
+    fontSize: 'calc(16px + (32 - 16) * (100vw - 320px)/(2560 - 320))',
+    opacity: isVisible ? 1 : 0,
+    visibility: isVisible ? 'visible' : 'hidden',
+    transition: 'opacity 0.5s ease-out, visibility 0.5s ease-out 0.5s', // Delay visibility change
   };
 
+  // Inject keyframes and bike styles into the head
   const bikeStyles = `
-    .bike-preloader {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: var(--bg);
-      color: var(--fg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
-      opacity: ${isVisible ? '1' : '0'};
-      visibility: ${isVisible ? 'visible' : 'hidden'};
-    }
-    
     .bike {
       display: block;
       width: 16em;
@@ -137,10 +125,24 @@ const BikePreloader = ({ isVisible }) => {
   return (
     <>
       <style>{bikeStyles}</style>
-      <div className="bike-preloader" style={preloaderStyle}>
+      <div 
+        className="bike-preloader"
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 9999,
+          ...preloaderStyle
+        }}
+      >
         <svg className="bike" viewBox="0 0 48 30" width="48" height="30">
           <g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1">
-            {/* Rear wheel */}
+            {/* SVG paths remain the same */}
             <g transform="translate(9.5,19)">
               <circle className="bike__tire" r="9" strokeDasharray="56.549 56.549"/>
               <g className="bike__spokes-spin" strokeDasharray="31.416 31.416" strokeDashoffset="-23.562">
@@ -148,16 +150,12 @@ const BikePreloader = ({ isVisible }) => {
                 <circle className="bike__spokes" r="5" transform="rotate(180 0 0)"/>
               </g>
             </g>
-
-            {/* Pedal / crankset */}
             <g transform="translate(24,19)">
               <g className="bike__pedals-spin" strokeDasharray="25.133 25.133" strokeDashoffset="-21.991" transform="rotate(67.5 0 0)">
                 <circle className="bike__pedals" r="4"/>
                 <circle className="bike__pedals" r="4" transform="rotate(180 0 0)"/>
               </g>
             </g>
-
-            {/* Front wheel */}
             <g transform="translate(38.5,19)">
               <circle className="bike__tire" r="9" strokeDasharray="56.549 56.549"/>
               <g className="bike__spokes-spin" strokeDasharray="31.416 31.416" strokeDashoffset="-23.562">
@@ -165,8 +163,6 @@ const BikePreloader = ({ isVisible }) => {
                 <circle className="bike__spokes" r="5" transform="rotate(180 0 0)"/>
               </g>
             </g>
-
-            {/* Frame, bars & seat */}
             <polyline className="bike__seat" points="14 3,18 3" strokeDasharray="5 5"/>
             <polyline className="bike__body" points="16 3,24 19,9.5 19,18 8,34 7,24 19" strokeDasharray="79 79"/>
             <path className="bike__handlebars" d="M30 2h6s1 0 1 1-1 1-1 1" strokeDasharray="10 10"/>

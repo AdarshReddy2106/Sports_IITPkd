@@ -12,7 +12,7 @@ import PrivacyPolicy from './components/privacypolicy';
 import BikePreloader from './components/bikePreloader';
 import AdminDashboard from './pages/AdminDashboard';
 
-// Theme Context (keep your existing code)
+// Theme Context
 const ThemeContext = createContext();
 
 export const useTheme = () => {
@@ -25,7 +25,6 @@ export const useTheme = () => {
 
 const ThemeProvider = ({ children }) => {
   const [isDark, setIsDark] = useState(() => {
-    // Check localStorage for saved theme preference
     const savedTheme = localStorage.getItem('theme');
     return savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches);
   });
@@ -35,9 +34,7 @@ const ThemeProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    // Save theme preference to localStorage
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    // Apply theme to document
     if (isDark) {
       document.documentElement.setAttribute('data-theme', 'dark');
       document.body.classList.add('dark');
@@ -56,18 +53,17 @@ const ThemeProvider = ({ children }) => {
 
 const SportsIITPkd = () => {
   const [currentPage, setCurrentPage] = useState('home');
-  const [isLoading, setIsLoading] = useState(true); // ADD THIS LINE
+  const [isLoading, setIsLoading] = useState(true);
 
-  // ADD THIS useEffect FOR LOADING TIMER
   useEffect(() => {
+    // Simulate loading time
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 3000); // 3 seconds loading time
+    }, 3000); // Adjust loading time as needed
 
     return () => clearTimeout(timer);
   }, []);
 
-  // Make setCurrentPage available globally for Footer
   window.setCurrentPage = setCurrentPage;
 
   const renderPage = () => {
@@ -95,13 +91,15 @@ const SportsIITPkd = () => {
 
   return (
     <ThemeProvider>
-      {/* ADD THIS LINE - Animated Bike Preloader */}
-      {isLoading && <BikePreloader />}
-      {/* WRAP YOUR EXISTING CONTENT IN THIS DIV WITH OPACITY TRANSITION */}
+      {/* Pass the isLoading state as the isVisible prop */}
+      <BikePreloader isVisible={isLoading} />
+      
+      {/* Use a key to re-mount the main content, ensuring transitions run correctly */}
       <div 
+        key={isLoading ? 'loading' : 'loaded'}
         style={{
           opacity: isLoading ? 0 : 1,
-          transition: 'opacity 1s ease-in-out'
+          transition: 'opacity 0.5s ease-in-out'
         }}
       >
         <Navigation 
