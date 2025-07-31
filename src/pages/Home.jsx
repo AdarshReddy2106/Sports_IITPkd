@@ -65,21 +65,25 @@ const useCounter = (end, duration = 2000, delay = 0) => {
 
 const Home = ({ setCurrentPage, isLoaded }) => {
   const [upcomingEvents, setUpcomingEvents] = useState([]);
-  // Change the initial state to 'hero-content-hidden'
-  const [animationClass, setAnimationClass] = useState('hero-content-hidden');
+  const [animationClass, setAnimationClass] = useState('');
 
   useEffect(() => {
-    if (isLoaded) {
-      // Set a timer to switch the class from 'hidden' to 'animate'
-      const timer = setTimeout(() => {
-        setAnimationClass('animate');
-      }, 50);
+    // Check if the user has visited the home page before in this session
+    const hasVisited = sessionStorage.getItem('hasVisitedHome');
 
-      // On unmount, reset it back to the hidden state for next time
-      return () => {
-        clearTimeout(timer);
-        setAnimationClass('hero-content-hidden');
-      };
+    if (isLoaded) {
+      if (hasVisited) {
+        // If they have, show the content instantly
+        setAnimationClass('instant');
+      } else {
+        // If it's their first time, play the animation
+        const timer = setTimeout(() => {
+          setAnimationClass('animate');
+          sessionStorage.setItem('hasVisitedHome', 'true');
+        }, 50);
+
+        return () => clearTimeout(timer);
+      }
     }
   }, [isLoaded]);
 
