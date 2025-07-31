@@ -56,10 +56,10 @@ const SportsIITPkd = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate loading time
+    // Simulate loading time for the preloader
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 3000); // Adjust loading time as needed
+    }, 3000); 
 
     return () => clearTimeout(timer);
   }, []);
@@ -67,36 +67,39 @@ const SportsIITPkd = () => {
   window.setCurrentPage = setCurrentPage;
 
   const renderPage = () => {
+    // Pass the loading status down to the page components
+    const props = { 
+      setCurrentPage, 
+      isLoaded: !isLoading,
+    };
+
     switch (currentPage) {
       case 'home':
-        return <Home setCurrentPage={setCurrentPage} />;
+        return <Home {...props} />;
       case 'about':
-        return <About setCurrentPage={setCurrentPage} />;
+        return <About {...props} />;
       case 'gallery':
-        return <Gallery setCurrentPage={setCurrentPage} />;
+        return <Gallery {...props} />;
       case 'calendar':
-        return <Calendar setCurrentPage={setCurrentPage} />;
+        return <Calendar {...props} />;
       case 'bookings':
-        return <Bookings setCurrentPage={setCurrentPage} />;
+        return <Bookings {...props} />;
       case 'contact':
-        return <Contact setCurrentPage={setCurrentPage} />;
+        return <Contact {...props} />;
       case 'privacypolicy':
-        return <PrivacyPolicy setCurrentPage={setCurrentPage} />;
+        return <PrivacyPolicy {...props} />;
       case 'admindashboard':
-        return <AdminDashboard setCurrentPage={setCurrentPage} />;
+        return <AdminDashboard {...props} />;
       default:
-        return <Home setCurrentPage={setCurrentPage} />;
+        return <Home {...props} />;
     }
   };
 
   return (
     <ThemeProvider>
-      {/* Pass the isLoading state as the isVisible prop */}
       <BikePreloader isVisible={isLoading} />
       
-      {/* Use a key to re-mount the main content, ensuring transitions run correctly */}
       <div 
-        key={isLoading ? 'loading' : 'loaded'}
         style={{
           opacity: isLoading ? 0 : 1,
           transition: 'opacity 0.5s ease-in-out'

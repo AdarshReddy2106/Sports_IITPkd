@@ -63,8 +63,23 @@ const useCounter = (end, duration = 2000, delay = 0) => {
   return [count, countRef, isVisible];
 };
 
-const Home = ({ setCurrentPage }) => {
+const Home = ({ setCurrentPage, isLoaded }) => {
   const [upcomingEvents, setUpcomingEvents] = useState([]);
+  const [animationClass, setAnimationClass] = useState('');
+
+  useEffect(() => {
+    // This effect now uses a setTimeout. This small delay gives the browser
+    // time to render the initial component with opacity 0 before applying
+    // the 'animate' class, which prevents any flickering.
+    if (isLoaded) {
+      const timer = setTimeout(() => {
+        setAnimationClass('animate');
+      }, 50); // A small 50ms delay is enough to fix the timing issue.
+
+      // Cleanup the timer if the component unmounts
+      return () => clearTimeout(timer);
+    }
+  }, [isLoaded]);
 
   useEffect(() => {
     const fetchUpcomingEvents = async () => {
@@ -130,18 +145,28 @@ const Home = ({ setCurrentPage }) => {
 
   const Hero = () => {
     const title = "Sports IIT Palakkad";
+    let letterCount = 0;
+  
     return (
       <div className="hero-with-bg">
         <div className="hero-overlay">
-          <div className="hero-content">
+          <div className={`hero-content ${animationClass}`}>
             <h1 className="hero-main-title">
-              {title.split('').map((char, index) => (
-                <span 
-                  key={index} 
-                  style={{ animationDelay: `${index * 0.05}s` }}
-                >
-                  {char === ' ' ? '\u00A0' : char}
-                </span>
+              {title.split(' ').map((word, wordIndex) => (
+                <div key={wordIndex} className="hero-word">
+                  {word.split('').map((letter, letterIndex) => {
+                    letterCount++;
+                    return (
+                      <span
+                        key={letterIndex}
+                        className="hero-letter"
+                        style={{ animationDelay: `${(letterCount - 1) * 0.07}s` }}
+                      >
+                        {letter}
+                      </span>
+                    );
+                  })}
+                </div>
               ))}
             </h1>
             <div className="hero-buttons">
