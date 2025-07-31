@@ -366,6 +366,10 @@ p {
   padding: 2rem;
 }
 
+.hero-content-hidden {
+  opacity: 0;
+}
+
 .hero-main-title {
   font-size: 6rem;
   font-weight: 900;
@@ -395,6 +399,11 @@ p {
 /* --- ANIMATION STYLES --- */
 
 /* 1. Animate class: Plays the animation */
+.hero-content.animate {
+  opacity: 1;
+  transition: opacity 0.2s ease-in;
+}
+
 .hero-content.animate .hero-letter {
   animation: fade-slide-up 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }

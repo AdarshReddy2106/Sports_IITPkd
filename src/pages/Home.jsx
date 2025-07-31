@@ -65,19 +65,21 @@ const useCounter = (end, duration = 2000, delay = 0) => {
 
 const Home = ({ setCurrentPage, isLoaded }) => {
   const [upcomingEvents, setUpcomingEvents] = useState([]);
-  const [animationClass, setAnimationClass] = useState('');
+  // Change the initial state to 'hero-content-hidden'
+  const [animationClass, setAnimationClass] = useState('hero-content-hidden');
 
   useEffect(() => {
-    // This effect now uses a setTimeout. This small delay gives the browser
-    // time to render the initial component with opacity 0 before applying
-    // the 'animate' class, which prevents any flickering.
     if (isLoaded) {
+      // Set a timer to switch the class from 'hidden' to 'animate'
       const timer = setTimeout(() => {
         setAnimationClass('animate');
-      }, 50); // A small 50ms delay is enough to fix the timing issue.
+      }, 50);
 
-      // Cleanup the timer if the component unmounts
-      return () => clearTimeout(timer);
+      // On unmount, reset it back to the hidden state for next time
+      return () => {
+        clearTimeout(timer);
+        setAnimationClass('hero-content-hidden');
+      };
     }
   }, [isLoaded]);
 
@@ -401,8 +403,7 @@ const UpcomingEvents = () => (
                     <div className="event-actions">
                       <a
                         href={event.eventLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        target="_blank"                        rel="noopener noreferrer"
                         className="event-action-btn"
                       >
                         <ExternalLink size={16} />
