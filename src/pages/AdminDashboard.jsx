@@ -70,7 +70,8 @@ const AdminDashboard = () => {
         description, 
         color,
         eventLink: eventLink || null,
-        linkText: linkText || "View Details"
+        linkText: linkText || "View Details",
+        user_id: user.id, // Store the admin's user ID
       },
     ]);
 

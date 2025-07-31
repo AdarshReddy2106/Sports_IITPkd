@@ -13,7 +13,8 @@ const Footer = ({ setCurrentPage }) => {
     <footer className="footer-main">
       <div className="footer-content container">
         <div className="footer-brand">
-          <h3>Sports IIT Palakkad</h3>
+          <h3>Sports Council IIT Palakkad</h3>
+          <p>Indian Institute of Technology Palakkad</p>
         </div>
 
         <div className="footer-links-container">
