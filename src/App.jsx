@@ -11,6 +11,7 @@ import Footer from './components/Footer';
 import PrivacyPolicy from './components/privacypolicy';
 import BikePreloader from './components/bikePreloader';
 import AdminDashboard from './pages/AdminDashboard';
+
 // Theme Context (keep your existing code)
 const ThemeContext = createContext();
 
@@ -36,7 +37,6 @@ const ThemeProvider = ({ children }) => {
   useEffect(() => {
     // Save theme preference to localStorage
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    
     // Apply theme to document
     if (isDark) {
       document.documentElement.setAttribute('data-theme', 'dark');
@@ -70,27 +70,24 @@ const SportsIITPkd = () => {
   // Make setCurrentPage available globally for Footer
   window.setCurrentPage = setCurrentPage;
 
-  
-
   const renderPage = () => {
     switch (currentPage) {
-      
       case 'home':
         return <Home setCurrentPage={setCurrentPage} />;
       case 'about':
-        return <About />;
+        return <About setCurrentPage={setCurrentPage} />;
       case 'gallery':
-        return <Gallery />;
+        return <Gallery setCurrentPage={setCurrentPage} />;
       case 'calendar':
-        return <Calendar />;
+        return <Calendar setCurrentPage={setCurrentPage} />;
       case 'bookings':
-        return <Bookings />;
+        return <Bookings setCurrentPage={setCurrentPage} />;
       case 'contact':
-        return <Contact />;
-      case 'privacypolicy':  
-        return <PrivacyPolicy />;
+        return <Contact setCurrentPage={setCurrentPage} />;
+      case 'privacypolicy':
+        return <PrivacyPolicy setCurrentPage={setCurrentPage} />;
       case 'admindashboard':
-        return <AdminDashboard />;
+        return <AdminDashboard setCurrentPage={setCurrentPage} />;
       default:
         return <Home setCurrentPage={setCurrentPage} />;
     }
@@ -98,23 +95,27 @@ const SportsIITPkd = () => {
 
   return (
     <ThemeProvider>
-      <div className="min-h-screen transition-all duration-300">
-        {/* ADD THIS LINE - Animated Bike Preloader */}
-        <BikePreloader isVisible={isLoading} />
-        
-        {/* WRAP YOUR EXISTING CONTENT IN THIS DIV WITH OPACITY TRANSITION */}
-        <div style={{ opacity: isLoading ? 0 : 1, transition: 'opacity 0.5s ease-in' }}>
-          <div className="md:hidden">
-            <MobileNav currentPage={currentPage} setCurrentPage={setCurrentPage} />
-          </div>
-          <div className="hidden md:block">
-            <Navigation currentPage={currentPage} setCurrentPage={setCurrentPage} />
-          </div>
-          <main className="fade-in">
-            {renderPage()}
-          </main>
-          <Footer />
-        </div>
+      {/* ADD THIS LINE - Animated Bike Preloader */}
+      {isLoading && <BikePreloader />}
+      {/* WRAP YOUR EXISTING CONTENT IN THIS DIV WITH OPACITY TRANSITION */}
+      <div 
+        style={{
+          opacity: isLoading ? 0 : 1,
+          transition: 'opacity 1s ease-in-out'
+        }}
+      >
+        <Navigation 
+          currentPage={currentPage} 
+          setCurrentPage={setCurrentPage}
+          isHomePage={currentPage === 'home'}
+        />
+        <MobileNav 
+          currentPage={currentPage} 
+          setCurrentPage={setCurrentPage}
+          isHomePage={currentPage === 'home'}
+        />
+        {renderPage()}
+        <Footer />
       </div>
     </ThemeProvider>
   );

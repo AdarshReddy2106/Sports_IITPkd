@@ -89,75 +89,71 @@ const Home = ({ setCurrentPage }) => {
       id: 'cricket',
       name: 'Cricket Ground',
       description: 'Full-sized cricket ground (placeholder photos).',
-      icon: '🏏',
+      icon: '緒',
       color: '#0d9488',
     },
     {
       id: 'basketball',
       name: 'Basketball Court',
       description: 'Professional-grade courts for training and matches.',
-      icon: '🏀',
+      icon: '準',
       color: '#1e40af',
     },
     {
       id: 'fitness',
       name: 'Fitness Center',
       description: 'Modern equipment for strength and conditioning.',
-      icon: '💪',
+      icon: '潮',
       color: '#ef4444',
     },
     {
       id: 'tabletennis',
       name: 'Table Tennis',
       description: 'Indoor tables for practice and tournaments.',
-      icon: '🏓',
+      icon: '藷',
       color: '#0d9488',
     },
     {
       id: 'track',
       name: 'Athletic Track',
       description: 'Professional running track for training and events.',
-      icon: '🏃',
+      icon: '純',
       color: '#1e40af',
     },
     {
       id: 'badminton',
       name: 'Badminton Courts',
       description: 'Indoor courts with proper flooring & lighting.',
-      icon: '🏸',
+      icon: '昇',
       color: '#ef4444',
     },
   ];
 
   const Hero = () => (
-    <div className="hero">
-      <div className="container">
-        <h1>Empowering Athletes, Building Champions</h1>
-        <p>
-          Your journey to excellence starts here with Sports Council's
-          world-class facilities and expert coaching.
-        </p>
-        <div
-          style={{
-            display: 'flex',
-            gap: '1rem',
-            justifyContent: 'center',
-            flexWrap: 'wrap',
-          }}
-        >
-          <button
-            onClick={() => setCurrentPage('bookings')}
-            className="btn btn-secondary"
-          >
-            Book Now
-          </button>
-          <button
-            onClick={() => setCurrentPage('about')}
-            className="btn"
-            style={{ background: 'rgba(255,255,255,0.2)', color: 'white' }}
-          >
-            Learn More
-          </button>
+    <div className="hero-with-bg">
+      <div className="hero-overlay">
+        <div className="hero-content">
+          <h1 className="hero-title">
+            Empowering Athletes, Building Champions
+          </h1>
+          <p className="hero-subtitle">
+            Your journey to excellence starts here with Sports Council's
+            world-class facilities and expert coaching.
+          </p>
+          <div className="hero-buttons">
+            <button
+              onClick={() => setCurrentPage('bookings')}
+              className="btn btn-secondary"
+            >
+              Book Now
+            </button>
+            <button
+              onClick={() => setCurrentPage('about')}
+              className="btn btn-outline"
+            >
+              Learn More
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -12,7 +12,7 @@ import {
 
 const ClerkAuth = () => {
   const { openSignIn } = useClerk();
-  
+
   const handleSignInClick = () => {
     openSignIn(); // Open Clerk sign in modal
   };
@@ -20,24 +20,13 @@ const ClerkAuth = () => {
   return (
     <>
       <SignedOut>
-        <button 
-          className="mobile-navbar-link"
-          onClick={handleSignInClick}
-          style={{ 
-            width: '100%', 
-            display: 'block',
-            textAlign: 'left',
-            border: 'none',
-            font: 'inherit',
-            cursor: 'pointer'
-          }}
-        >
+        <button onClick={handleSignInClick} className="mobile-navbar-auth">
           Sign In
         </button>
       </SignedOut>
       <SignedIn>
-        <div className="mobile-navbar-link" style={{ display: 'flex', alignItems: 'center' }}>
-          <UserButton afterSignOutUrl="/" />
+        <div style={{ padding: '1rem', borderBottom: '1px solid var(--border-primary)' }}>
+          <UserButton />
         </div>
       </SignedIn>
     </>
@@ -53,7 +42,7 @@ const navLinks = [
   { name: 'Contact', key: 'contact' },
 ];
 
-const MobileNav = ({ currentPage, setCurrentPage }) => {
+const MobileNav = ({ currentPage, setCurrentPage, isHomePage }) => {
   const [open, setOpen] = useState(false);
   const { isDark, toggleTheme } = useTheme();
 
@@ -63,18 +52,14 @@ const MobileNav = ({ currentPage, setCurrentPage }) => {
   };
 
   return (
-    <nav className="mobile-navbar">
+    <nav className={`mobile-navbar ${isHomePage ? 'transparent' : ''}`}>
       <div className="mobile-navbar-header">
-        <div className="logo">
-            <img src="/Logos/council.jpg" alt="" className="logo-icon" />
-          <span className="logo-name">Sports Council IIT Palakkad</span>
-        </div>
+        <h1 className="mobile-navbar-title">Sports Council IIT Palakkad</h1>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <button
-            className="theme-toggle"
+          <button 
             onClick={toggleTheme}
+            className="theme-toggle"
             aria-label="Toggle theme"
-            type="button"
           >
             {isDark ? <Sun size={20} /> : <Moon size={20} />}
           </button>
@@ -84,24 +69,22 @@ const MobileNav = ({ currentPage, setCurrentPage }) => {
             aria-label="Toggle menu"
             type="button"
           >
-            <span className={`hamburger${open ? ' open' : ''}`}></span>
+            <span className={`hamburger ${open ? 'open' : ''}`}></span>
           </button>
         </div>
       </div>
-      <div className={`mobile-navbar-menu${open ? ' show' : ''}`}>
+      
+      <div className={`mobile-navbar-menu ${open ? 'show' : ''}`}>
+        <ClerkAuth />
         {navLinks.map(link => (
           <button
             key={link.key}
-            className={`mobile-navbar-link${currentPage === link.key ? ' active' : ''}`}
             onClick={() => handleNav(link.key)}
+            className={`mobile-navbar-link ${currentPage === link.key ? 'active' : ''}`}
           >
             {link.name}
           </button>
         ))}
-        
-        <div className="mobile-navbar-auth">
-          <ClerkAuth />
-        </div>
       </div>
     </nav>
   );

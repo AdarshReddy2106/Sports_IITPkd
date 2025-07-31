@@ -10,7 +10,7 @@ import {
   useClerk,
 } from '@clerk/clerk-react';
 
-const Navigation = ({ currentPage, setCurrentPage }) => {
+const Navigation = ({ currentPage, setCurrentPage, isHomePage }) => {
   const { isDark, toggleTheme } = useTheme();
   const { user, isLoaded } = useUser();
   const { signOut } = useClerk();
@@ -28,50 +28,52 @@ const Navigation = ({ currentPage, setCurrentPage }) => {
   }, [isLoaded, user, signOut]);
 
   return (
-    <nav className="hidden md:block">
-      <div className="container">
-        <div className="navbar-content">
-          <div className="logo">
-            <img src="/Logos/council.jpg" alt="" className="logo-icon" />
-            <span className='logo-name'>Sports Council IIT Palakkad</span>
+    <nav className={`navbar ${isHomePage ? 'transparent' : ''}`}>
+      <div className="container navbar-content">
+        <div className="logo">
+          <div className="logo-icon">
+            <CheckCircle size={24} />
           </div>
-          <div className="nav-links">
-            {['Home', 'About', 'Gallery', 'Calendar', 'Bookings', 'Contact'].map((item) => (
-              <button
-                key={item}
-                onClick={() => setCurrentPage(item.toLowerCase())}
-                className={`nav-link ${currentPage === item.toLowerCase() ? 'active' : ''}`}
-              >
-                {item}
-              </button>
-            ))}
-
-            {user?.primaryEmailAddress?.emailAddress === '102301018@smail.iitpkd.ac.in' && (
-              <button
-                onClick={() => setCurrentPage('admindashboard')}
-                className={`nav-link ${currentPage === 'admindashboard' ? 'active' : ''}`}
-              >
-                Admin Dashboard
-              </button>
-            )}
-
-            {/* Clerk Auth UI */}
-            <SignedOut>
-              <SignInButton mode="modal">
-                <button className="nav-link">
-                  Sign In
-                </button>
-              </SignInButton>
-            </SignedOut>
-
-            <SignedIn>
-              <UserButton afterSignOutUrl="/" />
-            </SignedIn>
-
-            <button onClick={toggleTheme} className="theme-toggle">
-              {isDark ? <Sun size={20} /> : <Moon size={20} />}
+          <span className="logo-name">Sports Council IIT Palakkad</span>
+        </div>
+        
+        <div className="nav-links">
+          {['Home', 'About', 'Gallery', 'Calendar', 'Bookings', 'Contact'].map((item) => (
+            <button
+              key={item}
+              onClick={() => setCurrentPage(item.toLowerCase())}
+              className={`nav-link ${currentPage === item.toLowerCase() ? 'active' : ''}`}
+            >
+              {item}
             </button>
-          </div>
+          ))}
+          
+          {user?.primaryEmailAddress?.emailAddress === '102301018@smail.iitpkd.ac.in' && (
+            <button
+              onClick={() => setCurrentPage('admindashboard')}
+              className={`nav-link ${currentPage === 'admindashboard' ? 'active' : ''}`}
+            >
+              Admin Dashboard
+            </button>
+          )}
+          
+          {/* Clerk Auth UI */}
+          <SignedOut>
+            <SignInButton mode="modal">
+              <button className="nav-link">Sign In</button>
+            </SignInButton>
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+          
+          <button 
+            onClick={toggleTheme}
+            className="theme-toggle"
+            aria-label="Toggle theme"
+          >
+            {isDark ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
         </div>
       </div>
     </nav>
