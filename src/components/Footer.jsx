@@ -1,23 +1,24 @@
 import React from "react";
-import { useTheme } from "../App";
 import "./Footer.css";
 
-const Footer = () => {
+const Footer = ({ setCurrentPage }) => {
   const navTo = (page) => {
+    // In a real SPA, you'd use a router's navigation function
+    // For this project, we use the method passed from App.jsx
     if (window.setCurrentPage) window.setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
     <footer className="footer-main">
-      <div className="footer-content">
+      <div className="footer-content container">
         <div className="footer-brand">
           <h3>Sports IIT Palakkad</h3>
-          <p>We manage lead sports activities in IIT Palakkad</p>
         </div>
-        <div className="footer-links">
-          <div>
-            <h4>Company</h4>
+
+        <div className="footer-links-container">
+          <div className="footer-links">
+            <h4>Quick Links</h4>
             <ul>
               <li><button onClick={() => navTo("home")}>Home</button></li>
               <li><button onClick={() => navTo("gallery")}>Gallery</button></li>
@@ -27,15 +28,17 @@ const Footer = () => {
               <li><button onClick={() => navTo("bookings")}>Bookings</button></li>
             </ul>
           </div>
-          <div>
+
+          <div className="footer-links">
             <h4>Contact</h4>
             <ul>
-              <li>1489w Fluton ste, STE<br />2D Chicago, IL 63867.</li>
+              <li>Indian Institute of Technology Palakkad, Kerala | Pin: 678623</li>
               <li>+91 9876543210</li>
-              <li>info@sports.com</li>
+              <li>sec_sports@smail.iitpkd.ac.in</li>
             </ul>
           </div>
-          <div>
+
+          <div className="footer-links">
             <h4>Social</h4>
             <ul>
               <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a></li>
@@ -46,13 +49,13 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="footer-bottom">
-        <span>&copy;2025 Sports IIT PKD. All rights reserved</span>
-        <span className="footer-bottom-links">
+      <div className="footer-bottom container">
+        <span>©2025 Sports IIT PKD. All rights reserved.</span>
+        <div className="footer-bottom-links">
           <button onClick={() => navTo("privacypolicy")}>Privacy Policy</button>
-          <span className="footer-bottom-divider" />
+          <span className="footer-bottom-divider">|</span>
           <button onClick={() => navTo("terms")}>Terms & Conditions</button>
-        </span>
+        </div>
       </div>
     </footer>
   );
