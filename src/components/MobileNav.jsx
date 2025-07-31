@@ -54,7 +54,8 @@ const MobileNav = ({ currentPage, setCurrentPage, isHomePage }) => {
   return (
     <nav className={`mobile-navbar ${isHomePage ? 'transparent' : ''}`}>
       <div className="mobile-navbar-header">
-        <h1 className="mobile-navbar-title">Sports Council IIT Palakkad</h1>
+        {/* The title has been removed to create a cleaner look */}
+        <div style={{ flex: 1 }}></div> {/* This div pushes the buttons to the right */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <button 
             onClick={toggleTheme}

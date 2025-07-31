@@ -42,7 +42,6 @@ const useCounter = (end, duration = 2000, delay = 0) => {
         if (!startTime) startTime = currentTime;
         const progress = Math.min((currentTime - startTime) / duration, 1);
         
-        // Easing function for smooth animation
         const easeOutQuart = 1 - Math.pow(1 - progress, 4);
         const currentCount = Math.floor(easeOutQuart * end);
         
@@ -89,75 +88,81 @@ const Home = ({ setCurrentPage }) => {
       id: 'cricket',
       name: 'Cricket Ground',
       description: 'Full-sized cricket ground (placeholder photos).',
-      icon: '緒',
+      icon: '🏏',
       color: '#0d9488',
     },
     {
       id: 'basketball',
       name: 'Basketball Court',
       description: 'Professional-grade courts for training and matches.',
-      icon: '準',
+      icon: '🏀',
       color: '#1e40af',
     },
     {
       id: 'fitness',
       name: 'Fitness Center',
       description: 'Modern equipment for strength and conditioning.',
-      icon: '潮',
+      icon: '🏋️',
       color: '#ef4444',
     },
     {
       id: 'tabletennis',
       name: 'Table Tennis',
       description: 'Indoor tables for practice and tournaments.',
-      icon: '藷',
+      icon: '🏓',
       color: '#0d9488',
     },
     {
       id: 'track',
       name: 'Athletic Track',
       description: 'Professional running track for training and events.',
-      icon: '純',
+      icon: '🏃',
       color: '#1e40af',
     },
     {
       id: 'badminton',
       name: 'Badminton Courts',
       description: 'Indoor courts with proper flooring & lighting.',
-      icon: '昇',
+      icon: '🏸',
       color: '#ef4444',
     },
   ];
 
-  const Hero = () => (
-    <div className="hero-with-bg">
-      <div className="hero-overlay">
-        <div className="hero-content">
-          <h1 className="hero-title">
-            Empowering Athletes, Building Champions
-          </h1>
-          <p className="hero-subtitle">
-            Your journey to excellence starts here with Sports Council's
-            world-class facilities and expert coaching.
-          </p>
-          <div className="hero-buttons">
-            <button
-              onClick={() => setCurrentPage('bookings')}
-              className="btn btn-secondary"
-            >
-              Book Now
-            </button>
-            <button
-              onClick={() => setCurrentPage('about')}
-              className="btn btn-outline"
-            >
-              Learn More
-            </button>
+  const Hero = () => {
+    const title = "Sports IIT Palakkad";
+    return (
+      <div className="hero-with-bg">
+        <div className="hero-overlay">
+          <div className="hero-content">
+            <h1 className="hero-main-title">
+              {title.split('').map((char, index) => (
+                <span 
+                  key={index} 
+                  style={{ animationDelay: `${index * 0.05}s` }}
+                >
+                  {char === ' ' ? '\u00A0' : char}
+                </span>
+              ))}
+            </h1>
+            <div className="hero-buttons">
+              <button
+                onClick={() => setCurrentPage('bookings')}
+                className="btn btn-secondary"
+              >
+                Book Now
+              </button>
+              <button
+                onClick={() => setCurrentPage('about')}
+                className="btn btn-outline"
+              >
+                Learn More
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const StatCard = ({ number, text, delay = 0 }) => {
     const [count, countRef, isVisible] = useCounter(number, 2000, delay);
@@ -192,27 +197,6 @@ const Home = ({ setCurrentPage }) => {
       </div>
     </div>
   );
-
-  const formatEventDate = (dateString) => {
-    const eventDate = new Date(dateString);
-    const month = eventDate.toLocaleDateString('en-US', { month: 'short' });
-    const day = eventDate.getDate();
-    return { month, day };
-  };
-
-  const getEventColorClass = (color) => {
-    if (color?.includes('teal')) return 'teal';
-    if (color?.includes('red')) return 'red';
-    return 'blue';
-  };
-
-  const handleEventClick = (event) => {
-    if (event.registrationLink) {
-      window.open(event.registrationLink, '_blank');
-    } else if (event.posterUrl) {
-      window.open(event.posterUrl, '_blank');
-    }
-  };
 
   const WhyChooseUs = () => (
     <div className="section" style={{ background: 'var(--bg-primary)' }}>
@@ -308,28 +292,14 @@ const Home = ({ setCurrentPage }) => {
                     src={imgs[0]} 
                     alt={facility.name}
                     className="facility-image"
-                    style={{
-                      width: '100%',
-                      height: '200px',
-                      objectFit: 'cover',
-                      borderRadius: '1rem',
-                      marginBottom: '1rem',
-                    }}
                   />
                 ) : (
-                  <div
+                  <div className="facility-image-placeholder"
                     style={{
-                      height: '200px',
                       background: `linear-gradient(135deg, ${facility.color}, ${facility.color}dd)`,
-                      borderRadius: '1rem',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      marginBottom: '1rem',
-                      color: 'white',
                     }}
                   >
-                    <span className="facility-icon">{facility.icon}</span>
+                    <span>{facility.icon}</span>
                   </div>
                 )}
                 <h3>{facility.name}</h3>
@@ -401,8 +371,7 @@ const UpcomingEvents = () => (
                   {event.description && (
                     <p className="event-description">{event.description}</p>
                   )}
-
-                  {/* FIXED: Updated event link logic */}
+                  
                   {event.eventLink && (
                     <div className="event-actions">
                       <a

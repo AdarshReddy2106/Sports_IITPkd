@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { CheckCircle, Sun, Moon } from 'lucide-react';
+import { Sun, Moon } from 'lucide-react';
 import { useTheme } from '../App';
 import {
   SignedIn,
@@ -30,13 +30,6 @@ const Navigation = ({ currentPage, setCurrentPage, isHomePage }) => {
   return (
     <nav className={`navbar ${isHomePage ? 'transparent' : ''}`}>
       <div className="container navbar-content">
-        <div className="logo">
-          <div className="logo-icon">
-            <CheckCircle size={24} />
-          </div>
-          <span className="logo-name">Sports Council IIT Palakkad</span>
-        </div>
-        
         <div className="nav-links">
           {['Home', 'About', 'Gallery', 'Calendar', 'Bookings', 'Contact'].map((item) => (
             <button
