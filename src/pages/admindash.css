@@ -6,13 +6,65 @@
     box-shadow: var(--shadow-lg);
     border-radius: 12px;
     display: flex;
+    flex-direction: column; /* Stacks header, tabs, and content vertically */
     gap: 2rem;
-    flex-wrap: wrap;
     border: 1px solid var(--border-primary);
 }
 
+.admin-header h2 {
+    margin-bottom: 0.5rem;
+}
+
+.admin-tabs {
+    display: flex;
+    gap: 0.5rem;
+    border-bottom: 1px solid var(--border-primary);
+    padding-bottom: 1rem;
+}
+
+.admin-tabs button {
+    padding: 0.5rem 1rem;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s ease-in-out;
+}
+
+.admin-tabs button.active {
+    background: var(--accent-primary);
+    color: white;
+}
+
+.admin-tabs button:hover:not(.active) {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+
+/* NEW: Styles for the two-column layout */
+.admin-tab-content {
+    display: flex;
+    gap: 2rem;
+    width: 100%;
+}
+
+.form-column {
+    flex: 1 1 40%; /* Form takes ~40% of the width */
+}
+
+.events-column {
+    flex: 1 1 58%; /* Event lists take the rest */
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+
 .admin-panel-box {
-    flex: 1 1 45%;
+    /* flex property is now handled by column wrappers */
     background-color: var(--bg-primary);
     padding: 1.5rem;
     border-radius: 10px;
@@ -132,16 +184,6 @@
 /* Facility Bookings Section */
 .facility-bookings {
     flex: 1 1 100%;
-    margin-top: 3rem;
-}
-
-/* Heading */
-.facility-bookings h2 {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-    color: var(--text-primary);
-    text-align: left;
 }
 
 /* Table styling */
@@ -315,29 +357,4 @@
 
 .admin-panel-container {
     position: relative;
-}
-
-/* Loading states */
-.loading {
-    opacity: 0.6;
-    pointer-events: none;
-}
-
-.loading::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 20px;
-    height: 20px;
-    margin: -10px 0 0 -10px;
-    border: 2px solid var(--accent-primary);
-    border-top: 2px solid transparent;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
 }

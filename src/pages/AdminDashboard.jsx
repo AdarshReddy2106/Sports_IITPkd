@@ -61,8 +61,21 @@ const AdminDashboard = () => {
 
   // --- Fetch functions ---
   const fetchBookings = async () => {
-    const { data, error } = await supabase.from("bookings").select("*");
-    if (!error) setBookings(data);
+    // Fetch all bookings from Supabase, ordered by date
+    const { data, error } = await supabase.from("bookings").select("*").order('date', { ascending: false });
+    
+    if (!error) {
+      // Sort the fetched data to prioritize 'pending' status
+      const sortedData = (data || []).sort((a, b) => {
+        // If a is pending and b is not, a comes first
+        if (a.status === 'pending' && b.status !== 'pending') return -1;
+        // If b is pending and a is not, b comes first
+        if (b.status === 'pending' && a.status !== 'pending') return 1;
+        // Otherwise, maintain the original date-based sorting
+        return 0;
+      });
+      setBookings(sortedData);
+    }
   };
 
   const fetchEvents = async () => {
@@ -80,8 +93,12 @@ const AdminDashboard = () => {
       .from("bookings")
       .update({ status })
       .eq("id", id);
+      
     if (!error) {
-      setBookings((prev) => prev.filter(b => b.id !== id));
+      // Re-fetch and re-sort the bookings to reflect the change in order
+      fetchBookings();
+    } else {
+        alert("Error updating status: " + error.message);
     }
   };
 
@@ -180,10 +197,10 @@ const AdminDashboard = () => {
       {/* Events Tab */}
       {activeTab === 'events' && (
         <div className="admin-tab-content">
-          <div className="admin-panel-box">
+          {/* Left Column: Add Event Form */}
+          <div className="admin-panel-box form-column">
             <h3>Add New Event</h3>
             <form className="admin-form" onSubmit={handleAddEvent}>
-              {/* Add event form inputs... */}
                <input type="date" name="date" value={event.date} onChange={(e) => handleChange(e, setEvent)} required />
                <div style={{ display: "flex", gap: "0.5rem" }}>
                  <input type="time" name="startTime" placeholder="Start Time" value={event.startTime} onChange={(e) => handleChange(e, setEvent)} />
@@ -202,35 +219,37 @@ const AdminDashboard = () => {
             </form>
           </div>
 
-          <div className="admin-panel-box">
-            <h3>Upcoming Events</h3>
-            {upcomingEvents.length === 0 ? (<p>No upcoming events.</p>) : (
-              <ul style={{ listStyle: "none", padding: 0 }}>
-                {upcomingEvents.map((ev) => (
-                  <li key={ev.id} className="event-item">
-                    <div><strong>{ev.title}</strong><br />{ev.date} @ {ev.startTime}</div>
-                    <button onClick={() => handleDeleteEvent(ev.id)}>❌</button>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-          
-          <div className="admin-panel-box">
-            <h3>Past Event Results</h3>
-            {pastEvents.length === 0 ? (<p>No past events yet.</p>) : (
-              <ul style={{ listStyle: "none", padding: 0 }}>
-                {pastEvents.map((ev) => (
-                  <li key={ev.id} className="event-item">
-                    <div><strong>{ev.title}</strong><br />{ev.date} | Winner: {ev.winner || 'N/A'}</div>
-                    <div style={{ display: 'flex', gap: '0.5rem' }}>
-                      <button onClick={() => openResultsModal(ev)} style={{ background: '#3b82f6', color: 'white', border: 'none', padding: '0.25rem 0.5rem', borderRadius: '0.25rem', fontSize: '0.75rem' }}>✏️ Add/Edit Results</button>
+          {/* Right Column: Event Lists */}
+          <div className="events-column">
+            <div className="admin-panel-box">
+              <h3>Upcoming Events</h3>
+              {upcomingEvents.length === 0 ? (<p>No upcoming events.</p>) : (
+                <ul style={{ listStyle: "none", padding: 0 }}>
+                  {upcomingEvents.map((ev) => (
+                    <li key={ev.id} className="event-item">
+                      <div><strong>{ev.title}</strong><br />{ev.date} @ {ev.startTime}</div>
                       <button onClick={() => handleDeleteEvent(ev.id)}>❌</button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+            <div className="admin-panel-box">
+              <h3>Past Event Results</h3>
+              {pastEvents.length === 0 ? (<p>No past events yet.</p>) : (
+                <ul style={{ listStyle: "none", padding: 0 }}>
+                  {pastEvents.map((ev) => (
+                    <li key={ev.id} className="event-item">
+                      <div><strong>{ev.title}</strong><br />{ev.date} | Winner: {ev.winner || 'N/A'}</div>
+                      <div style={{ display: 'flex', gap: '0.5rem' }}>
+                        <button onClick={() => openResultsModal(ev)} style={{ background: '#3b82f6', color: 'white', border: 'none', padding: '0.25rem 0.5rem', borderRadius: '0.25rem', fontSize: '0.75rem' }}>✏️ Add/Edit Results</button>
+                        <button onClick={() => handleDeleteEvent(ev.id)}>❌</button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           </div>
         </div>
       )}
