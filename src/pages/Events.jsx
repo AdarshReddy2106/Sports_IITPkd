@@ -168,63 +168,10 @@ const Events = ({ setCurrentPage, isLoaded }) => {
               </div>
             )}
             
-            {selectedEvent.winner && (
-              <div className="event-results">
-                <h4>Results</h4>
-                <div className="winner-section">
-                  <div className="winner-card">
-                    <Trophy size={24} />
-                    <div>
-                      <h5>Winner</h5>
-                      <p>{selectedEvent.winner}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-            
-            {selectedEvent.runnerUp && (
-              <div className="runner-up-section">
-                <div className="runner-up-card">
-                  <Medal size={24} />
-                  <div>
-                    <h5>Runner Up</h5>
-                    <p>{selectedEvent.runnerUp}</p>
-                  </div>
-                </div>
-              </div>
-            )}
-            
-            {selectedEvent.scorecard && (
-              <div className="scorecard-section">
-                <h4>Scorecard</h4>
-                <div className="scorecard">
-                  <pre>{selectedEvent.scorecard}</pre>
-                </div>
-              </div>
-            )}
-            
-            {selectedEvent.highlights && (
-              <div className="highlights-section">
-                <h4>Event Highlights</h4>
-                <ul>
-                  {selectedEvent.highlights.split(',').map((highlight, index) => (
-                    <li key={index}>{highlight.trim()}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            
-            {selectedEvent.eventLink && (
-              <div className="event-link-section">
-                <a 
-                  href={selectedEvent.eventLink} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="event-link-btn"
-                >
-                  View More Details
-                </a>
+            {selectedEvent.eventSummary && (
+              <div className="event-summary-section">
+                <h4>Event Summary</h4>
+                <p style={{ whiteSpace: "pre-line" }}>{selectedEvent.eventSummary}</p>
               </div>
             )}
           </div>

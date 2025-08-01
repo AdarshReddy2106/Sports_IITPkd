@@ -25,14 +25,7 @@ const AdminDashboard = () => {
   });
 
   const [eventResults, setEventResults] = useState({
-    participants: "",
-    winner: "",
-    runnerUp: "",
-    scorecard: "",
-    highlights: "",
-    teams: "",
-    points: "",
-    additionalDetails: "",
+    eventSummary: "",
   });
 
   const [galleryItem, setGalleryItem] = useState({
@@ -144,14 +137,7 @@ const AdminDashboard = () => {
   const openResultsModal = (event) => {
     setSelectedEventForResults(event);
     setEventResults({
-      participants: event.participants || "",
-      winner: event.winner || "",
-      runnerUp: event.runnerUp || "",
-      scorecard: event.scorecard || "",
-      highlights: event.highlights || "",
-      teams: event.teams || "",
-      points: event.points || "",
-      additionalDetails: event.additionalDetails || "",
+      eventSummary: event.eventSummary || "", 
     });
     setShowResultsModal(true);
   };
@@ -304,20 +290,23 @@ const AdminDashboard = () => {
           <div className="modal-content" style={{ background: 'white', padding: '2rem', borderRadius: '0.5rem', maxWidth: '500px', width: '90%', maxHeight: '80vh', overflow: 'auto' }}>
             <h3>Add/Edit Results: {selectedEventForResults.title}</h3>
             <form onSubmit={handleUpdateEventResults}>
-              {/* Form inputs for event results... */}
-              <input type="number" name="participants" placeholder="Number of Participants" value={eventResults.participants} onChange={(e) => handleChange(e, setEventResults)} style={{ width: '100%', margin: '0.5rem 0', padding: '0.5rem' }}/>
-              <input type="text" name="winner" placeholder="Winner" value={eventResults.winner} onChange={(e) => handleChange(e, setEventResults)} style={{ width: '100%', margin: '0.5rem 0', padding: '0.5rem' }}/>
-              <input type="text" name="runnerUp" placeholder="Runner Up" value={eventResults.runnerUp} onChange={(e) => handleChange(e, setEventResults)} style={{ width: '100%', margin: '0.5rem 0', padding: '0.5rem' }}/>
-              <input type="text" name="teams" placeholder="Teams/Participants (comma separated)" value={eventResults.teams} onChange={(e) => handleChange(e, setEventResults)} style={{ width: '100%', margin: '0.5rem 0', padding: '0.5rem' }}/>
-              <input type="text" name="points" placeholder="Points/Scores" value={eventResults.points} onChange={(e) => handleChange(e, setEventResults)} style={{ width: '100%', margin: '0.5rem 0', padding: '0.5rem' }}/>
-              <textarea name="scorecard" placeholder="Detailed Scorecard/Results" rows="4" value={eventResults.scorecard} onChange={(e) => handleChange(e, setEventResults)} style={{ width: '100%', margin: '0.5rem 0', padding: '0.5rem' }}/>
-              <textarea name="highlights" placeholder="Event Highlights (comma separated)" rows="3" value={eventResults.highlights} onChange={(e) => handleChange(e, setEventResults)} style={{ width: '100%', margin: '0.5rem 0', padding: '0.5rem' }}/>
-              <textarea name="additionalDetails" placeholder="Additional Details" rows="3" value={eventResults.additionalDetails} onChange={(e) => handleChange(e, setEventResults)} style={{ width: '100%', margin: '0.5rem 0', padding: '0.5rem' }}/>
-              <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-                <button type="submit" style={{ background: '#10b981', color: 'white', border: 'none', padding: '0.75rem 1rem', borderRadius: '0.25rem', cursor: 'pointer' }}>Update Results</button>
-                <button type="button" onClick={closeResultsModal} style={{ background: '#6b7280', color: 'white', border: 'none', padding: '0.75rem 1rem', borderRadius: '0.25rem', cursor: 'pointer' }}>Cancel</button>
+              <textarea
+                name="eventSummary"
+                placeholder="Write anything about the event: highlights, winners, scorecards, or notes"
+                value={eventResults.eventSummary}
+                onChange={(e) => handleChange(e, setEventResults)}
+                style={{ width: '100%', minHeight: '200px', marginBottom: '1rem', padding: '0.75rem' }}
+              />
+              <div style={{ display: 'flex', gap: '1rem' }}>
+                <button type="submit" style={{ background: '#10b981', color: 'white', border: 'none', padding: '0.75rem 1rem', borderRadius: '0.25rem', cursor: 'pointer' }}>
+                  Save Summary
+                </button>
+                <button type="button" onClick={closeResultsModal} style={{ background: '#6b7280', color: 'white', border: 'none', padding: '0.75rem 1rem', borderRadius: '0.25rem', cursor: 'pointer' }}>
+                  Cancel
+                </button>
               </div>
             </form>
+
           </div>
         </div>
       )}
