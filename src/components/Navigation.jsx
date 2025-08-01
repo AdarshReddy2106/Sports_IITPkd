@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Sun, Moon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../App';
@@ -16,6 +16,7 @@ const Navigation = ({ currentPage, setCurrentPage, isHomePage }) => {
   const { user, isLoaded } = useUser();
   const { signOut } = useClerk();
   const navigate = useNavigate();
+  const [isAuthorizedAdmin, setIsAuthorizedAdmin] = useState(false);
 
   useEffect(() => {
     if (isLoaded && user) {
@@ -25,7 +26,20 @@ const Navigation = ({ currentPage, setCurrentPage, isHomePage }) => {
         signOut().then(() => {
           navigate('/');
         });
+        return;
       }
+
+      // Check admin authorization
+      const superAdminEmails = [
+        "102301018@smail.iitpkd.ac.in",
+        "122301042@smail.iitpkd.ac.in",
+      ];
+      const eventAdminEmails = [
+        "ace@iitpkd.ac.in",
+      ];
+      
+      const isAuthorized = superAdminEmails.includes(email) || eventAdminEmails.includes(email);
+      setIsAuthorizedAdmin(isAuthorized);
     }
   }, [isLoaded, user, signOut, navigate]);
 
@@ -52,7 +66,8 @@ const Navigation = ({ currentPage, setCurrentPage, isHomePage }) => {
             </button>
           ))}
           
-          {user?.primaryEmailAddress?.emailAddress === '102301018@smail.iitpkd.ac.in' && (
+          {/* Show Admin Dashboard for authorized users */}
+          {isLoaded && isAuthorizedAdmin && (
             <button
               onClick={() => handleNavigation('admindashboard')}
               className={`nav-link ${currentPage === 'admindashboard' ? 'active' : ''}`}

@@ -12,22 +12,24 @@ const Events = ({ setCurrentPage, isLoaded }) => {
   const eventsPerPage = 6;
 
   useEffect(() => {
-    fetchPastEvents();
+    fetchEvents();
   }, []);
 
-  const fetchPastEvents = async () => {
+  const fetchEvents = async () => {
     setLoading(true);
-    const today = new Date().toISOString().split('T')[0];
-    
     try {
+      // Get today's date in YYYY-MM-DD format for the query
+      const today = new Date().toISOString();
+
+      // Fetching from the main 'events' table for dates *before* today
       const { data, error } = await supabase
         .from('events')
         .select('*')
-        .lt('date', today) // Get past events
+        .lt('date', today) // Filter for events with a date less than today
         .order('date', { ascending: false });
 
       if (error) {
-        console.error('Error fetching events:', error);
+        console.error('Error fetching past events:', error);
       } else {
         setEvents(data || []);
       }
@@ -77,7 +79,7 @@ const Events = ({ setCurrentPage, isLoaded }) => {
 
   const getEventStatus = (event) => {
     if (event.winner) return 'Completed';
-    if (event.results) return 'Results Available';
+    if (event.scorecard) return 'Results Available';
     return 'Past Event';
   };
 
