@@ -7,7 +7,6 @@ const AdminDashboard = () => {
   const { isLoaded, user } = useUser();
   const [bookings, setBookings] = useState([]);
   const [events, setEvents] = useState([]); // Single state for all events
-  const [galleryImages, setGalleryImages] = useState([]);
   const [activeTab, setActiveTab] = useState('events');
   const [selectedEventForResults, setSelectedEventForResults] = useState(null);
   const [showResultsModal, setShowResultsModal] = useState(false);
@@ -26,15 +25,6 @@ const AdminDashboard = () => {
 
   const [eventResults, setEventResults] = useState({
     eventSummary: "",
-  });
-
-  const [galleryItem, setGalleryItem] = useState({
-    title: "",
-    category: "Facilities",
-    colorClass: "teal",
-    imageUrl1: "",
-    imageUrl2: "",
-    imageUrl3: "",
   });
 
   // Authorization Logic
@@ -58,7 +48,6 @@ const AdminDashboard = () => {
         fetchBookings();
       }
       fetchEvents();
-      fetchGalleryImages();
     }
   }, [isLoaded, isAuthorized, isSuperAdmin]);
   
@@ -82,14 +71,6 @@ const AdminDashboard = () => {
       .select("*")
       .order("date", { ascending: true });
     if (!error) setEvents(data);
-  };
-
-  const fetchGalleryImages = async () => {
-    const { data, error } = await supabase
-      .from("gallery")
-      .select("*")
-      .order("created_at", { ascending: false });
-    if (!error) setGalleryImages(data || []);
   };
 
   const updateStatus = async (id, status) => {
@@ -169,25 +150,6 @@ const AdminDashboard = () => {
     }
   };
 
-  // --- Gallery Functions ---
-  const handleAddGalleryItem = async (e) => {
-    e.preventDefault();
-    const { error } = await supabase.from("gallery").insert([{ ...galleryItem, user_id: user.id }]);
-    if (error) {
-      alert("❌ Failed to add gallery item: " + error.message);
-    } else {
-      alert("✅ Gallery item added successfully");
-      setGalleryItem({ title: "", category: "Facilities", colorClass: "teal", imageUrl1: "", imageUrl2: "", imageUrl3: "" });
-      fetchGalleryImages();
-    }
-  };
-
-  const handleDeleteGalleryItem = async (id) => {
-    const { error } = await supabase.from("gallery").delete().eq("id", id);
-    if (!error) fetchGalleryImages();
-    else alert("Error deleting gallery item: " + error.message);
-  };
-
   const handleChange = (e, setter) => {
     const { name, value } = e.target;
     setter(prev => ({ ...prev, [name]: value }));
@@ -210,7 +172,6 @@ const AdminDashboard = () => {
 
       <div className="admin-tabs">
         <button className={activeTab === 'events' ? 'active' : ''} onClick={() => setActiveTab('events')}>Events</button>
-        <button className={activeTab === 'gallery' ? 'active' : ''} onClick={() => setActiveTab('gallery')}>Gallery</button>
         {isSuperAdmin && (
           <button className={activeTab === 'bookings' ? 'active' : ''} onClick={() => setActiveTab('bookings')}>Bookings</button>
         )}
@@ -274,14 +235,54 @@ const AdminDashboard = () => {
         </div>
       )}
 
-      {/* Gallery Tab */}
-      {activeTab === 'gallery' && (
-         <div className="admin-tab-content">{/* Gallery content remains the same */}</div>
-      )}
-
       {/* Bookings Tab (Super Admin Only) */}
       {isSuperAdmin && activeTab === 'bookings' && (
-        <div className="admin-tab-content">{/* Bookings content remains the same */}</div>
+        <div className="admin-tab-content">
+          <div className="facility-bookings admin-panel-box" style={{ flex: '1 1 100%' }}>
+            <h3>Facility Bookings</h3>
+            {bookings.length > 0 ? (
+              <table className="booking-table">
+                <thead>
+                  <tr>
+                    <th>Email</th>
+                    <th>Facility</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {bookings.map((booking) => (
+                    <tr key={booking.id}>
+                      <td>{booking.email}</td>
+                      <td>{booking.facility}</td>
+                      <td>{new Date(booking.date).toLocaleDateString()}</td>
+                      <td>{`${booking.start_time} - ${booking.end_time}`}</td>
+                      <td>
+                        <span className={`status-badge status-${booking.status.toLowerCase()}`}>
+                          {booking.status}
+                        </span>
+                      </td>
+                      <td className="booking-actions">
+                        {booking.status === 'pending' ? (
+                          <>
+                            <button onClick={() => updateStatus(booking.id, 'approved')}>Approve</button>
+                            <button onClick={() => updateStatus(booking.id, 'rejected')}>Reject</button>
+                          </>
+                        ) : (
+                          'Handled'
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <p>No bookings found.</p>
+            )}
+          </div>
+        </div>
       )}
 
       {/* Event Results Modal */}
@@ -306,7 +307,6 @@ const AdminDashboard = () => {
                 </button>
               </div>
             </form>
-
           </div>
         </div>
       )}
