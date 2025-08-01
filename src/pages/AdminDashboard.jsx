@@ -6,11 +6,11 @@ import "./admindash.css";
 const AdminDashboard = () => {
   const { isLoaded, user } = useUser();
   const [bookings, setBookings] = useState([]);
-  const [events, setEvents] = useState([]); // Single state for all events
+  const [events, setEvents] = useState([]);
   const [activeTab, setActiveTab] = useState('events');
   const [selectedEventForResults, setSelectedEventForResults] = useState(null);
   const [showResultsModal, setShowResultsModal] = useState(false);
-
+  
   // State for forms
   const [event, setEvent] = useState({
     date: "",
@@ -23,9 +23,8 @@ const AdminDashboard = () => {
     linkText: "View Details",
   });
 
-  const [eventResults, setEventResults] = useState({
-    eventSummary: "",
-  });
+  // FIXED: Use a simple string state for the summary text to avoid state conflicts.
+  const [summaryText, setSummaryText] = useState("");
 
   // Authorization Logic
   const superAdminEmails = [
@@ -53,25 +52,18 @@ const AdminDashboard = () => {
   
   // --- Filter events into past and upcoming ---
   const today = new Date();
-  today.setHours(0, 0, 0, 0); // Set to start of day for accurate comparison
+  today.setHours(0, 0, 0, 0);
 
   const upcomingEvents = events.filter(e => new Date(e.date) >= today);
   const pastEvents = events.filter(e => new Date(e.date) < today);
 
-
   // --- Fetch functions ---
   const fetchBookings = async () => {
-    // Fetch all bookings from Supabase, ordered by date
     const { data, error } = await supabase.from("bookings").select("*").order('date', { ascending: false });
-    
     if (!error) {
-      // Sort the fetched data to prioritize 'pending' status
       const sortedData = (data || []).sort((a, b) => {
-        // If a is pending and b is not, a comes first
         if (a.status === 'pending' && b.status !== 'pending') return -1;
-        // If b is pending and a is not, b comes first
         if (b.status === 'pending' && a.status !== 'pending') return 1;
-        // Otherwise, maintain the original date-based sorting
         return 0;
       });
       setBookings(sortedData);
@@ -88,39 +80,22 @@ const AdminDashboard = () => {
 
   const updateStatus = async (id, status) => {
     if (!isSuperAdmin) return;
-    
-    const { error } = await supabase
-      .from("bookings")
-      .update({ status })
-      .eq("id", id);
-      
+    const { error } = await supabase.from("bookings").update({ status }).eq("id", id);
     if (!error) {
-      // Re-fetch and re-sort the bookings to reflect the change in order
       fetchBookings();
     } else {
-        alert("Error updating status: " + error.message);
+      alert("Error updating status: " + error.message);
     }
   };
 
   const handleAddEvent = async (e) => {
     e.preventDefault();
-    const { error } = await supabase.from("events").insert([
-      { 
-        ...event,
-        eventLink: event.eventLink || null,
-        linkText: event.linkText || "View Details",
-        user_id: user.id,
-      },
-    ]);
-
+    const { error } = await supabase.from("events").insert([{ ...event, eventLink: event.eventLink || null, linkText: event.linkText || "View Details", user_id: user.id }]);
     if (error) {
       alert("❌ Failed to add event: " + error.message);
     } else {
       alert("✅ Event added successfully");
-      setEvent({
-        date: "", startTime: "", endTime: "", title: "", description: "",
-        color: "bg-teal-600", eventLink: "", linkText: "View Details",
-      });
+      setEvent({ date: "", startTime: "", endTime: "", title: "", description: "", color: "bg-teal-600", eventLink: "", linkText: "View Details" });
       fetchEvents();
     }
   };
@@ -134,27 +109,25 @@ const AdminDashboard = () => {
   // --- Results Modal Logic ---
   const openResultsModal = (event) => {
     setSelectedEventForResults(event);
-    setEventResults({
-      eventSummary: event.eventSummary || "", 
-    });
+    // FIXED: Set the simple summaryText state when the modal opens.
+    setSummaryText(event.eventSummary || ""); 
     setShowResultsModal(true);
   };
 
   const closeResultsModal = () => {
     setShowResultsModal(false);
     setSelectedEventForResults(null);
+    setSummaryText(""); // Clear the summary text on close.
   };
   
   const handleUpdateEventResults = async (e) => {
     e.preventDefault();
     if (!selectedEventForResults) return;
-
     try {
       const { error } = await supabase
-        .from("events") // Update the main 'events' table
-        .update({
-          ...eventResults
-        })
+        .from("events")
+        // FIXED: Update the database with the simple summaryText state.
+        .update({ eventSummary: summaryText })
         .eq("id", selectedEventForResults.id);
 
       if (error) throw error;
@@ -165,11 +138,6 @@ const AdminDashboard = () => {
     } catch (error) {
       alert("❌ Failed to update event results: " + error.message);
     }
-  };
-
-  const handleChange = (e, setter) => {
-    const { name, value } = e.target;
-    setter(prev => ({ ...prev, [name]: value }));
   };
 
   if (!isLoaded) {
@@ -186,31 +154,26 @@ const AdminDashboard = () => {
         <h2>Admin Dashboard</h2>
         <p>Access Level: {isSuperAdmin ? 'Super Admin' : 'Event Admin'}</p>
       </div>
-
       <div className="admin-tabs">
         <button className={activeTab === 'events' ? 'active' : ''} onClick={() => setActiveTab('events')}>Events</button>
-        {isSuperAdmin && (
-          <button className={activeTab === 'bookings' ? 'active' : ''} onClick={() => setActiveTab('bookings')}>Bookings</button>
-        )}
+        {isSuperAdmin && (<button className={activeTab === 'bookings' ? 'active' : ''} onClick={() => setActiveTab('bookings')}>Bookings</button>)}
       </div>
 
-      {/* Events Tab */}
       {activeTab === 'events' && (
         <div className="admin-tab-content">
-          {/* Left Column: Add Event Form */}
           <div className="admin-panel-box form-column">
             <h3>Add New Event</h3>
             <form className="admin-form" onSubmit={handleAddEvent}>
-               <input type="date" name="date" value={event.date} onChange={(e) => handleChange(e, setEvent)} required />
+               <input type="date" name="date" value={event.date} onChange={(e) => setEvent(prev => ({ ...prev, date: e.target.value }))} required />
                <div style={{ display: "flex", gap: "0.5rem" }}>
-                 <input type="time" name="startTime" placeholder="Start Time" value={event.startTime} onChange={(e) => handleChange(e, setEvent)} />
-                 <input type="time" name="endTime" placeholder="End Time" value={event.endTime} onChange={(e) => handleChange(e, setEvent)} />
+                 <input type="time" name="startTime" placeholder="Start Time" value={event.startTime} onChange={(e) => setEvent(prev => ({ ...prev, startTime: e.target.value }))} />
+                 <input type="time" name="endTime" placeholder="End Time" value={event.endTime} onChange={(e) => setEvent(prev => ({ ...prev, endTime: e.target.value }))} />
                </div>
-               <input type="text" name="title" placeholder="Title" value={event.title} onChange={(e) => handleChange(e, setEvent)} required />
-               <input type="url" name="eventLink" value={event.eventLink} onChange={(e) => handleChange(e, setEvent)} placeholder="Event Link(Form/Poster)" />
-               <input type="text" name="linkText" value={event.linkText} onChange={(e) => handleChange(e, setEvent)} placeholder="Register Now, View Poster, etc." />
-               <textarea name="description" placeholder="Description" rows="3" value={event.description} onChange={(e) => handleChange(e, setEvent)} />
-               <select name="color" value={event.color} onChange={(e) => handleChange(e, setEvent)}>
+               <input type="text" name="title" placeholder="Title" value={event.title} onChange={(e) => setEvent(prev => ({ ...prev, title: e.target.value }))} required />
+               <input type="url" name="eventLink" value={event.eventLink} onChange={(e) => setEvent(prev => ({ ...prev, eventLink: e.target.value }))} placeholder="Event Link(Form/Poster)" />
+               <input type="text" name="linkText" value={event.linkText} onChange={(e) => setEvent(prev => ({ ...prev, linkText: e.target.value }))} placeholder="Register Now, View Poster, etc." />
+               <textarea name="description" placeholder="Description" rows="3" value={event.description} onChange={(e) => setEvent(prev => ({ ...prev, description: e.target.value }))} />
+               <select name="color" value={event.color} onChange={(e) => setEvent(prev => ({ ...prev, color: e.target.value }))}>
                  <option value="bg-teal-600">Teal</option>
                  <option value="bg-red-500">Red</option>
                  <option value="bg-blue-900">Blue</option>
@@ -219,7 +182,6 @@ const AdminDashboard = () => {
             </form>
           </div>
 
-          {/* Right Column: Event Lists */}
           <div className="events-column">
             <div className="admin-panel-box">
               <h3>Upcoming Events</h3>
@@ -254,7 +216,6 @@ const AdminDashboard = () => {
         </div>
       )}
 
-      {/* Bookings Tab (Super Admin Only) */}
       {isSuperAdmin && activeTab === 'bookings' && (
         <div className="admin-tab-content">
           <div className="facility-bookings admin-panel-box" style={{ flex: '1 1 100%' }}>
@@ -263,12 +224,7 @@ const AdminDashboard = () => {
               <table className="booking-table">
                 <thead>
                   <tr>
-                    <th>Email</th>
-                    <th>Facility</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Status</th>
-                    <th>Actions</th>
+                    <th>Email</th><th>Facility</th><th>Date</th><th>Time</th><th>Status</th><th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -278,43 +234,35 @@ const AdminDashboard = () => {
                       <td>{booking.facility}</td>
                       <td>{new Date(booking.date).toLocaleDateString()}</td>
                       <td>{`${booking.start_time} - ${booking.end_time}`}</td>
-                      <td>
-                        <span className={`status-badge status-${booking.status.toLowerCase()}`}>
-                          {booking.status}
-                        </span>
-                      </td>
+                      <td><span className={`status-badge status-${booking.status.toLowerCase()}`}>{booking.status}</span></td>
                       <td className="booking-actions">
                         {booking.status === 'pending' ? (
                           <>
                             <button onClick={() => updateStatus(booking.id, 'approved')}>Approve</button>
                             <button onClick={() => updateStatus(booking.id, 'rejected')}>Reject</button>
                           </>
-                        ) : (
-                          'Handled'
-                        )}
+                        ) : ('Handled')}
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-            ) : (
-              <p>No bookings found.</p>
-            )}
+            ) : (<p>No bookings found.</p>)}
           </div>
         </div>
       )}
 
-      {/* Event Results Modal */}
       {showResultsModal && selectedEventForResults && (
-        <div className="modal-overlay" style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
-          <div className="modal-content" style={{ background: 'white', padding: '2rem', borderRadius: '0.5rem', maxWidth: '500px', width: '90%', maxHeight: '80vh', overflow: 'auto' }}>
+        <div className="modal-overlay">
+          <div className="modal-content">
             <h3>Add/Edit Results: {selectedEventForResults.title}</h3>
             <form onSubmit={handleUpdateEventResults}>
               <textarea
                 name="eventSummary"
                 placeholder="Write anything about the event: highlights, winners, scorecards, or notes"
-                value={eventResults.eventSummary}
-                onChange={(e) => handleChange(e, setEventResults)}
+                // FIXED: Use the simple summaryText state and its updater.
+                value={summaryText}
+                onChange={(e) => setSummaryText(e.target.value)}
                 style={{ width: '100%', minHeight: '200px', marginBottom: '1rem', padding: '0.75rem' }}
               />
               <div style={{ display: 'flex', gap: '1rem' }}>
