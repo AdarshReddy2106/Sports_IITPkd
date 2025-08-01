@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { CheckCircle, MapPin, Users, Calendar, Clock, ExternalLink, ArrowRight } from 'lucide-react';
 import { supabase } from '../../Js/supabase';
 import './UpcomingEvents.css';
@@ -63,25 +64,21 @@ const useCounter = (end, duration = 2000, delay = 0) => {
   return [count, countRef, isVisible];
 };
 
-const Home = ({ setCurrentPage, isLoaded }) => {
+const Home = ({ isLoaded }) => { // Removed setCurrentPage from props
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [animationClass, setAnimationClass] = useState('');
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
-    // Check if the user has visited the home page before in this session
     const hasVisited = sessionStorage.getItem('hasVisitedHome');
-
     if (isLoaded) {
       if (hasVisited) {
-        // If they have, show the content instantly
         setAnimationClass('instant');
       } else {
-        // If it's their first time, play the animation
         const timer = setTimeout(() => {
           setAnimationClass('animate');
           sessionStorage.setItem('hasVisitedHome', 'true');
         }, 50);
-
         return () => clearTimeout(timer);
       }
     }
@@ -89,11 +86,17 @@ const Home = ({ setCurrentPage, isLoaded }) => {
 
   useEffect(() => {
     const fetchUpcomingEvents = async () => {
-      const today = new Date().toISOString().split('T')[0];
+      // FIXED: Create a timezone-safe date string for today
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, '0');
+      const day = String(today.getDate()).padStart(2, '0');
+      const todayDateString = `${year}-${month}-${day}`;
+
       const { data, error } = await supabase
         .from('events')
         .select('*')
-        .gte('date', today)
+        .gte('date', todayDateString) // Use the corrected date string
         .order('date', { ascending: true })
         .limit(3);
 
@@ -176,16 +179,11 @@ const Home = ({ setCurrentPage, isLoaded }) => {
               ))}
             </h1>
             <div className="hero-buttons">
-              <button
-                onClick={() => setCurrentPage('bookings')}
-                className="btn btn-secondary"
-              >
+              {/* FIXED: Use navigate for routing */}
+              <button onClick={() => navigate('/bookings')} className="btn btn-secondary">
                 Book Now
               </button>
-              <button
-                onClick={() => setCurrentPage('about')}
-                className="btn btn-outline"
-              >
+              <button onClick={() => navigate('/about')} className="btn btn-outline">
                 Learn More
               </button>
             </div>
@@ -209,9 +207,7 @@ const Home = ({ setCurrentPage, isLoaded }) => {
 
     return (
       <div ref={countRef} className="stat-card">
-        <div className={`stat-num ${isCounting ? 'counting' : ''}`}>
-          {count}
-        </div>
+        <div className={`stat-num ${isCounting ? 'counting' : ''}`}>{count}</div>
         <div className="stat-text">{text}</div>
       </div>
     );
@@ -232,9 +228,7 @@ const Home = ({ setCurrentPage, isLoaded }) => {
   const WhyChooseUs = () => (
     <div className="section" style={{ background: 'var(--bg-primary)' }}>
       <div className="container">
-        <h2 className="section-title">
-          Why Choose <span className="text-gradient">Us</span>
-        </h2>
+        <h2 className="section-title">Why Choose <span className="text-gradient">Us</span></h2>
         <div className="grid grid-3">
           <div className="card">
             <div
@@ -315,7 +309,7 @@ const Home = ({ setCurrentPage, isLoaded }) => {
         </h2>
         <div className="grid grid-3">
           {facilities.map((facility) => {
-            const imgs = makeImages(facility.name); // match Gallery titles
+            const imgs = makeImages(facility.name);
             return (
               <div key={facility.id} className="card facility-card">
                 {imgs.length ? (
@@ -340,10 +334,8 @@ const Home = ({ setCurrentPage, isLoaded }) => {
           })}
         </div>
         <div className="text-center" style={{ marginTop: '3rem' }}>
-          <button
-            onClick={() => setCurrentPage('gallery')}
-            className="btn btn-secondary"
-          >
+          {/* FIXED: Use navigate for routing */}
+          <button onClick={() => navigate('/gallery')} className="btn btn-secondary">
             View More Photos
           </button>
         </div>
@@ -362,7 +354,6 @@ const UpcomingEvents = () => (
           Don't miss out on our exciting upcoming events and competitions
         </p>
       </div>
-
       <div className="upcoming-events-grid">
         {upcomingEvents.length === 0 ? (
           <div className="no-events">
@@ -388,7 +379,6 @@ const UpcomingEvents = () => (
                     {eventDate.getDate()}
                   </span>
                 </div>
-
                 <div className="event_content">
                   <h3 className="event_title">{event.title}</h3>
                   
@@ -422,12 +412,9 @@ const UpcomingEvents = () => (
           })
         )}
       </div>
-
       <div className="events-footer">
-        <button 
-          className="view-all-events-btn"
-          onClick={() => setCurrentPage('calendar')}
-        >
+        {/* FIXED: Use navigate for routing */}
+        <button className="view-all-events-btn" onClick={() => navigate('/calendar')}>
           View All Events
           <ArrowRight size={20} />
         </button>
