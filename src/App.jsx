@@ -1,4 +1,5 @@
 import React, { useState, createContext, useContext, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import MobileNav from './components/MobileNav';
 import Home from './pages/Home';
@@ -11,6 +12,7 @@ import Footer from './components/Footer';
 import PrivacyPolicy from './components/privacypolicy';
 import BikePreloader from './components/bikePreloader';
 import AdminDashboard from './pages/AdminDashboard';
+import Events from './pages/Events';
 
 // Theme Context
 const ThemeContext = createContext();
@@ -51,52 +53,46 @@ const ThemeProvider = ({ children }) => {
   );
 };
 
-const SportsIITPkd = () => {
+// Component to track current page and handle loading
+const AppContent = () => {
+  const location = useLocation();
   const [currentPage, setCurrentPage] = useState('home');
   const [isLoading, setIsLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
+  // Handle responsive design
   useEffect(() => {
-    // Simulate loading time for the preloader
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Update current page based on route
+  useEffect(() => {
+    const path = location.pathname;
+    if (path === '/') {
+      setCurrentPage('home');
+    } else {
+      setCurrentPage(path.substring(1));
+    }
+  }, [location]);
+
+  // Handle preloader
+  useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 3000); 
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, []);
 
-  window.setCurrentPage = setCurrentPage;
-
-  const renderPage = () => {
-    // Pass the loading status down to the page components
-    const props = { 
-      setCurrentPage, 
-      isLoaded: !isLoading,
-    };
-
-    switch (currentPage) {
-      case 'home':
-        return <Home {...props} />;
-      case 'about':
-        return <About {...props} />;
-      case 'gallery':
-        return <Gallery {...props} />;
-      case 'calendar':
-        return <Calendar {...props} />;
-      case 'bookings':
-        return <Bookings {...props} />;
-      case 'contact':
-        return <Contact {...props} />;
-      case 'privacypolicy':
-        return <PrivacyPolicy {...props} />;
-      case 'admindashboard':
-        return <AdminDashboard {...props} />;
-      default:
-        return <Home {...props} />;
-    }
-  };
+  const isHomePage = currentPage === 'home';
 
   return (
-    <ThemeProvider>
+    <>
       <BikePreloader isVisible={isLoading} />
       
       <div 
@@ -105,19 +101,47 @@ const SportsIITPkd = () => {
           transition: 'opacity 0.5s ease-in-out'
         }}
       >
-        <Navigation 
-          currentPage={currentPage} 
-          setCurrentPage={setCurrentPage}
-          isHomePage={currentPage === 'home'}
-        />
-        <MobileNav 
-          currentPage={currentPage} 
-          setCurrentPage={setCurrentPage}
-          isHomePage={currentPage === 'home'}
-        />
-        {renderPage()}
+        {isMobile ? (
+          <MobileNav 
+            currentPage={currentPage} 
+            setCurrentPage={setCurrentPage}
+            isHomePage={isHomePage}
+          />
+        ) : (
+          <Navigation 
+            currentPage={currentPage} 
+            setCurrentPage={setCurrentPage}
+            isHomePage={isHomePage}
+          />
+        )}
+
+        <main>
+          <Routes>
+            <Route path="/" element={<Home setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
+            <Route path="/about" element={<About setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
+            <Route path="/gallery" element={<Gallery setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
+            <Route path="/calendar" element={<Calendar setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
+            <Route path="/events" element={<Events setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
+            <Route path="/bookings" element={<Bookings setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
+            <Route path="/contact" element={<Contact setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
+            <Route path="/admindashboard" element={<AdminDashboard setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
+            <Route path="/privacypolicy" element={<PrivacyPolicy setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
+            <Route path="*" element={<Home setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
+          </Routes>
+        </main>
+
         <Footer />
       </div>
+    </>
+  );
+};
+
+const SportsIITPkd = () => {
+  return (
+    <ThemeProvider>
+      <Router>
+        <AppContent />
+      </Router>
     </ThemeProvider>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Sun, Moon } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../App';
 import {
   SignedIn,
@@ -14,6 +15,7 @@ const Navigation = ({ currentPage, setCurrentPage, isHomePage }) => {
   const { isDark, toggleTheme } = useTheme();
   const { user, isLoaded } = useUser();
   const { signOut } = useClerk();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isLoaded && user) {
@@ -21,11 +23,20 @@ const Navigation = ({ currentPage, setCurrentPage, isHomePage }) => {
       if (!email.endsWith('iitpkd.ac.in')) {
         alert('Access restricted to iitpkd.ac.in emails only');
         signOut().then(() => {
-          window.location.href = '/';
+          navigate('/');
         });
       }
     }
-  }, [isLoaded, user, signOut]);
+  }, [isLoaded, user, signOut, navigate]);
+
+  const handleNavigation = (page) => {
+    if (page === 'home') {
+      navigate('/');
+    } else {
+      navigate(`/${page}`);
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <nav className={`navbar ${isHomePage ? 'transparent' : ''}`}>
@@ -34,7 +45,7 @@ const Navigation = ({ currentPage, setCurrentPage, isHomePage }) => {
           {['Home', 'About', 'Gallery', 'Calendar', 'Bookings', 'Contact'].map((item) => (
             <button
               key={item}
-              onClick={() => setCurrentPage(item.toLowerCase())}
+              onClick={() => handleNavigation(item.toLowerCase())}
               className={`nav-link ${currentPage === item.toLowerCase() ? 'active' : ''}`}
             >
               {item}
@@ -43,7 +54,7 @@ const Navigation = ({ currentPage, setCurrentPage, isHomePage }) => {
           
           {user?.primaryEmailAddress?.emailAddress === '102301018@smail.iitpkd.ac.in' && (
             <button
-              onClick={() => setCurrentPage('admindashboard')}
+              onClick={() => handleNavigation('admindashboard')}
               className={`nav-link ${currentPage === 'admindashboard' ? 'active' : ''}`}
             >
               Admin Dashboard

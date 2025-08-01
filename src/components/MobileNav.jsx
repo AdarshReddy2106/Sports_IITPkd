@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Sun, Moon } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../App';
 import {
   SignedIn,
@@ -45,17 +46,22 @@ const navLinks = [
 const MobileNav = ({ currentPage, setCurrentPage, isHomePage }) => {
   const [open, setOpen] = useState(false);
   const { isDark, toggleTheme } = useTheme();
+  const navigate = useNavigate();
 
   const handleNav = (key) => {
-    setCurrentPage(key);
+    if (key === 'home') {
+      navigate('/');
+    } else {
+      navigate(`/${key}`);
+    }
     setOpen(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
     <nav className={`mobile-navbar ${isHomePage ? 'transparent' : ''}`}>
       <div className="mobile-navbar-header">
-        {/* The title has been removed to create a cleaner look */}
-        <div style={{ flex: 1 }}></div> {/* This div pushes the buttons to the right */}
+        <div style={{ flex: 1 }}></div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <button 
             onClick={toggleTheme}

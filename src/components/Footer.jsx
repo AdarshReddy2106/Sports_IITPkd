@@ -1,11 +1,16 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./Footer.css";
 
-const Footer = ({ setCurrentPage }) => {
+const Footer = () => {
+  const navigate = useNavigate();
+
   const navTo = (page) => {
-    // In a real SPA, you'd use a router's navigation function
-    // For this project, we use the method passed from App.jsx
-    if (window.setCurrentPage) window.setCurrentPage(page);
+    if (page === "home") {
+      navigate('/');
+    } else {
+      navigate(`/${page}`);
+    }
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
