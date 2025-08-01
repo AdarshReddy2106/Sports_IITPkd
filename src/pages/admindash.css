@@ -167,7 +167,7 @@
 }
 
 .event-item button {
-    background: var(--accent-secondary);
+    background: black
     color: white;
     padding: 0.3rem 0.6rem;
     border: none;

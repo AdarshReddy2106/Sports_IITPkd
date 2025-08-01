@@ -240,7 +240,7 @@ const AdminDashboard = () => {
                 <ul style={{ listStyle: "none", padding: 0 }}>
                   {pastEvents.map((ev) => (
                     <li key={ev.id} className="event-item">
-                      <div><strong>{ev.title}</strong><br />{ev.date} | Winner: {ev.winner || 'N/A'}</div>
+                      <div><strong>{ev.title}</strong><br />{ev.date} </div>
                       <div style={{ display: 'flex', gap: '0.5rem' }}>
                         <button onClick={() => openResultsModal(ev)} style={{ background: '#3b82f6', color: 'white', border: 'none', padding: '0.25rem 0.5rem', borderRadius: '0.25rem', fontSize: '0.75rem' }}>✏️ Add/Edit Results</button>
                         <button onClick={() => handleDeleteEvent(ev.id)}>❌</button>
