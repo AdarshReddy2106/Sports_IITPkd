@@ -407,7 +407,8 @@ const UpcomingEvents = () => (
                     <div className="event-actions">
                       <a
                         href={event.eventLink}
-                        target="_blank"                        rel="noopener noreferrer"
+                        target="_blank"                
+                        rel="noopener noreferrer"
                         className="event-action-btn"
                       >
                         <ExternalLink size={16} />

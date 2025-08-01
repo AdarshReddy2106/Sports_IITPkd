@@ -69,8 +69,7 @@
   font-size: 1rem;
 }
 
-/* === Link & Button Styling === */
-.footer-links a,
+.footer-links a, 
 .footer-links button {
   color: var(--text-secondary);
   background: none;
@@ -79,33 +78,97 @@
   text-decoration: none;
   font-family: inherit;
   font-size: inherit;
-  padding: 0;
+  padding: 8px 12px;
   margin: 0;
-  transition: color 0.2s ease-in-out, padding-left 0.2s ease-in-out;
+  border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-block;
+}
+
+/* Subtle background glow effect */
+.footer-links a::before, 
+.footer-links button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(var(--accent-primary-rgb, 59, 130, 246), 0.1), 
+    transparent
+  );
+  transition: left 0.5s ease-in-out;
+  z-index: -1;
+}
+
+/* Removed arrow indicator */
+
+/* Hover states */
+.footer-links a:hover, 
+.footer-links button:hover {
+  color: var(--accent-primary);
+  background: rgba(var(--accent-primary-rgb, 59, 130, 246), 0.08);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(var(--accent-primary-rgb, 59, 130, 246), 0.15);
+}
+
+/* Shimmer effect on hover */
+.footer-links a:hover::before, 
+.footer-links button:hover::before {
+  left: 100%;
+}
+
+/* Focus states for accessibility */
+.footer-links a:focus, 
+.footer-links button:focus {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+/* Active/pressed state */
+.footer-links a:active, 
+.footer-links button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(var(--accent-primary-rgb, 59, 130, 246), 0.2);
+}
+
+/* Alternative hover effect variant */
+.footer-links.variant-underline a, 
+.footer-links.variant-underline button {
+  padding: 4px 0;
+  border-radius: 0;
+  background: none !important;
+  box-shadow: none !important;
+  transform: none !important;
   position: relative;
 }
 
-.footer-links a:hover,
-.footer-links button:hover {
-  color: var(--accent-primary);
-  padding-left: 8px;
-}
-
-.footer-links a::before,
-.footer-links button::before {
-  content: '→';
+.footer-links.variant-underline a::before, 
+.footer-links.variant-underline button::before {
+  content: '';
   position: absolute;
-  left: -5px;
-  top: 1px;
-  opacity: 0;
-  transition: opacity 0.2s ease-in-out, left 0.2s ease-in-out;
-  color: var(--accent-primary);
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary, var(--accent-primary)));
+  transition: width 0.3s ease-in-out;
 }
 
-.footer-links a:hover::before,
-.footer-links button:hover::before {
-  opacity: 1;
-  left: -2px;
+.footer-links.variant-underline a:hover::before, 
+.footer-links.variant-underline button:hover::before {
+  width: 100%;
+}
+
+.footer-links.variant-underline a:hover, 
+.footer-links.variant-underline button:hover {
+  background: none !important;
+  transform: none !important;
+  box-shadow: none !important;
 }
 
 

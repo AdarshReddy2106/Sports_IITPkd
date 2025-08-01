@@ -27,14 +27,16 @@ const Footer = ({ setCurrentPage }) => {
               <li><button onClick={() => navTo("about")}>About</button></li>
               <li><button onClick={() => navTo("contact")}>Contact</button></li>
               <li><button onClick={() => navTo("bookings")}>Bookings</button></li>
+              <li><button onClick={() => navTo("events")}>Events</button></li>
             </ul>
           </div>
 
           <div className="footer-links">
             <h4>Contact</h4>
             <ul>
-              <li>Indian Institute of Technology Palakkad, Kerala | Pin: 678623</li>
-              <li>+91 9876543210</li>
+              <li>Indian Institute of Technology Palakkad,</li>
+              <li>Kerala | Pin: 678623</li>
+              <li>+91 8977276836</li>
               <li>sec_sports@smail.iitpkd.ac.in</li>
             </ul>
           </div>
@@ -42,10 +44,8 @@ const Footer = ({ setCurrentPage }) => {
           <div className="footer-links">
             <h4>Social</h4>
             <ul>
-              <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a></li>
-              <li><a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-              <li><a href="https://youtube.com" target="_blank" rel="noopener noreferrer">YouTube</a></li>
-              <li><a href="https://twitter.com" target="_blank" rel="noopener noreferrer">Twitter</a></li>
+              <li><a href="https://www.instagram.com/sports_iit_pkd/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+              <li><a href="https://www.youtube.com/@SportsIITPKD" target="_blank" rel="noopener noreferrer">YouTube</a></li>
             </ul>
           </div>
         </div>
