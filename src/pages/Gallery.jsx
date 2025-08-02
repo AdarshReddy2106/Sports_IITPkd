@@ -2,97 +2,122 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../../Js/supabase';
 import './Gallery.css';
 
+// --- Static Fallback Data ---
+// This provides the initial 8 cards and serves as a fallback.
+const getStaticImages = () => [
+  { id: 'static-1', title: 'Cricket Ground', category: 'Facilities', colorClass: 'teal' },
+  { id: 'static-2', title: 'Basketball Court', category: 'Facilities', colorClass: 'blue' },
+  { id: 'static-3', title: 'Fitness Center', category: 'Facilities', colorClass: 'red' },
+  { id: 'static-4', title: 'Table Tennis', category: 'Facilities', colorClass: 'teal' },
+  { id: 'static-5', title: 'Athletic Track', category: 'Facilities', colorClass: 'blue' },
+  { id: 'static-6', title: 'Badminton Courts', category: 'Facilities', colorClass: 'red' },
+  { id: 'static-7', title: 'Championship Event', category: 'Events', colorClass: 'teal' },
+  { id: 'static-8', title: 'Training Session', category: 'Training', colorClass: 'blue' },
+];
+
 const Gallery = () => {
   const [openCard, setOpenCard] = useState(null);
   const [galleryImages, setGalleryImages] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchGalleryImages();
+    const fetchAndCombineImages = async () => {
+      setLoading(true);
+      const staticImages = getStaticImages(); // Get the default static images
+
+      try {
+        // Fetch new items from the database
+        const { data: dbImages, error } = await supabase
+          .from('gallery')
+          .select('*')
+          .order('created_at', { ascending: false }); //
+
+        if (error) {
+          console.error('Error fetching gallery images:', error.message);
+          setGalleryImages(staticImages); // On error, just use the static images
+        } else {
+          // Combine static and database images, removing duplicates
+          const combined = new Map();
+          // Add static images first
+          staticImages.forEach(item => combined.set(item.title, item));
+          // Add/overwrite with database images (newest ones come first)
+          (dbImages || []).forEach(item => combined.set(item.title, item));
+
+          setGalleryImages(Array.from(combined.values()));
+        }
+      } catch (error) {
+        console.error('A critical error occurred:', error.message);
+        setGalleryImages(staticImages); // Fallback in case of a critical failure
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAndCombineImages();
   }, []);
 
-  const fetchGalleryImages = async () => {
-    setLoading(true);
-    try {
-      const { data, error } = await supabase
-        .from('gallery')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) {
-        console.error('Error fetching gallery images:', error);
-        // Fallback to static images if database fails
-        setGalleryImages(getStaticImages());
-      } else {
-        // If no database images, use static ones
-        if (!data || data.length === 0) {
-          setGalleryImages(getStaticImages());
-        } else {
-          setGalleryImages(data);
-        }
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      setGalleryImages(getStaticImages());
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Fallback static images
-  const getStaticImages = () => [
-    { id: 1, title: 'Cricket Ground', category: 'Facilities', colorClass: 'teal' },  
-    { id: 2, title: 'Basketball Court', category: 'Facilities', colorClass: 'blue' },
-    { id: 3, title: 'Fitness Center', category: 'Facilities', colorClass: 'red' },
-    { id: 4, title: 'Table Tennis', category: 'Facilities', colorClass: 'teal' },      
-    { id: 5, title: 'Athletic Track', category: 'Facilities', colorClass: 'blue' },
-    { id: 6, title: 'Badminton Courts', category: 'Facilities', colorClass: 'red' },   
-    { id: 7, title: 'Championship Event', category: 'Events', colorClass: 'teal' },
-    { id: 8, title: 'Training Session', category: 'Training', colorClass: 'blue' },
-  ];
+  // --- Helper Functions (from the more robust version) ---
 
   const closeModal = () => setOpenCard(null);
 
-  const getImageUrl = (img, index) => {
-    // If database image with URLs
-    if (img.imageUrl1 && index === 1) return img.imageUrl1;
-    if (img.imageUrl2 && index === 2) return img.imageUrl2;
-    if (img.imageUrl3 && index === 3) return img.imageUrl3;
-    
-    // Fallback to local images
-    return `/uploads/${img.title.replace(/\s/g, '').toLowerCase()}-${index}.jpg`;
+  /**
+   * Gets all valid image URLs from a gallery item.
+   * Handles both database items (with imageUrl properties) and static items.
+   */
+  const getAvailableImages = (item) => {
+    if (!item) return [];
+
+    // If it's a database item with uploaded URLs, use them
+    if (item.imageUrl1) {
+      return [item.imageUrl1, item.imageUrl2, item.imageUrl3].filter(Boolean); //
+    }
+
+    // Otherwise, it's a static item; generate placeholder URLs
+    const slug = item.title.replace(/\s/g, '').toLowerCase();
+    return [1, 2, 3].map(n => `/uploads/${slug}-${n}.jpg`); //
   };
 
-  const renderSlideshow = (img, isModal = false) => (
-    <div className={`slideshow ${isModal ? 'modal-slideshow' : ''}`}>
-      {[1, 2, 3].map((n) => (
-        <img
-          key={n}
-          className="slide-image"
-          src={getImageUrl(img, n)}
-          alt={`${img.title} ${n}`}
-          onError={(e) => {
-            // Fallback if image fails to load
-            e.target.src = `/uploads/placeholder-${n}.jpg`;
-          }}
-        />
-      ))}
-    </div>
-  );
+  /**
+   * Renders the slideshow for a card or a placeholder if no images are found.
+   */
+  const renderSlideshow = (item) => {
+    const availableImages = getAvailableImages(item);
+
+    if (availableImages.length === 0) {
+      return (
+        <div className="slideshow">
+          <div className="placeholder-image">
+            <span>🖼️</span>
+            <p>No Image Available</p>
+          </div>
+        </div>
+      );
+    }
+
+    // Uses CSS animation to cycle through images
+    return (
+      <div className="slideshow">
+        {availableImages.map((url, index) => (
+          <img
+            key={url}
+            className="slide-image"
+            src={url}
+            alt={`${item.title} ${index + 1}`}
+            style={{ animationDelay: `${index * 5}s` }}
+            onError={(e) => { e.target.style.display = 'none'; }}
+          />
+        ))}
+      </div>
+    );
+  };
+
+  // --- JSX Rendering ---
 
   if (loading) {
     return (
       <div className="gallery-container">
-        <div className="gallery-wrapper">
-          <div className="gallery-header">
-            <h2 className="gallery-title">
-              Photo <span className="accent">Gallery</span>
-            </h2>
-            <p className="gallery-description">Loading gallery images...</p>
-          </div>
-          <div className="loading-spinner">
-            <div className="spinner"></div>
-          </div>
+        <div className="loading-spinner">
+          <div className="spinner"></div>
         </div>
       </div>
     );
@@ -101,47 +126,56 @@ const Gallery = () => {
   return (
     <div className="gallery-container">
       <div className="gallery-wrapper">
-        {/* -------- header -------- */}
         <div className="gallery-header">
           <h2 className="gallery-title">
             Photo <span className="accent">Gallery</span>
           </h2>
           <p className="gallery-description">
-            Take a look at our world‑class facilities and exciting events through our photo gallery.
+            A glimpse into our world-class facilities and exciting campus events.
           </p>
         </div>
 
-        {/* -------- card grid -------- */}
-        <div className="gallery-grid">
-          {galleryImages.map((img) => (
-            <div
-              key={img.id}
-              className={`gallery-item ${img.colorClass}`}
-              onClick={() => setOpenCard(img)}
-            >
-              {/* fading slideshow inside card */}
-              {renderSlideshow(img)}
-
-              <div className="gallery-content">
-                <h3 className="gallery-item-title">{img.title}</h3>
-                <p className="gallery-item-category">{img.category}</p>
-              </div>
-            </div>
-          ))}
-        </div>
+        {galleryImages.length > 0 ? (
+          <div className="gallery-grid">
+            {galleryImages.map((item) => {
+              const imageCount = getAvailableImages(item).length;
+              return (
+                <div
+                  key={item.id}
+                  className={`gallery-item ${item.colorClass || 'teal'}`}
+                  onClick={() => setOpenCard(item)}
+                >
+                  {renderSlideshow(item)}
+                  <div className="gallery-content">
+                    <h3 className="gallery-item-title">{item.title}</h3>
+                    <p className="gallery-item-category">{item.category}</p>
+                    {imageCount > 1 && (
+                      <div className="image-indicator">
+                        <span className="image-count">🖼️ {imageCount} photos</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div style={{ textAlign: 'center', padding: '3rem 1rem', color: 'var(--text-secondary)' }}>
+            <h3>🖼️ No Gallery Items Found</h3>
+            <p>The gallery is currently empty. Check back later!</p>
+          </div>
+        )}
       </div>
 
-      {/* ----- popup modal ----- */}
       {openCard && (
         <div className="modal-overlay" onClick={closeModal}>
-          <div
-            className="modal-box"
-            onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside
-          >
-            {renderSlideshow(openCard, true)}
-
-            <h3 className="modal-title">{openCard.title}</h3>
-            <p className="modal-category">{openCard.category}</p>
+          <div className="modal-box" onClick={(e) => e.stopPropagation()}>
+            {renderSlideshow(openCard)}
+            <div className="modal-info">
+              <h3 className="modal-title">{openCard.title}</h3>
+              <p className="modal-category">{openCard.category}</p>
+            </div>
+            <button className="modal-close" onClick={closeModal}>&times;</button>
           </div>
         </div>
       )}

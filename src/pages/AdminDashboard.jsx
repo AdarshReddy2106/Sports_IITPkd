@@ -7,6 +7,7 @@ const AdminDashboard = () => {
   const { isLoaded, user } = useUser();
   const [bookings, setBookings] = useState([]);
   const [events, setEvents] = useState([]);
+  const [galleryItems, setGalleryItems] = useState([]);
   const [activeTab, setActiveTab] = useState('events');
   const [selectedEventForResults, setSelectedEventForResults] = useState(null);
   const [showResultsModal, setShowResultsModal] = useState(false);
@@ -23,7 +24,21 @@ const AdminDashboard = () => {
     linkText: "View Details",
   });
 
-  // FIXED: Use a simple string state for the summary text to avoid state conflicts.
+  // State for gallery form - updated for file uploads
+  const [galleryItem, setGalleryItem] = useState({
+    title: "",
+    category: "",
+    colorClass: "teal",
+  });
+
+  // New state for file uploads
+  const [selectedFiles, setSelectedFiles] = useState({
+    image1: null,
+    image2: null,
+    image3: null
+  });
+  const [uploadingGallery, setUploadingGallery] = useState(false);
+
   const [summaryText, setSummaryText] = useState("");
 
   // Authorization Logic
@@ -47,6 +62,7 @@ const AdminDashboard = () => {
         fetchBookings();
       }
       fetchEvents();
+      fetchGalleryItems();
     }
   }, [isLoaded, isAuthorized, isSuperAdmin]);
   
@@ -78,6 +94,14 @@ const AdminDashboard = () => {
     if (!error) setEvents(data);
   };
 
+  const fetchGalleryItems = async () => {
+    const { data, error } = await supabase
+      .from("gallery")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (!error) setGalleryItems(data || []);
+  };
+
   const updateStatus = async (id, status) => {
     if (!isSuperAdmin) return;
     const { error } = await supabase.from("bookings").update({ status }).eq("id", id);
@@ -105,11 +129,136 @@ const AdminDashboard = () => {
     if (!error) fetchEvents();
     else alert("Error deleting event: " + error.message);
   };
+
+  // New file handling functions
+  const handleFileChange = (e, imageNumber) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Validate file type
+      const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+      if (!validTypes.includes(file.type)) {
+        alert('Please select a valid image file (JPEG, PNG, WebP, or GIF)');
+        return;
+      }
+      
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('File size must be less than 5MB');
+        return;
+      }
+
+      setSelectedFiles(prev => ({
+        ...prev,
+        [imageNumber]: file
+      }));
+    }
+  };
+
+  const uploadImageToSupabase = async (file, fileName) => {
+    try {
+      const { data, error } = await supabase.storage
+        .from('gallery-images') // Make sure this bucket exists in your Supabase storage
+        .upload(fileName, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
+
+      if (error) throw error;
+
+      // Get public URL
+      const { data: urlData } = supabase.storage
+        .from('gallery-images')
+        .getPublicUrl(fileName);
+
+      return urlData.publicUrl;
+    } catch (error) {
+      console.error('Upload error:', error);
+      throw error;
+    }
+  };
+
+  // Updated gallery management function
+  const handleAddGalleryItem = async (e) => {
+    e.preventDefault();
+    if (!galleryItem.title.trim()) {
+      alert("Please enter a title for the gallery item");
+      return;
+    }
+
+    if (!selectedFiles.image1) {
+      alert("Please select at least one image");
+      return;
+    }
+
+    setUploadingGallery(true);
+
+    try {
+      const timestamp = Date.now();
+      const sanitizedTitle = galleryItem.title.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
+      
+      // Upload files and get URLs
+      const imageUrls = {};
+      
+      for (let i = 1; i <= 3; i++) {
+        const file = selectedFiles[`image${i}`];
+        if (file) {
+          const fileName = `${sanitizedTitle}_${timestamp}_${i}.${file.name.split('.').pop()}`;
+          const url = await uploadImageToSupabase(file, fileName);
+          imageUrls[`imageUrl${i}`] = url;
+        }
+      }
+
+      // Insert into database
+      const { error } = await supabase.from("gallery").insert([{
+        ...galleryItem,
+        ...imageUrls,
+        user_id: user.id,
+        created_at: new Date().toISOString()
+      }]);
+
+      if (error) throw error;
+
+      alert("✅ Gallery item added successfully");
+      
+      // Reset form
+      setGalleryItem({
+        title: "",
+        category: "",
+        colorClass: "teal",
+      });
+      setSelectedFiles({
+        image1: null,
+        image2: null,
+        image3: null
+      });
+      
+      // Reset file inputs
+      const fileInputs = document.querySelectorAll('input[type="file"]');
+      fileInputs.forEach(input => input.value = '');
+      
+      fetchGalleryItems();
+    } catch (error) {
+      alert("❌ failed to add gallery item: " + error.message);
+    } finally {
+      setUploadingGallery(false);
+    }
+  };
+
+  const handleDeleteGalleryItem = async (id) => {
+    if (window.confirm("Are you sure you want to delete this gallery item?")) {
+      const { error } = await supabase.from("gallery").delete().eq("id", id);
+      if (!error) {
+        fetchGalleryItems();
+        alert("✅ Gallery item deleted successfully");
+      } else {
+        alert("Error deleting gallery item: " + error.message);
+      }
+    }
+  };
   
   // --- Results Modal Logic ---
   const openResultsModal = (event) => {
     setSelectedEventForResults(event);
-    // FIXED: Set the simple summaryText state when the modal opens.
     setSummaryText(event.eventSummary || ""); 
     setShowResultsModal(true);
   };
@@ -117,7 +266,7 @@ const AdminDashboard = () => {
   const closeResultsModal = () => {
     setShowResultsModal(false);
     setSelectedEventForResults(null);
-    setSummaryText(""); // Clear the summary text on close.
+    setSummaryText(""); 
   };
   
   const handleUpdateEventResults = async (e) => {
@@ -126,7 +275,6 @@ const AdminDashboard = () => {
     try {
       const { error } = await supabase
         .from("events")
-        // FIXED: Update the database with the simple summaryText state.
         .update({ eventSummary: summaryText })
         .eq("id", selectedEventForResults.id);
 
@@ -156,6 +304,7 @@ const AdminDashboard = () => {
       </div>
       <div className="admin-tabs">
         <button className={activeTab === 'events' ? 'active' : ''} onClick={() => setActiveTab('events')}>Events</button>
+        <button className={activeTab === 'gallery' ? 'active' : ''} onClick={() => setActiveTab('gallery')}>Gallery</button>
         {isSuperAdmin && (<button className={activeTab === 'bookings' ? 'active' : ''} onClick={() => setActiveTab('bookings')}>Bookings</button>)}
       </div>
 
@@ -216,6 +365,142 @@ const AdminDashboard = () => {
         </div>
       )}
 
+      {activeTab === 'gallery' && (
+        <div className="admin-tab-content">
+          <div className="admin-panel-box form-column">
+            <h3>Add Gallery Item</h3>
+            <form className="admin-form" onSubmit={handleAddGalleryItem}>
+              <input 
+                type="text" 
+                name="title" 
+                placeholder="Title (e.g., Cricket Ground)" 
+                value={galleryItem.title} 
+                onChange={(e) => setGalleryItem(prev => ({ ...prev, title: e.target.value }))} 
+                required 
+              />
+              <input 
+                type="text" 
+                name="category" 
+                placeholder="Category (e.g., Facilities, Events)" 
+                value={galleryItem.category} 
+                onChange={(e) => setGalleryItem(prev => ({ ...prev, category: e.target.value }))} 
+                required 
+              />
+              <select 
+                name="colorClass" 
+                value={galleryItem.colorClass} 
+                onChange={(e) => setGalleryItem(prev => ({ ...prev, colorClass: e.target.value }))}
+              >
+                <option value="teal">Teal</option>
+                <option value="blue">Blue</option>
+                <option value="red">Red</option>
+              </select>
+              
+              {/* File upload inputs */}
+              <div style={{ marginBottom: '1rem' }}>
+                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600' }}>
+                  Image 1 (Required) *
+                </label>
+                <input 
+                  type="file" 
+                  accept="image/*"
+                  onChange={(e) => handleFileChange(e, 'image1')}
+                  required
+                  style={{ width: '100%', padding: '0.5rem', border: '2px solid #ccc', borderRadius: '4px' }}
+                />
+                {selectedFiles.image1 && (
+                  <p style={{ fontSize: '0.8rem', color: 'green', margin: '0.25rem 0' }}>
+                    ✓ {selectedFiles.image1.name}
+                  </p>
+                )}
+              </div>
+
+              <div style={{ marginBottom: '1rem' }}>
+                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600' }}>
+                  Image 2 (Optional)
+                </label>
+                <input 
+                  type="file" 
+                  accept="image/*"
+                  onChange={(e) => handleFileChange(e, 'image2')}
+                  style={{ width: '100%', padding: '0.5rem', border: '2px solid #ccc', borderRadius: '4px' }}
+                />
+                {selectedFiles.image2 && (
+                  <p style={{ fontSize: '0.8rem', color: 'green', margin: '0.25rem 0' }}>
+                    ✓ {selectedFiles.image2.name}
+                  </p>
+                )}
+              </div>
+
+              <div style={{ marginBottom: '1rem' }}>
+                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600' }}>
+                  Image 3 (Optional)
+                </label>
+                <input 
+                  type="file" 
+                  accept="image/*"
+                  onChange={(e) => handleFileChange(e, 'image3')}
+                  style={{ width: '100%', padding: '0.5rem', border: '2px solid #ccc', borderRadius: '4px' }}
+                />
+                {selectedFiles.image3 && (
+                  <p style={{ fontSize: '0.8rem', color: 'green', margin: '0.25rem 0' }}>
+                    ✓ {selectedFiles.image3.name}
+                  </p>
+                )}
+              </div>
+
+              <button type="submit" disabled={uploadingGallery}>
+                {uploadingGallery ? '📤 Uploading...' : '🖼️ Add Gallery Item'}
+              </button>
+            </form>
+          </div>
+
+          <div className="events-column">
+            <div className="admin-panel-box">
+              <h3>Gallery Items ({galleryItems.length})</h3>
+              {galleryItems.length === 0 ? (
+                <p>No gallery items found.</p>
+              ) : (
+                <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
+                  <ul style={{ listStyle: "none", padding: 0 }}>
+                    {galleryItems.map((item) => (
+                      <li key={item.id} className="event-item">
+                        <div>
+                          <strong>{item.title}</strong><br />
+                          <span style={{ fontSize: '0.9rem', opacity: 0.8 }}>
+                            {item.category} • {item.colorClass}
+                          </span>
+                          <br />
+                          <span style={{ fontSize: '0.8rem', opacity: 0.6 }}>
+                            Images: {[item.imageUrl1, item.imageUrl2, item.imageUrl3].filter(Boolean).length}/3
+                          </span>
+                        </div>
+                        <button onClick={() => handleDeleteGalleryItem(item.id)}>❌</button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+            
+            <div className="admin-panel-box">
+              <h3>Gallery Guidelines</h3>
+              <div style={{ fontSize: '0.9rem', lineHeight: '1.5', color: 'var(--text-secondary)' }}>
+                <p><strong>Image Requirements:</strong></p>
+                <ul style={{ paddingLeft: '1rem' }}>
+                  <li>At least one image is required</li>
+                  <li>Supported formats: JPG, PNG, WebP, GIF</li>
+                  <li>Maximum file size: 5MB per image</li>
+                  <li>Recommended size: 800x600px or higher</li>
+                </ul>
+                <p><strong>Categories:</strong> Facilities, Events, Training, Awards, etc.</p>
+                <p><strong>Colors:</strong> Choose based on content type for visual consistency</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {isSuperAdmin && activeTab === 'bookings' && (
         <div className="admin-tab-content">
           <div className="facility-bookings admin-panel-box" style={{ flex: '1 1 100%' }}>
@@ -254,22 +539,31 @@ const AdminDashboard = () => {
 
       {showResultsModal && selectedEventForResults && (
         <div className="modal-overlay">
-          <div className="modal-content">
+          <div className="modal-content" style={{ background: 'var(--bg-primary)', color: 'var(--text-primary)', padding: '2rem', borderRadius: '12px', border: '1px solid var(--border-primary)' }}>
             <h3>Add/Edit Results: {selectedEventForResults.title}</h3>
             <form onSubmit={handleUpdateEventResults}>
               <textarea
                 name="eventSummary"
                 placeholder="Write anything about the event: highlights, winners, scorecards, or notes"
-                // FIXED: Use the simple summaryText state and its updater.
                 value={summaryText}
                 onChange={(e) => setSummaryText(e.target.value)}
-                style={{ width: '100%', minHeight: '200px', marginBottom: '1rem', padding: '0.75rem' }}
+                style={{ 
+                  width: '100%', 
+                  minHeight: '200px', 
+                  marginBottom: '1rem', 
+                  padding: '0.75rem',
+                  border: '3px solid black',
+                  borderRadius: '6px',
+                  background: 'var(--bg-tertiary)',
+                  color: 'var(--text-primary)',
+                  resize: 'vertical'
+                }}
               />
               <div style={{ display: 'flex', gap: '1rem' }}>
-                <button type="submit" style={{ background: '#10b981', color: 'white', border: 'none', padding: '0.75rem 1rem', borderRadius: '0.25rem', cursor: 'pointer' }}>
+                <button type="submit" style={{ background: 'linear-gradient(135deg, #10b981, #059669)', color: 'white', border: 'none', padding: '0.75rem 1rem', borderRadius: '6px', cursor: 'pointer', fontWeight: '600' }}>
                   Save Summary
                 </button>
-                <button type="button" onClick={closeResultsModal} style={{ background: '#6b7280', color: 'white', border: 'none', padding: '0.75rem 1rem', borderRadius: '0.25rem', cursor: 'pointer' }}>
+                <button type="button" onClick={closeResultsModal} style={{ background: '#6b7280', color: 'white', border: 'none', padding: '0.75rem 1rem', borderRadius: '6px', cursor: 'pointer', fontWeight: '600' }}>
                   Cancel
                 </button>
               </div>
