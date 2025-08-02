@@ -19,17 +19,15 @@ const Bookings = () => {
     notes: ''
   });
   
-
   useEffect(() => {
-  if (user?.fullName && user?.primaryEmailAddress?.emailAddress) {
-    setForm(prev => ({
-      ...prev,
-      name: user.fullName,
-      email: user.primaryEmailAddress.emailAddress,
-    }));
-  }
-}, [user?.fullName, user?.primaryEmailAddress]);
-
+    if (user?.fullName && user?.primaryEmailAddress?.emailAddress) {
+      setForm(prev => ({
+        ...prev,
+        name: user.fullName,
+        email: user.primaryEmailAddress.emailAddress,
+      }));
+    }
+  }, [user?.fullName, user?.primaryEmailAddress]);
 
   const [userBookings, setUserBookings] = useState([]);
 
@@ -60,52 +58,91 @@ const Bookings = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-  //     if (!form.name || !form.email) {
-  //       setStatus('Login to Book Facilities');
-  //       return;
-  // }
-    console.log(form.name)
-    setStatus('Booking...');
-    try {
-      const res = await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setStatus('Booking Sent! Wait for Confirmation.');
-        setForm(prev => ({
-          ...prev,
-          selectedFacility: '',
-          bookingDate: '',
-          startTime: '',
-          endTime: '',
-          participants: '',
-          notes: ''
-        }));
-      } else {
-        setStatus(data.error || 'Failed to send.');
-      }
-    } catch (error) {
-      console.error('Fetch error:', error);
+    
+    if (!form.name || !form.email) {
+      setStatus('Login to Book Facilities');
+      return;
     }
+
+    if (!user?.id) {
+      setStatus('User not properly authenticated. Please refresh and try again.');
+      return;
+    }
+
+    console.log('Form data before submission:', form);
+    console.log('User ID:', user?.id);
+    setStatus('Booking...');
+
+    try {
       // Get facility name for database
       const facilityName = facilities.find(f => f.id === form.selectedFacility)?.name || form.selectedFacility;
       
-      // Create booking in database
+      // Create booking data object BEFORE any async operations
       const bookingData = {
-        user_id: user?.id,
+        user_id: user.id,
         name: form.name,
         email: form.email,
         facility: facilityName,
         date: form.bookingDate,
         start_time: form.startTime,
         end_time: form.endTime,
-        participants: form.participants,
-        notes: form.notes
+        participants: parseInt(form.participants) || 0,
+        notes: form.notes || ''
       };
-      await createBooking(bookingData);
+
+      console.log('Booking data to be saved:', bookingData);
+
+      // First, try to save to database
+      console.log('Attempting to save booking to database...');
+      const createdBooking = await createBooking(bookingData);
+      console.log('Database save result:', createdBooking);
+      
+      if (!createdBooking) {
+        setStatus('Failed to save booking to database. Please try again.');
+        return;
+      }
+
+      // Then send email notification
+      console.log('Attempting to send email notification...');
+      try {
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(form),
+        });
+        
+        if (!res.ok) {
+          const errorData = await res.json();
+          console.warn('Email failed but booking saved:', errorData);
+          setStatus('Booking saved successfully, but email notification failed.');
+        } else {
+          const data = await res.json();
+          console.log('Email sent successfully:', data);
+          setStatus('Booking Sent! Wait for Confirmation.');
+        }
+      } catch (emailError) {
+        console.warn('Email service error, but booking was saved:', emailError);
+        setStatus('Booking saved successfully, but email notification failed.');
+      }
+
+      // Reset only the booking-specific fields, keep name and email
+      setForm(prev => ({
+        ...prev,
+        selectedFacility: '',
+        bookingDate: '',
+        startTime: '',
+        endTime: '',
+        participants: '',
+        notes: ''
+      }));
+      
+      // Refresh the bookings list
+      await fetchUserBookings();
+
+    } catch (error) {
+      console.error('Booking submission error:', error);
+      setStatus(`Error: ${error.message || 'An unexpected error occurred'}`);
+    }
   };
 
   const facilities = [
@@ -266,7 +303,6 @@ const Bookings = () => {
           </div>
 
           <div className="sidebar">
-            {/* ...unchanged contact/booking info sidebar... */}
             <div className="info-card">
               <h3 className="info-title">Booking Information</h3>
               <div className="hours-table">
