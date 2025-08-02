@@ -1,53 +1,48 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../../Js/supabase';
 import './Gallery.css';
 
-// --- Static Fallback Data ---
-// This provides the initial 8 cards and serves as a fallback.
+// Enhanced static fallback data with better variety
 const getStaticImages = () => [
-  { id: 'static-1', title: 'Cricket Ground', category: 'Facilities', colorClass: 'teal' },
-  { id: 'static-2', title: 'Basketball Court', category: 'Facilities', colorClass: 'blue' },
-  { id: 'static-3', title: 'Fitness Center', category: 'Facilities', colorClass: 'red' },
-  { id: 'static-4', title: 'Table Tennis', category: 'Facilities', colorClass: 'teal' },
-  { id: 'static-5', title: 'Athletic Track', category: 'Facilities', colorClass: 'blue' },
-  { id: 'static-6', title: 'Badminton Courts', category: 'Facilities', colorClass: 'red' },
-  { id: 'static-7', title: 'Championship Event', category: 'Events', colorClass: 'teal' },
-  { id: 'static-8', title: 'Training Session', category: 'Training', colorClass: 'blue' },
+  { id: 'static-1', title: 'Cricket Ground', colorClass: 'teal' },
+  { id: 'static-2', title: 'Basketball Court', colorClass: 'blue' },
+  { id: 'static-3', title: 'Fitness Center', colorClass: 'red' },
+  { id: 'static-4', title: 'Table Tennis', colorClass: 'purple' },
+  { id: 'static-5', title: 'Athletic Track', colorClass: 'green' },
+  { id: 'static-6', title: 'Badminton Courts', colorClass: 'blue' },
+  { id: 'static-7', title: 'Championship Event', colorClass: 'red' },
+  { id: 'static-8', title: 'Training Session', colorClass: 'teal' },
 ];
 
 const Gallery = () => {
   const [openCard, setOpenCard] = useState(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [galleryImages, setGalleryImages] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchAndCombineImages = async () => {
       setLoading(true);
-      const staticImages = getStaticImages(); // Get the default static images
+      const staticImages = getStaticImages();
 
       try {
-        // Fetch new items from the database
         const { data: dbImages, error } = await supabase
           .from('gallery')
           .select('*')
-          .order('created_at', { ascending: false }); //
+          .order('created_at', { ascending: false });
 
         if (error) {
           console.error('Error fetching gallery images:', error.message);
-          setGalleryImages(staticImages); // On error, just use the static images
+          setGalleryImages(staticImages);
         } else {
-          // Combine static and database images, removing duplicates
           const combined = new Map();
-          // Add static images first
           staticImages.forEach(item => combined.set(item.title, item));
-          // Add/overwrite with database images (newest ones come first)
           (dbImages || []).forEach(item => combined.set(item.title, item));
-
           setGalleryImages(Array.from(combined.values()));
         }
       } catch (error) {
         console.error('A critical error occurred:', error.message);
-        setGalleryImages(staticImages); // Fallback in case of a critical failure
+        setGalleryImages(staticImages);
       } finally {
         setLoading(false);
       }
@@ -56,70 +51,86 @@ const Gallery = () => {
     fetchAndCombineImages();
   }, []);
 
-  // --- Helper Functions (from the more robust version) ---
-
-  const closeModal = () => setOpenCard(null);
-
-  /**
-   * Gets all valid image URLs from a gallery item.
-   * Handles both database items (with imageUrl properties) and static items.
-   */
+  // Enhanced image handling with better error management
   const getAvailableImages = (item) => {
     if (!item) return [];
-
-    // If it's a database item with uploaded URLs, use them
     if (item.imageUrl1) {
-      return [item.imageUrl1, item.imageUrl2, item.imageUrl3].filter(Boolean); //
+      // Collect all potential image URLs and filter out any null/empty ones
+      return [item.imageUrl1, item.imageUrl2, item.imageUrl3, item.imageUrl4, item.imageUrl5].filter(Boolean);
     }
-
-    // Otherwise, it's a static item; generate placeholder URLs
     const slug = item.title.replace(/\s/g, '').toLowerCase();
-    return [1, 2, 3].map(n => `/uploads/${slug}-${n}.jpg`); //
+    return [1, 2, 3].map(n => `/uploads/${slug}-${n}.jpg`);
   };
 
-  /**
-   * Renders the slideshow for a card or a placeholder if no images are found.
-   */
-  const renderSlideshow = (item) => {
-    const availableImages = getAvailableImages(item);
+  const openModal = (item) => {
+    setOpenCard(item);
+    setCurrentImageIndex(0);
+  };
 
+  const closeModal = () => {
+    setOpenCard(null);
+  };
+
+  const handleNextImage = useCallback(() => {
+    if (!openCard) return;
+    const images = getAvailableImages(openCard);
+    if (images.length > 1) {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }
+  }, [openCard, getAvailableImages]);
+
+  const handlePrevImage = useCallback(() => {
+    if (!openCard) return;
+    const images = getAvailableImages(openCard);
+    if (images.length > 1) {
+      setCurrentImageIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
+    }
+  }, [openCard, getAvailableImages]);
+
+  // Modern image stack renderer for the card grid
+  const renderImageStack = (item) => {
+    const availableImages = getAvailableImages(item);
     if (availableImages.length === 0) {
       return (
         <div className="slideshow">
-          <div className="placeholder-image">
-            <span>🖼️</span>
-            <p>No Image Available</p>
-          </div>
+          <div className="placeholder-image"><span>🖼️</span><p>No Image Available</p></div>
         </div>
       );
     }
-
-    // Uses CSS animation to cycle through images
     return (
       <div className="slideshow">
-        {availableImages.map((url, index) => (
-          <img
-            key={url}
-            className="slide-image"
-            src={url}
-            alt={`${item.title} ${index + 1}`}
-            style={{ animationDelay: `${index * 5}s` }}
-            onError={(e) => { e.target.style.display = 'none'; }}
-          />
-        ))}
+        <div className="image-stack">
+          {availableImages.slice(0, 3).map((url, index) => (
+            <img key={`${url}-${index}`} className="slide-image" src={url} alt={`${item.title} ${index + 1}`} loading="lazy" onError={(e) => { e.target.style.display = 'none'; console.warn(`Failed to load image: ${url}`); }} />
+          ))}
+        </div>
       </div>
     );
   };
 
-  // --- JSX Rendering ---
+  // Handle keyboard navigation for accessibility
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (!openCard) return;
+      if (event.key === 'Escape') closeModal();
+      if (event.key === 'ArrowRight') handleNextImage();
+      if (event.key === 'ArrowLeft') handlePrevImage();
+    };
+
+    if (openCard) {
+      document.addEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'hidden';
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'unset';
+    };
+  }, [openCard, handleNextImage, handlePrevImage]);
 
   if (loading) {
     return (
-      <div className="gallery-container">
-        <div className="loading-spinner">
-          <div className="spinner"></div>
-        </div>
-      </div>
+      <div className="gallery-container"><div className="gallery-wrapper"><div className="loading-spinner"><div className="spinner"></div></div></div></div>
     );
   }
 
@@ -127,12 +138,8 @@ const Gallery = () => {
     <div className="gallery-container">
       <div className="gallery-wrapper">
         <div className="gallery-header">
-          <h2 className="gallery-title">
-            Photo <span className="accent">Gallery</span>
-          </h2>
-          <p className="gallery-description">
-            A glimpse into our world-class facilities and exciting campus events.
-          </p>
+          <h2 className="gallery-title">Photo <span className="accent">Gallery</span></h2>
+          <p className="gallery-description">Explore our world-class facilities, exciting events, and vibrant campus life through our visual journey.</p>
         </div>
 
         {galleryImages.length > 0 ? (
@@ -140,38 +147,53 @@ const Gallery = () => {
             {galleryImages.map((item) => {
               const imageCount = getAvailableImages(item).length;
               return (
-                <div
-                  key={item.id}
-                  className={`gallery-item ${item.colorClass || 'teal'}`}
-                  onClick={() => setOpenCard(item)}
-                >
-                  {renderSlideshow(item)}
+                <div key={item.id} className={`gallery-item ${item.colorClass || 'teal'}`} onClick={() => openModal(item)} role="button" tabIndex={0} aria-label={`View ${item.title} gallery`} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(item); } }}>
+                  {renderImageStack(item)}
                   <div className="gallery-content">
                     <h3 className="gallery-item-title">{item.title}</h3>
-                    <p className="gallery-item-category">{item.category}</p>
-                    {imageCount > 1}
+                    <p className="gallery-item-category">{item.category}{imageCount > 1 && (<span style={{ opacity: 0.7, marginLeft: '0.5rem' }}>• {imageCount} photos</span>)}</p>
                   </div>
                 </div>
               );
             })}
           </div>
         ) : (
-          <div style={{ textAlign: 'center', padding: '3rem 1rem', color: 'var(--text-secondary)' }}>
-            <h3>🖼️ No Gallery Items Found</h3>
-            <p>The gallery is currently empty. Check back later!</p>
+          <div style={{ textAlign: 'center', padding: '4rem 2rem', color: 'var(--text-secondary)', background: 'var(--bg-secondary)', borderRadius: '2rem', border: '2px dashed var(--border-primary)' }}>
+            <div style={{ fontSize: '4rem', marginBottom: '1rem', opacity: 0.5 }}>🖼️</div>
+            <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>No Gallery Items Found</h3>
+            <p style={{ fontSize: '1.1rem', opacity: 0.8 }}>The gallery is currently empty. Check back later for amazing content!</p>
           </div>
         )}
       </div>
 
+      {/* Enhanced Modal with Image Slider */}
       {openCard && (
-        <div className="modal-overlay" onClick={closeModal}>
+        <div className="modal-overlay" onClick={closeModal} role="dialog" aria-modal="true" aria-labelledby="modal-title">
           <div className="modal-box" onClick={(e) => e.stopPropagation()}>
-            {renderSlideshow(openCard)}
-            <div className="modal-info">
-              <h3 className="modal-title">{openCard.title}</h3>
-              <p className="modal-category">{openCard.category}</p>
+            <div className="modal-slider">
+              {getAvailableImages(openCard).map((url, index) => (
+                <img
+                  key={url}
+                  src={url}
+                  alt={`${openCard.title} ${index + 1}`}
+                  className={`modal-slide-image ${index === currentImageIndex ? 'active' : ''}`}
+                />
+              ))}
+              
+              {getAvailableImages(openCard).length > 1 && (
+                <>
+                  <button onClick={(e) => { e.stopPropagation(); handlePrevImage(); }} className="slider-btn prev" aria-label="Previous image">‹</button>
+                  <button onClick={(e) => { e.stopPropagation(); handleNextImage(); }} className="slider-btn next" aria-label="Next image">›</button>
+                  <div className="slider-counter">{currentImageIndex + 1} / {getAvailableImages(openCard).length}</div>
+                </>
+              )}
             </div>
-            <button className="modal-close" onClick={closeModal}>&times;</button>
+            <div className="modal-info">
+              <h3 id="modal-title" className="modal-title">{openCard.title}</h3>
+              <p className="modal-category">{openCard.category}</p>
+              {openCard.description && (<p style={{ marginTop: '1rem', opacity: 0.8, lineHeight: 1.6, fontSize: '1rem' }}>{openCard.description}</p>)}
+            </div>
+            <button className="modal-close" onClick={closeModal} aria-label="Close gallery modal">×</button>
           </div>
         </div>
       )}
