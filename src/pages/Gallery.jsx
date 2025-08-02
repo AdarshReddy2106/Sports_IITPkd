@@ -149,11 +149,7 @@ const Gallery = () => {
                   <div className="gallery-content">
                     <h3 className="gallery-item-title">{item.title}</h3>
                     <p className="gallery-item-category">{item.category}</p>
-                    {imageCount > 1 && (
-                      <div className="image-indicator">
-                        <span className="image-count">🖼️ {imageCount} photos</span>
-                      </div>
-                    )}
+                    {imageCount > 1}
                   </div>
                 </div>
               );
