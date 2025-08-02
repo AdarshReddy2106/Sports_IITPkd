@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Phone, Mail } from 'lucide-react';
+import { Phone, Mail, Loader2, CheckCircle, XCircle } from 'lucide-react';
 import './Bookings.css';
 import { useUser } from '@clerk/clerk-react';
 import { useEffect } from 'react';
@@ -60,10 +60,10 @@ const Bookings = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-      if (!form.name || !form.email) {
-        setStatus('Login to Book Facilities');
-        return;
-  }
+  //     if (!form.name || !form.email) {
+  //       setStatus('Login to Book Facilities');
+  //       return;
+  // }
     console.log(form.name)
     setStatus('Booking...');
     try {
@@ -134,8 +134,31 @@ const Bookings = () => {
               <h3>Your Bookings</h3>
               <ul>
                 {userBookings.map((b, i) => (
-                  <li key={i}>
-                    {b.facility} on {b.date} — <strong>{b.status}</strong>
+                  <li key={i} className="booking-item">
+                    <div className="booking-info">
+                      <span className="facility-name">{b.facility}</span>
+                      <span className="booking-date">on {b.date}</span>
+                    </div>
+                    <div className="booking-status">
+                      {b.status === 'pending' ? (
+                        <div className="status-pending">
+                          <Loader2 className="loading-icon" size={16} />
+                          <span>Pending</span>
+                        </div>
+                      ) : b.status === 'accepted' ? (
+                        <div className="status-accepted">
+                          <CheckCircle className="tick-icon" size={16} />
+                          <span>Accepted</span>
+                        </div>
+                      ) : b.status === 'rejected' ? (
+                        <div className="status-rejected">
+                          <XCircle className="close-icon" size={16} />
+                          <span>Rejected</span>
+                        </div>
+                      ) : (
+                        <strong>{b.status}</strong>
+                      )}
+                    </div>
                   </li>
                 ))}
               </ul>

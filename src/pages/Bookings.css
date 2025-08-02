@@ -462,3 +462,131 @@
     box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.2), 0 1px 3px rgba(0, 0, 0, 0.1) !important;
   }
 }
+
+/* User Bookings Styles */
+.user-bookings {
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border-primary);
+}
+
+.user-bookings h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.user-bookings ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.booking-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  background: var(--bg-secondary);
+  border-radius: 0.75rem;
+  border: 1px solid var(--border-primary);
+  transition: all 0.3s ease;
+}
+
+.booking-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.booking-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.facility-name {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.booking-date {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.booking-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-pending {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #f59e0b;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.loading-icon {
+  animation: spin 1s linear infinite;
+  color: #f59e0b;
+}
+
+.status-accepted {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #10b981;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.tick-icon {
+  color: #10b981;
+}
+
+.status-rejected {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #ef4444;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.close-icon {
+  color: #ef4444;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive styles for booking items */
+@media (max-width: 768px) {
+  .booking-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .booking-status {
+    align-self: flex-end;
+  }
+  
+  .status-pending,
+  .status-accepted,
+  .status-rejected {
+    font-size: 0.85rem;
+  }
+}

@@ -339,13 +339,31 @@ p {
   position: relative;
   min-height: 100vh;
   background-image: url('/image.png');
-  background-size: 100% 100%;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
   animation: zoom-in 20s ease-out infinite alternate;
+}
+
+/* Mobile responsive styles */
+@media screen and (max-width: 768px) {
+  .hero-with-bg {
+    min-height: 50vh; /* Half screen height on mobile */
+    background-size: cover; /* Maintain aspect ratio without stretching */
+    background-position: center;
+  }
+}
+
+/* For very small screens */
+@media screen and (max-width: 480px) {
+  .hero-with-bg {
+    min-height: 50vh;
+    background-size: cover;
+    background-position: center;
+  }
 }
 
 .hero-overlay {
@@ -355,6 +373,33 @@ p {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* For very small screens */
+@media screen and (max-width: 480px) {
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    /* background: rgba(0, 0, 0, 0.6); */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 30%;
+  }
+}
+
+
+/* Mobile responsive styles */
+@media screen and (max-width: 768px) {
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    /* background: rgba(0, 0, 0, 0.6); */
+    display: flex;
+    /* align-items: center; */
+    /* justify-content: center; */
+    padding-top: 10%;
+  }
 }
 
 .hero-content {
@@ -375,7 +420,8 @@ p {
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 2px;
-  text-shadow: 0 5px 35px rgba(0,0,0,0.5);
+  color:white;
+  /* text-shadow: 0 5px 35px rgba(0,0,0,0.5); */
   margin-bottom: 2.5rem;
   display: flex;
   flex-wrap: wrap;
@@ -448,24 +494,99 @@ p {
   }
 }
 
-@media (max-width: 768px) {
+/* Tablet styles (768px - 1024px) */
+@media (max-width: 1024px) {
   .hero-main-title {
-    font-size: 3.5rem;
+    font-size: 4.5rem;
+    letter-spacing: 1.5px;
+    gap: 0.4rem 1.2rem;
+  }
+  
+  .hero-content {
+    padding: 1.5rem;
+    max-width: 900px;
   }
   
   .hero-buttons {
-    flex-direction: column;
-    align-items: center;
+    gap: 0.8rem;
+  }
+  
+  .hero-buttons .btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
   }
 }
 
+/* Mobile styles (768px and below) */
+@media (max-width: 768px) {
+  .hero-main-title {
+    font-size: 3rem;
+    letter-spacing: 1px;
+    gap: 0.3rem 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .hero-content {
+    padding: 1.2rem;
+    max-width: 100%;
+  }
+  
+  .hero-buttons {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+  }
+  
+  .hero-buttons .btn {
+    padding: 0.7rem 1.4rem;
+    font-size: 0.85rem;
+    min-width: 140px;
+  }
+}
+
+/* Small mobile styles (480px and below) */
 @media (max-width: 480px) {
   .hero-main-title {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
+    letter-spacing: 0.8px;
+    gap: 0.2rem 0.8rem;
+    margin-bottom: 1.5rem;
   }
   
   .hero-content {
     padding: 1rem;
+  }
+  
+  .hero-buttons {
+    gap: 0.6rem;
+  }
+  
+  .hero-buttons .btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.8rem;
+    min-width: 120px;
+  }
+}
+
+/* Extra small mobile styles (360px and below) */
+@media (max-width: 360px) {
+  .hero-main-title {
+    font-size: 1.8rem;
+    letter-spacing: 0.6px;
+    gap: 0.15rem 0.6rem;
+    margin-bottom: 1.2rem;
+  }
+  
+  .hero-content {
+    padding: 0.8rem;
+  }
+  
+  .hero-buttons .btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+    min-width: 100px;
   }
 }
 
@@ -697,18 +818,47 @@ p {
   .nav-links {
     display: none;
   }
-
+  
   .container {
     padding: 0 1rem;
   }
-
+  
   .card {
     padding: 1.5rem;
   }
-
+  
   .btn {
     padding: 0.75rem 1.5rem;
     font-size: 0.9rem;
+  }
+}
+
+/* Responsive button styles for all screen sizes */
+@media (max-width: 1024px) {
+  .btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .btn {
+    padding: 0.7rem 1.4rem;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
   }
 }
 
