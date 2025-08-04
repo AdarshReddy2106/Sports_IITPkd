@@ -3,12 +3,10 @@ import { useUser } from '@clerk/clerk-react';
 import { supabase } from '../../Js/supabase';
 import { createBooking, getBookingsByFacilityAndDate, getBookingsByUserId, sendBookingNotification } from '../../Js/UserBookings';
 import './Bookings.css';
-import { ClockIcon, CalendarIcon, UserIcon, InfoIcon, CheckCircleIcon, XCircleIcon, HourglassIcon } from 'lucide-react';
-
+import { CheckCircle, XCircle, Clock } from 'lucide-react';
 
 // --- Helper Components ---
-
-const Clock = () => {
+const TimeClock = () => {
     const [time, setTime] = useState(new Date());
     useEffect(() => {
         const timerId = setInterval(() => setTime(new Date()), 1000);
@@ -76,11 +74,10 @@ const BookingModal = ({ slot, facility, date, onClose, onBookingSuccess }) => {
             const result = await createBooking(bookingData);
             if (result) {
                 setStatus('Booking submitted! Sending notifications...');
-                // Send email notification (fire and forget)
                 await sendBookingNotification(result);
                 setStatus('Booking successful! Waiting for confirmation.');
                 setTimeout(() => {
-                    onBookingSuccess(); // This will trigger a re-fetch in the parent
+                    onBookingSuccess();
                     onClose();
                 }, 2000);
             } else {
@@ -159,10 +156,10 @@ const AvailabilityGrid = ({ facility, date, bookings, onSlotClick }) => {
 const UserBookingsList = ({ bookings, isLoading }) => {
     const getStatusIcon = (status) => {
         switch (status) {
-            case 'accepted': return <CheckCircleIcon className="status-icon accepted" />;
-            case 'rejected': return <XCircleIcon className="status-icon rejected" />;
+            case 'accepted': return <CheckCircle className="status-icon accepted" />;
+            case 'rejected': return <XCircle className="status-icon rejected" />;
             case 'pending':
-            default: return <HourglassIcon className="status-icon pending" />;
+            default: return <Clock className="status-icon pending" />;
         }
     };
     
@@ -189,11 +186,10 @@ const UserBookingsList = ({ bookings, isLoading }) => {
 };
 
 // --- Main Component ---
-
 const Bookings = () => {
     const { user } = useUser();
     const [currentDate, setCurrentDate] = useState(new Date());
-    const [selectedSport, setSelectedSport] = useState('badminton');
+    const [selectedSport, setSelectedSport] = useState('baby_pool');
     const [allBookings, setAllBookings] = useState([]);
     const [userBookings, setUserBookings] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -202,19 +198,19 @@ const Bookings = () => {
     const sports = [
         { id: 'badminton', name: 'Badminton' },
         { id: 'basketball', name: 'Basketball' },
-        { id: 'cricket', name: 'Cricket' },
+         { id: 'cricket', name: 'Cricket' },
         { id: 'football', name: 'Football' },
         { id: 'table_tennis', name: 'Table Tennis' },
         { id: 'volleyball', name: 'Volleyball' },
     ];
     
     const facilities = {
-        badminton: [{ id: 'badminton_1', name: 'Badminton Court 1' }],
-        basketball: [{ id: 'basketball_1', name: 'Basketball Court 1' }],
-        cricket: [{ id: 'cricket_nets_1', name: 'Cricket Nets 1' }],
-        football: [{ id: 'football_ground_1', name: 'Football Ground' }],
+        badminton: [{ id: 'badminton', name: 'Badminton Court' }],
+        basketball: [{ id: 'basketball', name: 'Basketball Court' }],
+        cricket: [{ id: 'cricket', name: 'Cricket Ground' }],
+        football: [{ id: 'football_ground', name: 'Football Ground' }],
         table_tennis: [{ id: 'tt_table_1', name: 'Table Tennis 1' }, { id: 'tt_table_2', name: 'Table Tennis 2' }],
-        volleyball: [{ id: 'volleyball_court_1', name: 'Volleyball Court 1' }],
+        volleyball: [{ id: 'volleyball_court_1', name: 'Volleyball Court' }],
     };
 
     const selectedFacilities = facilities[selectedSport] || [];
@@ -240,20 +236,16 @@ const Bookings = () => {
 
     useEffect(() => {
         fetchData();
-
-        // --- Supabase Real-time Subscription ---
         const channel = supabase
             .channel('bookings-realtime')
             .on('postgres_changes', { event: '*', schema: 'public', table: 'bookings' }, 
                 (payload) => {
                     console.log('Change received!', payload);
-                    // Re-fetch all data when any booking changes
                     fetchData();
                 }
             )
             .subscribe();
 
-        // Cleanup function to remove the subscription
         return () => {
             supabase.removeChannel(channel);
         };
@@ -271,12 +263,12 @@ const Bookings = () => {
                     facility={selectedSlot.facility}
                     date={currentDate}
                     onClose={() => setSelectedSlot(null)}
-                    onBookingSuccess={fetchData} // Re-fetch data on success
+                    onBookingSuccess={fetchData}
                 />
             )}
             <div className="page-header">
-                <h1>IITB Sports Facility Booking Status</h1>
-                <div className="header-controls"><DateDisplay date={currentDate} setDate={setCurrentDate} /><Clock /></div>
+                <h1>IIT Palakkad Sports Facility Booking Status</h1>
+                <div className="header-controls"><DateDisplay date={currentDate} setDate={setCurrentDate} /><TimeClock /></div>
             </div>
 
             <SportTabs sports={sports} selectedSport={selectedSport} setSelectedSport={setSelectedSport} />
@@ -309,7 +301,7 @@ const Bookings = () => {
             )}
 
             <div className="map-section">
-                <h2>IITB Sports Facilities Map</h2>
+                <h2>IIT Palakkad Sports Facilities Map</h2>
                 <div className="map-placeholder"><p>Facility map would be displayed here.</p></div>
             </div>
         </div>

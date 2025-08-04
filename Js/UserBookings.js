@@ -7,36 +7,29 @@ import { supabase } from "./supabase";
  */
 export const createBooking = async (bookingData) => {
   try {
-    // Basic validation
     if (!bookingData.user_id || !bookingData.facility || !bookingData.date) {
       throw new Error('Missing required booking information.');
     }
 
     const { data, error } = await supabase
       .from("bookings")
-      .insert([bookingData]) // Inserts the booking data as a new row
+      .insert([bookingData])
       .select()
-      .single(); // Assumes you want to get the single created record back
+      .single();
 
     if (error) {
       console.error("Supabase error creating booking:", error);
-      // More specific error for unique constraint violation
       if (error.code === '23505') {
           throw new Error('This time slot is already booked or pending.');
       }
       throw error;
     }
-
-    console.log("Booking created successfully in Supabase:", data);
     return data;
-
   } catch (err) {
     console.error("Error in createBooking function:", err);
-    // Re-throw the error so the calling component can handle it
     throw err;
   }
 };
-
 
 /**
  * Fetches all bookings for a given set of facilities on a specific date.
@@ -48,22 +41,18 @@ export const getBookingsByFacilityAndDate = async (facilityNames, date) => {
     if (!facilityNames || facilityNames.length === 0 || !date) {
         return { data: [], error: null };
     }
-
     try {
         const { data, error } = await supabase
             .from('bookings')
             .select('*')
-            .in('facility', facilityNames) // Use 'in' to match any facility in the array
-            .eq('date', date); // Match the specific date
-            // We fetch all statuses to correctly display them (pending, accepted, etc.)
+            .in('facility', facilityNames)
+            .eq('date', date);
 
         if (error) {
             console.error("Supabase error fetching bookings:", error);
             throw error;
         }
-
         return { data, error: null };
-
     } catch (err) {
         console.error("Error in getBookingsByFacilityAndDate:", err);
         return { data: null, error: err };
@@ -79,7 +68,6 @@ export const getBookingsByUserId = async (userId) => {
     if (!userId) {
         return { data: [], error: { message: "User ID is required." } };
     }
-
     try {
         const { data, error } = await supabase
             .from('bookings')
@@ -91,9 +79,7 @@ export const getBookingsByUserId = async (userId) => {
             console.error("Supabase error fetching user bookings:", error);
             throw error;
         }
-        
         return { data, error: null };
-
     } catch (err) {
         console.error("Error in getBookingsByUserId:", err);
         return { data: null, error: err };
@@ -106,9 +92,7 @@ export const getBookingsByUserId = async (userId) => {
  * @returns {Promise<boolean>} True if the email was sent successfully, false otherwise.
  */
 export const sendBookingNotification = async (bookingDetails) => {
-    // The URL for your backend email service
-    const API_ENDPOINT = 'http://localhost:3001/api/send-booking-email';
-
+    const API_ENDPOINT = 'http://localhost:2030/api/booking/send-email';
     try {
         const response = await fetch(API_ENDPOINT, {
             method: 'POST',
@@ -126,10 +110,8 @@ export const sendBookingNotification = async (bookingDetails) => {
         const result = await response.json();
         console.log('Notification API response:', result.message);
         return true;
-
     } catch (error) {
         console.error('Error sending booking notification:', error);
-        // This error could be a network failure or an error from the API
         return false;
     }
 };
