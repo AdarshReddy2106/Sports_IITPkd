@@ -1,353 +1,319 @@
-import React, { useState } from 'react';
-import { Phone, Mail, Loader2, CheckCircle, XCircle } from 'lucide-react';
-import './Bookings.css';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useUser } from '@clerk/clerk-react';
-import { useEffect } from 'react';
-import { createBooking } from '../../Js/UserBookings';
 import { supabase } from '../../Js/supabase';
+import { createBooking, getBookingsByFacilityAndDate, getBookingsByUserId, sendBookingNotification } from '../../Js/UserBookings';
+import './Bookings.css';
+import { ClockIcon, CalendarIcon, UserIcon, InfoIcon, CheckCircleIcon, XCircleIcon, HourglassIcon } from 'lucide-react';
+
+
+// --- Helper Components ---
+
+const Clock = () => {
+    const [time, setTime] = useState(new Date());
+    useEffect(() => {
+        const timerId = setInterval(() => setTime(new Date()), 1000);
+        return () => clearInterval(timerId);
+    }, []);
+    return <div className="time-display">{time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}</div>;
+};
+
+const DateDisplay = ({ date, setDate }) => (
+    <div className="date-selector">
+        <button onClick={() => setDate(d => new Date(d.setDate(d.getDate() - 1)))}>‹</button>
+        <span className="date-text">{date.toLocaleDateString([], { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
+        <button onClick={() => setDate(d => new Date(d.setDate(d.getDate() + 1)))}>›</button>
+    </div>
+);
+
+const SportTabs = ({ sports, selectedSport, setSelectedSport }) => (
+    <div className="sport-tabs">
+        {sports.map(sport => (
+            <button key={sport.id} className={`sport-tab-btn ${selectedSport === sport.id ? 'active' : ''}`} onClick={() => setSelectedSport(sport.id)}>
+                {sport.name}
+            </button>
+        ))}
+    </div>
+);
+
+const Legend = () => (
+    <div className="legend">
+        <div className="legend-item"><span className="dot available"></span>Available</div>
+        <div className="legend-item"><span className="dot pending"></span>Pending</div>
+        <div className="legend-item"><span className="dot booked"></span>Booked</div>
+    </div>
+);
+
+const BookingModal = ({ slot, facility, date, onClose, onBookingSuccess }) => {
+    const { user } = useUser();
+    const [notes, setNotes] = useState('');
+    const [participants, setParticipants] = useState(1);
+    const [status, setStatus] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!user) {
+            setStatus('Please sign in to book a facility.');
+            return;
+        }
+        setIsLoading(true);
+        setStatus('Processing your booking...');
+
+        const bookingData = {
+            user_id: user.id,
+            name: user.fullName,
+            email: user.primaryEmailAddress.emailAddress,
+            facility: facility.name,
+            date: date.toISOString().split('T')[0],
+            start_time: `${String(slot.hour).padStart(2, '0')}:00`,
+            end_time: `${String(slot.hour + 1).padStart(2, '0')}:00`,
+            participants: parseInt(participants, 10),
+            notes: notes,
+            status: 'pending'
+        };
+
+        try {
+            const result = await createBooking(bookingData);
+            if (result) {
+                setStatus('Booking submitted! Sending notifications...');
+                // Send email notification (fire and forget)
+                await sendBookingNotification(result);
+                setStatus('Booking successful! Waiting for confirmation.');
+                setTimeout(() => {
+                    onBookingSuccess(); // This will trigger a re-fetch in the parent
+                    onClose();
+                }, 2000);
+            } else {
+                throw new Error('Failed to create booking.');
+            }
+        } catch (error) {
+            console.error("Booking failed:", error);
+            setStatus(`Error: ${error.message}`);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    return (
+        <div className="modal-backdrop" onClick={onClose}>
+            <div className="modal-content" onClick={e => e.stopPropagation()}>
+                <div className="modal-header"><h2>Book Slot</h2><button onClick={onClose} className="close-btn">&times;</button></div>
+                <div className="modal-body">
+                    <p><strong>Facility:</strong> {facility.name}</p>
+                    <p><strong>Date:</strong> {date.toLocaleDateString()}</p>
+                    <p><strong>Time:</strong> {slot.label}</p>
+                    <form onSubmit={handleSubmit}>
+                        <div className="form-group"><label htmlFor="participants">Number of Participants</label><input type="number" id="participants" value={participants} onChange={(e) => setParticipants(e.target.value)} min="1" required /></div>
+                        <div className="form-group"><label htmlFor="notes">Additional Notes</label><textarea id="notes" value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Any special requests?" /></div>
+                        <button type="submit" className="submit-btn" disabled={isLoading}>{isLoading ? 'Booking...' : 'Confirm Booking'}</button>
+                        {status && <p className="status-message">{status}</p>}
+                    </form>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const AvailabilityGrid = ({ facility, date, bookings, onSlotClick }) => {
+    const timeSlots = useMemo(() => {
+        const slots = [];
+        for (let hour = 7; hour < 22; hour++) {
+            const period = hour < 12 ? 'AM' : 'PM';
+            const displayHour = hour <= 12 ? (hour === 0 ? 12 : hour) : hour - 12;
+            
+            const bookingForSlot = bookings.find(b => {
+                const bookingStartHour = parseInt(b.start_time.split(':')[0]);
+                return hour === bookingStartHour && (b.status === 'accepted' || b.status === 'pending');
+            });
+            
+            let status = 'available';
+            if (bookingForSlot) {
+                status = bookingForSlot.status === 'accepted' ? 'booked' : 'pending';
+            }
+
+            slots.push({ hour, label: `${displayHour}:00 ${period}`, status });
+        }
+        return slots;
+    }, [bookings, date]);
+
+    return (
+        <div className="availability-grid-container">
+            <div className="grid-header">
+                <div className="header-cell court-name">Court / Time</div>
+                {timeSlots.map(slot => <div key={slot.hour} className="header-cell time-label">{slot.label}</div>)}
+            </div>
+            <div className="grid-body">
+                <div className="body-row">
+                    <div className="body-cell court-name">{facility.name}</div>
+                    {timeSlots.map(slot => (
+                        <div key={slot.hour} className={`body-cell status-${slot.status}`} onClick={() => slot.status === 'available' && onSlotClick(slot)}>
+                            {slot.status === 'available' ? 'A' : ''}
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const UserBookingsList = ({ bookings, isLoading }) => {
+    const getStatusIcon = (status) => {
+        switch (status) {
+            case 'accepted': return <CheckCircleIcon className="status-icon accepted" />;
+            case 'rejected': return <XCircleIcon className="status-icon rejected" />;
+            case 'pending':
+            default: return <HourglassIcon className="status-icon pending" />;
+        }
+    };
+    
+    if (isLoading) return <div className="user-bookings-list"><h3>My Bookings</h3><p>Loading...</p></div>;
+    if (!bookings || bookings.length === 0) return <div className="user-bookings-list"><h3>My Bookings</h3><p>You have no active bookings.</p></div>;
+
+    return (
+        <div className="user-bookings-list">
+            <h3>My Bookings</h3>
+            <ul>
+                {bookings.map(booking => (
+                    <li key={booking.id} className={`booking-list-item status-bg-${booking.status}`}>
+                        <div className="item-icon">{getStatusIcon(booking.status)}</div>
+                        <div className="item-details">
+                            <strong>{booking.facility}</strong>
+                            <span>{new Date(booking.date).toLocaleDateString()} at {booking.start_time}</span>
+                        </div>
+                        <div className={`item-status status-text-${booking.status}`}>{booking.status}</div>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+};
+
+// --- Main Component ---
 
 const Bookings = () => {
-  const { user } = useUser();
-  const [form, setForm] = useState({
-    name: '',
-    email: '',
-    selectedFacility: '',
-    bookingDate: '',
-    startTime: '',
-    endTime: '',
-    participants: '',
-    notes: ''
-  });
-  
-  useEffect(() => {
-    if (user?.fullName && user?.primaryEmailAddress?.emailAddress) {
-      setForm(prev => ({
-        ...prev,
-        name: user.fullName,
-        email: user.primaryEmailAddress.emailAddress,
-      }));
-    }
-  }, [user?.fullName, user?.primaryEmailAddress]);
+    const { user } = useUser();
+    const [currentDate, setCurrentDate] = useState(new Date());
+    const [selectedSport, setSelectedSport] = useState('badminton');
+    const [allBookings, setAllBookings] = useState([]);
+    const [userBookings, setUserBookings] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [selectedSlot, setSelectedSlot] = useState(null);
 
-  const [userBookings, setUserBookings] = useState([]);
-
-  const fetchUserBookings = async () => {
-    if (user) {
-      const { data, error } = await supabase
-        .from("bookings")
-        .select("*")
-        .eq("user_id", user.id)
-        .order("created_at", { ascending: false });
-      if (!error) setUserBookings(data);
-    }
-  };
-
-  useEffect(() => {
-    fetchUserBookings();
-  }, [user]);
-
-  const [status, setStatus] = useState('');
-
-  const API_URL = process.env.NODE_ENV === 'production'
-    ? 'https://contactapi-iit.vercel.app/api/BookingMail'
-    : 'http://localhost:2030/api/BookingMail';
-
-  const handleChange = e => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async e => {
-    e.preventDefault();
+    const sports = [
+        { id: 'badminton', name: 'Badminton' },
+        { id: 'basketball', name: 'Basketball' },
+        { id: 'cricket', name: 'Cricket' },
+        { id: 'football', name: 'Football' },
+        { id: 'table_tennis', name: 'Table Tennis' },
+        { id: 'volleyball', name: 'Volleyball' },
+    ];
     
-    if (!form.name || !form.email) {
-      setStatus('Login to Book Facilities');
-      return;
-    }
+    const facilities = {
+        badminton: [{ id: 'badminton_1', name: 'Badminton Court 1' }],
+        basketball: [{ id: 'basketball_1', name: 'Basketball Court 1' }],
+        cricket: [{ id: 'cricket_nets_1', name: 'Cricket Nets 1' }],
+        football: [{ id: 'football_ground_1', name: 'Football Ground' }],
+        table_tennis: [{ id: 'tt_table_1', name: 'Table Tennis 1' }, { id: 'tt_table_2', name: 'Table Tennis 2' }],
+        volleyball: [{ id: 'volleyball_court_1', name: 'Volleyball Court 1' }],
+    };
 
-    if (!user?.id) {
-      setStatus('User not properly authenticated. Please refresh and try again.');
-      return;
-    }
+    const selectedFacilities = facilities[selectedSport] || [];
 
-    console.log('Form data before submission:', form);
-    console.log('User ID:', user?.id);
-    setStatus('Booking...');
+    const fetchData = useCallback(async () => {
+        setIsLoading(true);
+        const dateString = currentDate.toISOString().split('T')[0];
+        const facilityNames = selectedFacilities.map(f => f.name);
 
-    try {
-      // Get facility name for database
-      const facilityName = facilities.find(f => f.id === form.selectedFacility)?.name || form.selectedFacility;
-      
-      // Create booking data object BEFORE any async operations
-      const bookingData = {
-        user_id: user.id,
-        name: form.name,
-        email: form.email,
-        facility: facilityName,
-        date: form.bookingDate,
-        start_time: form.startTime,
-        end_time: form.endTime,
-        participants: parseInt(form.participants) || 0,
-        notes: form.notes || ''
-      };
+        const [allBookingsRes, userBookingsRes] = await Promise.all([
+            getBookingsByFacilityAndDate(facilityNames, dateString),
+            user ? getBookingsByUserId(user.id) : Promise.resolve({ data: [] })
+        ]);
 
-      console.log('Booking data to be saved:', bookingData);
-
-      // First, try to save to database
-      console.log('Attempting to save booking to database...');
-      const createdBooking = await createBooking(bookingData);
-      console.log('Database save result:', createdBooking);
-      
-      if (!createdBooking) {
-        setStatus('Failed to save booking to database. Please try again.');
-        return;
-      }
-
-      // Then send email notification
-      console.log('Attempting to send email notification...');
-      try {
-        const res = await fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(form),
-        });
+        if (allBookingsRes.error) console.error("Error fetching all bookings:", allBookingsRes.error);
+        else setAllBookings(allBookingsRes.data || []);
         
-        if (!res.ok) {
-          const errorData = await res.json();
-          console.warn('Email failed but booking saved:', errorData);
-          setStatus('Booking saved successfully, but email notification failed.');
-        } else {
-          const data = await res.json();
-          console.log('Email sent successfully:', data);
-          setStatus('Booking Sent! Wait for Confirmation.');
-        }
-      } catch (emailError) {
-        console.warn('Email service error, but booking was saved:', emailError);
-        setStatus('Booking saved successfully, but email notification failed.');
-      }
+        if (userBookingsRes.error) console.error("Error fetching user bookings:", userBookingsRes.error);
+        else setUserBookings(userBookingsRes.data || []);
+        
+        setIsLoading(false);
+    }, [currentDate, selectedSport, user]);
 
-      // Reset only the booking-specific fields, keep name and email
-      setForm(prev => ({
-        ...prev,
-        selectedFacility: '',
-        bookingDate: '',
-        startTime: '',
-        endTime: '',
-        participants: '',
-        notes: ''
-      }));
-      
-      // Refresh the bookings list
-      await fetchUserBookings();
+    useEffect(() => {
+        fetchData();
 
-    } catch (error) {
-      console.error('Booking submission error:', error);
-      setStatus(`Error: ${error.message || 'An unexpected error occurred'}`);
-    }
-  };
+        // --- Supabase Real-time Subscription ---
+        const channel = supabase
+            .channel('bookings-realtime')
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'bookings' }, 
+                (payload) => {
+                    console.log('Change received!', payload);
+                    // Re-fetch all data when any booking changes
+                    fetchData();
+                }
+            )
+            .subscribe();
 
-  const facilities = [
-    { id: 'Badminton', name: 'Badminton Court' },
-    { id: 'Basketball', name: 'Basketball Court' },
-    { id: 'Cricket', name: 'Cricket Field' },
-    { id: 'TableTennis', name: 'Table Tennis Courts' },
-    { id: 'Track', name: 'Athletic Track' },
-  ];
+        // Cleanup function to remove the subscription
+        return () => {
+            supabase.removeChannel(channel);
+        };
+    }, [fetchData]);
+    
+    const handleSlotClick = (facility, slot) => {
+        setSelectedSlot({ facility, ...slot });
+    };
 
-  return (
-    <div className="bookings-container">
-      <div className="bookings-wrapper">
-        <div className="bookings-header">
-          <h2 className="bookings-title">
-            Book Our <span className="accent">Facilities</span>
-          </h2>
-          <p className="bookings-description">
-            Reserve our world-class facilities for your training sessions, events, or competitions.
-          </p>
-        </div>
-
-        <div className="bookings-content">
-          <div className="booking-form-card">
-            <div className="user-bookings">
-              <h3>Your Bookings</h3>
-              <ul>
-                {userBookings.map((b, i) => (
-                  <li key={i} className="booking-item">
-                    <div className="booking-info">
-                      <span className="facility-name">{b.facility}</span>
-                      <span className="booking-date">on {b.date}</span>
-                    </div>
-                    <div className="booking-status">
-                      {b.status === 'pending' ? (
-                        <div className="status-pending">
-                          <Loader2 className="loading-icon" size={16} />
-                          <span>Pending</span>
-                        </div>
-                      ) : b.status === 'accepted' ? (
-                        <div className="status-accepted">
-                          <CheckCircle className="tick-icon" size={16} />
-                          <span>Accepted</span>
-                        </div>
-                      ) : b.status === 'rejected' ? (
-                        <div className="status-rejected">
-                          <XCircle className="close-icon" size={16} />
-                          <span>Rejected</span>
-                        </div>
-                      ) : (
-                        <strong>{b.status}</strong>
-                      )}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <h3 className="form-title">Facility Booking</h3>
-            <form onSubmit={handleSubmit}>
-              <div className="form-group">
-                <label className="form-label">Select Facility</label>
-                <select
-                  name="selectedFacility"
-                  value={form.selectedFacility}
-                  onChange={handleChange}
-                  className="form-select"
-                  required
-                >
-                  <option value="">Select a facility</option>
-                  {facilities.map(facility => (
-                    <option key={facility.id} value={facility.id}>{facility.name}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Date</label>
-                <div className="input-wrapper">
-                  <input
-                    type="date"
-                    name="bookingDate"
-                    value={form.bookingDate}
-                    onChange={handleChange}
-                    className="form-input"
-                    required
-                  />
-                  {!form.bookingDate && (
-                    <span className="custom-placeholder">Select date</span>
-                  )}
-                </div>
-              </div>
-
-              <div className="form-row">
-                <div className="form-group">
-                  <label className="form-label">Start Time</label>
-                  <div className="input-wrapper">
-                    <input
-                      type="time"
-                      name="startTime"
-                      value={form.startTime}
-                      onChange={handleChange}
-                      className="form-input"
-                      required
-                    />
-                    {!form.startTime && (
-                      <span className="custom-placeholder">Select start time</span>
-                    )}
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label className="form-label">End Time</label>
-                  <div className="input-wrapper">
-                    <input
-                      type="time"
-                      name="endTime"
-                      value={form.endTime}
-                      onChange={handleChange}
-                      className="form-input"
-                      required
-                    />
-                    {!form.endTime && (
-                      <span className="custom-placeholder">Select end time</span>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Number of Participants</label>
-                <input
-                  type="number"
-                  name="participants"
-                  value={form.participants}
-                  onChange={handleChange}
-                  className="form-input"
-                  placeholder="Enter number of participants"
-                  required
+    return (
+        <div className="booking-status-page">
+            {selectedSlot && (
+                <BookingModal
+                    slot={selectedSlot}
+                    facility={selectedSlot.facility}
+                    date={currentDate}
+                    onClose={() => setSelectedSlot(null)}
+                    onBookingSuccess={fetchData} // Re-fetch data on success
                 />
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Additional Notes</label>
-                <input
-                  type="text"
-                  name="notes"
-                  value={form.notes}
-                  onChange={handleChange}
-                  className="form-input"
-                  placeholder="Any additional requirements or notes"
-                />
-              </div>
-              <button type="submit" className="submit-btn">
-                Book Now
-              </button>
-              {status && <div className="status-message">{status}</div>}
-            </form>
-          </div>
-
-          <div className="sidebar">
-            <div className="info-card">
-              <h3 className="info-title">Booking Information</h3>
-              <div className="hours-table">
-                <div className="hours-row">
-                  <span className="hours-day">Monday - Friday</span>
-                  <span className="hours-time">6:00 AM - 10:00 PM</span>
-                </div>
-                <div className="hours-row">
-                  <span className="hours-day">Saturday</span>
-                  <span className="hours-time">7:00 AM - 9:00 PM</span>
-                </div>
-                <div className="hours-row">
-                  <span className="hours-day">Sunday</span>
-                  <span className="hours-time">8:00 AM - 8:00 PM</span>
-                </div>
-              </div>
-
-              <h4 className="info-title" style={{ marginTop: '2rem', marginBottom: '1rem' }}>Booking Policies</h4>
-              <ul className="policies-list">
-                <li className="policy-item">Bookings must be made at least 24 hours in advance</li>
-                <li className="policy-item">Cancellations must be made 12 hours before the scheduled time</li>
-                <li className="policy-item">Payment is required at the time of booking</li>
-                <li className="policy-item">Members receive priority booking privileges</li>
-              </ul>
+            )}
+            <div className="page-header">
+                <h1>IITB Sports Facility Booking Status</h1>
+                <div className="header-controls"><DateDisplay date={currentDate} setDate={setCurrentDate} /><Clock /></div>
             </div>
 
-            <div className="help-card">
-              <h3 className="help-title">Need Help?</h3>
-              <p className="help-description">Our team is ready to assist you with your booking needs. Contact us for personalized assistance.</p>
-              <div className="contact-info">
-                <div className="contact-item">
-                  <Phone className="contact-icon" />
-                  <span>+1 (555) 123-4567</span>
-                </div>
-                <div className="contact-item">
-                  <Mail className="contact-icon" />
-                  <span>bookings@elitesports.com</span>
-                </div>
-              </div>
+            <SportTabs sports={sports} selectedSport={selectedSport} setSelectedSport={setSelectedSport} />
+            
+            <div className="main-content">
+                <Legend />
+                {isLoading ? (
+                    <div className="loading-indicator">Loading availability...</div>
+                ) : (
+                    <div className="grids-container">
+                        {selectedFacilities.length > 0 ? (
+                            selectedFacilities.map(facility => (
+                                <AvailabilityGrid
+                                    key={facility.id}
+                                    facility={facility}
+                                    date={currentDate}
+                                    bookings={allBookings.filter(b => b.facility === facility.name)}
+                                    onSlotClick={(slot) => handleSlotClick(facility, slot)}
+                                />
+                            ))
+                        ) : <p>No facilities found for this sport.</p>}
+                    </div>
+                )}
             </div>
-          </div>
+            
+            {user && (
+                <div className="user-bookings-section">
+                    <UserBookingsList bookings={userBookings} isLoading={isLoading} />
+                </div>
+            )}
+
+            <div className="map-section">
+                <h2>IITB Sports Facilities Map</h2>
+                <div className="map-placeholder"><p>Facility map would be displayed here.</p></div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default Bookings;
