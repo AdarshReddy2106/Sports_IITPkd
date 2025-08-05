@@ -227,7 +227,7 @@ p {
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border-primary);
   padding: 1rem 0;
-  position: sticky;
+  position: relative;
   top: 0;
   z-index: 100;
   transition: all 0.3s ease;

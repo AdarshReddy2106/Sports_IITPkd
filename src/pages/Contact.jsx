@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-import { MapPin, Phone, Mail, Facebook, Instagram, Twitter, Youtube } from 'lucide-react';
+import { MapPin, Phone, Mail, Facebook, Instagram, Youtube } from 'lucide-react';
 import './Contact.css';
 
 function Contact() {
@@ -113,7 +113,7 @@ function Contact() {
                   </div>
                   <div className="info-content">
                     <h4>Address</h4>
-                    <p>123 Sports Avenue, Athleticville<br />New York, NY 10001</p>
+                    <p>Indian Institute of Technology Palakkad, Kerala 678623</p>
                   </div>
                 </div>
                 <div className="info-item">
@@ -122,7 +122,7 @@ function Contact() {
                   </div>
                   <div className="info-content">
                     <h4>Phone</h4>
-                    <p>+1 (555) 123-4567<br />+1 (555) 987-6543</p>
+                    <p>+91 8977276836</p>
                   </div>
                 </div>
                 <div className="info-item">
@@ -131,7 +131,7 @@ function Contact() {
                   </div>
                   <div className="info-content">
                     <h4>Email</h4>
-                    <p>info@elitesports.com<br />support@elitesports.com</p>
+                    <p>sec_sports@smail.iitpkd.ac.in</p>
                   </div>
                 </div>
               </div>
@@ -141,16 +141,13 @@ function Contact() {
               <h3 className="social-title">Follow Us</h3>
               <div className="social-icons">
                 <button className="social-btn facebook">
-                  <Facebook size={20} />
+                  <a href="https://www.instagram.com/sports_iit_pkd/" target="_blank" rel="noopener noreferrer"><Facebook size={20} /></a>
                 </button>
                 <button className="social-btn instagram">
-                  <Instagram size={20} />
-                </button>
-                <button className="social-btn twitter">
-                  <Twitter size={20} />
+                  <a href="https://www.instagram.com/sports_iit_pkd/" target="_blank" rel="noopener noreferrer"><Instagram size={20} /></a>
                 </button>
                 <button className="social-btn youtube">
-                  <Youtube size={20} />
+                  <a href="https://www.youtube.com/@SportsIITPKD" target="_blank" rel="noopener noreferrer"><Youtube size={20} /></a>
                 </button>
               </div>
             </div>
