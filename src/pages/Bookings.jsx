@@ -293,12 +293,40 @@ const Bookings = () => {
                     </div>
                 )}
             </div>
-            
-            {user && (
-                <div className="user-bookings-section">
-                    <UserBookingsList bookings={userBookings} isLoading={isLoading} />
+
+            {/* New layout container */}
+            <div className="bottom-layout-container">
+                {/* Left Column */}
+                <div className="left-column">
+                    {user && (
+                        <div className="user-bookings-section">
+                            <UserBookingsList bookings={userBookings} isLoading={isLoading} />
+                        </div>
+                    )}
                 </div>
-            )}
+
+                {/* Right Column */}
+                <div className="right-column">
+                    <div className="info-card">
+                        <h3 className="info-title">Booking Information</h3>
+                        <h4 className="info-title" style={{ marginTop: '2rem', marginBottom: '1rem' }}>Booking Policies</h4>
+                        <ul className="policies-list">
+                            <li className="policy-item">Bookings must be made at least 24 hours in advance</li>
+                            <li className="policy-item">Cancellations must be made 12 hours before the scheduled time</li>
+                        </ul>
+                    </div>
+                    
+                    <div className="help-card">
+                        <h3 className="help-title">Need Help?</h3>
+                        <p className="help-description">Our team is ready to assist you with your booking needs. Contact us for personalized assistance.</p>
+                        <div className="contact-info">
+                            <div className="contact-item">
+                                <span>+91 8977276836</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };

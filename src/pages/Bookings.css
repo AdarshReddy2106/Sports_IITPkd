@@ -1,4 +1,9 @@
-
+:root {
+    --status-available: #10b981;
+     --status-booked: #ef4444; /* Red */
+    --status-pending: #f59e0b; /* Orange */
+    --border-color: #4b5563;
+}
 
 .booking-status-page {
     background-color: var(--bg-primary);
@@ -176,6 +181,8 @@
     color: var(--text-primary);
     font-size: 0.9rem;
     position: sticky;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
     left: 0;
     z-index: 10;
 }
@@ -240,6 +247,56 @@
     background-color: var(--bg-tertiary);
     border-left: 5px solid;
 }
+.info-card {
+  background: var(--bg-primary);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-primary);
+  transition: all 0.3s ease;
+}
+.info-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+}
+
+.info-title {
+  font-size: 1.25rem;
+}
+
+.policies-list {
+  list-style: none;
+  padding: 0;
+}
+
+.policy-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.help-card {
+  background: linear-gradient(135deg, var(--accent-blue), #1e40af);
+  color: white;
+  border-radius: 1.5rem;
+  padding: 2rem;
+  box-shadow: var(--shadow-xl);
+  transition: all 0.3s ease;
+}
+
+.help-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+}
+.help-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
 
 .booking-list-item.status-bg-accepted { border-color: var(--status-available); }
 .booking-list-item.status-bg-rejected { border-color: var(--status-booked); }
@@ -411,4 +468,48 @@
     text-align: center;
     margin-top: 1rem;
     font-weight: 500;
+}
+
+.bottom-layout-container {
+    display: flex;
+    flex-wrap: wrap; /* Allows columns to stack on smaller screens */
+    gap: 18px; /* Space between columns */
+    margin-top: 2rem;
+    align-items: flex-start; /* Aligns columns to the top */
+}
+
+.left-column {
+    flex: 2; /* Allows this column to take up more space */
+    min-width: 300px; /* Ensures the column doesn't get too squished */
+}
+
+.right-column {
+    flex: 1; /* Allows this column to take up less space */
+    display: flex;
+    flex-direction: column;
+    gap: 2rem; /* Creates space between the info and help cards */
+    min-width: 300px;
+}
+
+/* --- Adjustments to existing classes --- */
+.user-bookings-section {
+    margin: 0; /* Remove previous margins to rely on the flex container */
+    width: 100%; /* Ensure it fills the new column */
+}
+
+/* --- Responsive adjustments for smaller screens --- */
+@media (max-width: 992px) {
+    .bottom-layout-container {
+        flex-direction: column;
+    }
+}
+
+
+@media (max-width: 992px) {
+    .bottom-layout-container {
+        flex-direction: column;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 }
