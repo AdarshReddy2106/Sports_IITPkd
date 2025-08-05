@@ -1,17 +1,4 @@
-/* --- Main Page Layout & Theme --- */
-:root {
-    --bg-primary: #111827; /* Dark blue-gray */
-    --bg-secondary: #1f2937; /* Lighter blue-gray */
-    --bg-tertiary: #374151;
-    --text-primary: #f9fafb; /* Off-white */
-    --text-secondary: #9ca3af; /* Light gray */
-    --accent-primary: #38bdf8; /* Bright blue */
-    --accent-secondary: #4f46e5; /* Indigo */
-    --status-available: #10b981; /* Green */
-    --status-booked: #ef4444; /* Red */
-    --status-pending: #f59e0b; /* Orange */
-    --border-color: #4b5563;
-}
+
 
 .booking-status-page {
     background-color: var(--bg-primary);
