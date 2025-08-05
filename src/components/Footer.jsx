@@ -28,9 +28,6 @@ const Footer = () => {
             <ul>
               <li><button onClick={() => navTo("home")}>Home</button></li>
               <li><button onClick={() => navTo("gallery")}>Gallery</button></li>
-              <li><button onClick={() => navTo("calendar")}>Calendar</button></li>
-              <li><button onClick={() => navTo("about")}>About</button></li>
-              <li><button onClick={() => navTo("contact")}>Contact</button></li>
               <li><button onClick={() => navTo("bookings")}>Bookings</button></li>
               <li><button onClick={() => navTo("events")}>Events</button></li>
             </ul>

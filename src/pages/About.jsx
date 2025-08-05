@@ -34,17 +34,7 @@ const About = () => {
             </div>
           </div>
           
-          <div className="about-visual">
-            <div className="visual-shapes">
-              <div className="shape shape-1"></div>
-              <div className="shape shape-2"></div>
-              <div className="shape shape-3"></div>
-            </div>
-            <div className="visual-bg-shapes">
-              <div className="bg-circle-1"></div>
-              <div className="bg-circle-2"></div>
-            </div>
-          </div>
+
         </div>
       </div>
       <div className="logo-slider">

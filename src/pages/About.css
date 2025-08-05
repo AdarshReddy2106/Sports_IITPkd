@@ -1,7 +1,7 @@
 .about-container {
-  padding: 1rem 0;
+  padding: 1rem 0 1rem 0;
   background: var(--bg-primary);
-  min-height: 100vh;
+  /* min-height: 100vh; */
   transition: all 0.3s ease;
 }
 
@@ -13,8 +13,6 @@
 
 .about-content {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
   align-items: center;
 }
 

@@ -37,7 +37,7 @@
 }
 
 .calendar-container {
-  padding: 4rem 0;
+  padding: 2rem 0;
   background: var(--bg-secondary);
   min-height: 100vh;
   transition: all 0.3s ease;
