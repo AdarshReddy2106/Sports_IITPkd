@@ -189,7 +189,7 @@ const UserBookingsList = ({ bookings, isLoading }) => {
 const Bookings = () => {
     const { user } = useUser();
     const [currentDate, setCurrentDate] = useState(new Date());
-    const [selectedSport, setSelectedSport] = useState('baby_pool');
+    const [selectedSport, setSelectedSport] = useState('badminton');
     const [allBookings, setAllBookings] = useState([]);
     const [userBookings, setUserBookings] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -299,11 +299,6 @@ const Bookings = () => {
                     <UserBookingsList bookings={userBookings} isLoading={isLoading} />
                 </div>
             )}
-
-            <div className="map-section">
-                <h2>IIT Palakkad Sports Facilities Map</h2>
-                <div className="map-placeholder"><p>Facility map would be displayed here.</p></div>
-            </div>
         </div>
     );
 };

@@ -523,7 +523,7 @@ const AdminDashboard = () => {
                       <td className="booking-actions">
                         {booking.status === 'pending' ? (
                           <>
-                            <button onClick={() => updateStatus(booking.id, 'approved')}>Approve</button>
+                            <button onClick={() => updateStatus(booking.id, 'accepted')}>Approve</button>
                             <button onClick={() => updateStatus(booking.id, 'rejected')}>Reject</button>
                           </>
                         ) : ('Handled')}
