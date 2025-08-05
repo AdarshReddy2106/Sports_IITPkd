@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Calendar as CalendarIcon } from 'lucide-react';
 import { supabase } from '../../Js/supabase';
 import './Calendar.css';
 
@@ -47,7 +47,7 @@ const Calendar = () => {
 
   const today = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`;
 
-  const days = [];
+  const days = []; 
 
   for (let i = 0; i < firstDay; i++) {
     days.push(
@@ -74,12 +74,21 @@ const Calendar = () => {
     );
   }
 
-  const formatEventDate = (dateString) => {
-    const eventDate = new Date(dateString);
-    const month = eventDate.toLocaleDateString('en-US', { month: 'short' }).toUpperCase();
-    const day = eventDate.getDate();
-    return { month, day };
+  const formatEventDate = (dateString) => { 
+    const eventDate = new Date(dateString); 
+    const month = eventDate.toLocaleDateString('en-US', { month: 'short' }).toUpperCase(); 
+    const day = eventDate.getDate(); 
+    return { month, day }; 
   };
+
+  // MODIFICATION: Filter events to show only those in the current month
+  const eventsForCurrentMonth = events.filter(event => {
+    const eventDate = new Date(event.date);
+    // Adjust for timezone differences by comparing year and month
+    return eventDate.getFullYear() === currentMonth.getFullYear() &&
+           eventDate.getMonth() === currentMonth.getMonth();
+  });
+
 
   return (
     <div className="calendar-container">
@@ -91,15 +100,15 @@ const Calendar = () => {
 
         <div className="calendar-widget">
           <div className="calendar-nav">
-            <button 
-              onClick={() => setCurrentMonth(new Date(currentYear, currentMonth.getMonth() - 1))} 
+            <button
+              onClick={() => setCurrentMonth(new Date(currentYear, currentMonth.getMonth() - 1))}
               className="calendar-nav-btn"
             >
               <ChevronLeft />
             </button>
             <h3 className="calendar-month-title">{currentMonthName} {currentYear}</h3>
-            <button 
-              onClick={() => setCurrentMonth(new Date(currentYear, currentMonth.getMonth() + 1))} 
+            <button
+              onClick={() => setCurrentMonth(new Date(currentYear, currentMonth.getMonth() + 1))}
               className="calendar-nav-btn"
             >
               <ChevronRight />
@@ -116,30 +125,40 @@ const Calendar = () => {
         </div>
 
         <div className="events-section">
-          <h3 className="events-title">Upcoming Events</h3>
+          {/* MODIFICATION: Dynamic title for the events list */}
+          <h3 className="events-title">Events in <span className='accent'>{currentMonthName}</span></h3>
           <div className="events-list">
-            {events.map((event, index) => {
-              const { month, day } = formatEventDate(event.date);
+            {/* MODIFICATION: Check if there are events and render the list or a message */}
+            {eventsForCurrentMonth.length > 0 ? (
+              eventsForCurrentMonth.map((event, index) => {
+                const { month, day } = formatEventDate(event.date); //
 
-              return (
-                <div key={index} className="event-card">
-                  <div className={`event-date ${event.color?.includes('teal') ? 'teal' : event.color?.includes('red') ? 'red' : 'blue'}`}>
-                    <div className="event-month">{month}</div>
-                    <div className="event-day">{day}</div>
+                return (
+                  <div key={index} className="event-card">
+                    <div className={`event-date ${event.color?.includes('teal') ? 'teal' : event.color?.includes('red') ? 'red' : 'blue'}`}>
+                      <div className="event-month">{month}</div>
+                      <div className="event-day">{day}</div>
+                    </div>
+                    <div className="event-content">
+                      <h4 className="event-title">{event.title}</h4>
+                      <p className="event-time">
+                        {event.startTime && event.endTime
+                          ? `${event.startTime} - ${event.endTime}`
+                          : event.time || 'Time TBD'
+                        }
+                      </p>
+                      <p className="event-description">{event.description}</p>
+                    </div>
                   </div>
-                  <div className="event-content">
-                    <h4 className="event-title">{event.title}</h4>
-                    <p className="event-time">
-                      {event.startTime && event.endTime 
-                        ? `${event.startTime} - ${event.endTime}`
-                        : event.time || 'Time TBD'
-                      }
-                    </p>
-                    <p className="event-description">{event.description}</p>
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })
+            ) : (
+              <div className="no-events">
+                <CalendarIcon size={48} strokeWidth={1.5}/>
+                <h4>No Events Scheduled</h4>
+                <p>There are no events scheduled for {currentMonthName}.</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
