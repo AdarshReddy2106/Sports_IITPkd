@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useUser } from '@clerk/clerk-react';
-import { supabase } from '../../Js/supabase';
-import { createBooking, getBookingsByFacilityAndDate, getBookingsByUserId, sendBookingNotification } from '../../Js/UserBookings';
+import { supabase } from '../../../Js/supabase';
+import { createBooking, getBookingsByFacilityAndDate, getBookingsByUserId, sendBookingNotification } from '../../../Js/UserBookings';
 import './Bookings.css';
 import { CheckCircle, XCircle, Clock } from 'lucide-react';
 

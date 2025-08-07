@@ -1,0 +1,174 @@
+/* Import a font for a closer match to the image */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+/* Main container for the entire section */
+.sports-programs-container {
+  font-family: 'Poppins', sans-serif;
+  background-color: #1a2332;
+  padding: 60px 20px;
+  text-align: center;
+  min-height: 100vh;
+}
+
+/* Header section with title and subtitle */
+.sports-programs-header {
+  max-width: 750px;
+  margin: 0 auto 50px auto;
+}
+
+.sports-programs-header h2 {
+  font-size: clamp(2rem, 5vw, 2.5rem);
+  color: #ffffff;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.sports-programs-header p {
+  font-size: 1.1rem;
+  color: #94a3b8;
+  line-height: 1.7;
+}
+
+/* Grid container for the cards */
+.sports-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+
+/* Individual sport card */
+.sport-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  height: 280px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sport-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Image container */
+.sport-image-container {
+  height: 180px;
+  background: linear-gradient(135deg, var(--sport-color, #0d6efd), rgba(0, 0, 0, 0.3));
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px 16px 0 0;
+  overflow: hidden;
+}
+
+.sport-image-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.2), transparent);
+}
+
+/* Icon in the image */
+.sport-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  backdrop-filter: blur(10px);
+  z-index: 2;
+}
+
+.sport-icon-wrapper svg {
+  width: 40px;
+  height: 40px;
+  color: #ffffff;
+  stroke-width: 1.5;
+}
+
+/* Card content */
+.sport-content {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.sport-card h3 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.sport-description {
+  color: #94a3b8;
+  line-height: 1.5;
+  font-size: 0.9rem;
+  display: none; /* Hide description to match the image design */
+}
+
+/* Remove the learn more link styling since we'll make the whole card clickable */
+.learn-more-link {
+  display: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .sports-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+  
+  .sport-card {
+    height: 240px;
+  }
+  
+  .sport-image-container {
+    height: 150px;
+  }
+  
+  .sport-icon-wrapper {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .sport-icon-wrapper svg {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .sport-card h3 {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .sports-programs-container {
+    padding: 40px 15px;
+  }
+  
+  .sports-grid {
+    grid-template-columns: 1fr;
+  }
+}

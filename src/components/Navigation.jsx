@@ -56,7 +56,7 @@ const Navigation = ({ currentPage, setCurrentPage, isHomePage }) => {
     <nav className={`navbar ${isHomePage ? 'transparent' : ''}`}>
       <div className="container navbar-content">
         <div className="nav-links">
-          {['Home', 'About', 'Gallery', 'Calendar', 'Bookings', 'Contact'].map((item) => (
+          {['Home', 'About', 'Clubs', 'Gallery', 'Calendar', 'Bookings', 'Contact'].map((item) => (
             <button
               key={item}
               onClick={() => handleNavigation(item.toLowerCase())}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon } from 'lucide-react';
-import { supabase } from '../../Js/supabase';
+import { supabase } from '../../../Js/supabase';
 import './Calendar.css';
 
 const Calendar = () => {

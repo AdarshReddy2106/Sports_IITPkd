@@ -3,16 +3,18 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import Navigation from './components/Navigation';
 import MobileNav from './components/MobileNav';
 import Home from './pages/Home';
-import About from './pages/About';
-import Gallery from './pages/Gallery';
-import Calendar from './pages/Calendar';
-import Bookings from './pages/Bookings';
-import Contact from './pages/Contact';
+import About from './pages/About/About';
+import Gallery from './pages/Gallery/Gallery';
+import Calendar from './pages/Calender/Calendar';
+import Bookings from './pages/Bookings/Bookings';
+import Contact from './pages/Contact/Contact';
 import Footer from './components/Footer';
 import PrivacyPolicy from './components/privacypolicy';
 import BikePreloader from './components/bikePreloader';
 import AdminDashboard from './pages/AdminDashboard';
 import Events from './pages/Events';
+import Clubs from './pages/Clubs/Clubs';
+import SportPage from './components/SportsPage';
 
 // Theme Context
 const ThemeContext = createContext();
@@ -75,6 +77,8 @@ const AppContent = () => {
     const path = location.pathname;
     if (path === '/') {
       setCurrentPage('home');
+    } else if (path.startsWith('/clubs/')) {
+      setCurrentPage('clubs');
     } else {
       setCurrentPage(path.substring(1));
     }
@@ -119,6 +123,8 @@ const AppContent = () => {
           <Routes>
             <Route path="/" element={<Home setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
             <Route path="/about" element={<About setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
+            <Route path="/clubs" element={<Clubs setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
+            <Route path="/clubs/:sportName" element={<SportPage setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
             <Route path="/gallery" element={<Gallery setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
             <Route path="/calendar" element={<Calendar setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
             <Route path="/events" element={<Events setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />

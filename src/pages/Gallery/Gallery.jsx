@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { supabase } from '../../Js/supabase';
+import { supabase } from '../../../Js/supabase';
 import './Gallery.css';
 
 // Enhanced static fallback data with better variety

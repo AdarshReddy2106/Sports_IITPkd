@@ -1,6 +1,6 @@
 import React from 'react';
 import './About.css';
-import '../../src/components/scroll.css'
+import '../../components/scroll.css';
 
 const About = () => {
   return (
