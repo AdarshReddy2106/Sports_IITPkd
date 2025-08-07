@@ -30,7 +30,7 @@ const sportsData = {
         features: ['Synthetic flooring', 'Standard nets', 'Natural lighting', 'Equipment storage']
       }
     ],
-    Rules: [
+    achievements: [
       {
         title: 'Inter-College Badminton Championship',
         year: '2024',
@@ -90,7 +90,7 @@ const sportsData = {
         features: ['Sand flooring', 'Professional nets', 'Floodlights', 'Spectator seating']
       }
     ],
-    Rules: [
+    achievements: [
       {
         title: 'State Volleyball Championship',
         year: '2024',
@@ -130,7 +130,7 @@ const sportsData = {
         features: ['Wooden flooring', 'Professional hoops', 'LED lighting', 'Sound system']
       }
     ],
-    Rules: [
+    achievements: [
       {
         title: 'Regional Basketball Tournament',
         year: '2024',
@@ -170,7 +170,7 @@ const sportsData = {
         features: ['Turf wicket', 'Practice nets', 'Pavilion', 'Scoreboard']
       }
     ],
-    Rules: [
+    achievements: [
       {
         title: 'Inter-University Cricket Championship',
         year: '2024',
@@ -210,7 +210,7 @@ const sportsData = {
         features: ['Natural grass', 'Professional goals', 'Floodlights', 'Dugouts']
       }
     ],
-    Rules: [
+    achievements: [
       {
         title: 'State Football League',
         year: '2024',
@@ -250,7 +250,7 @@ const sportsData = {
         features: ['Professional tables', 'LED lighting', 'Air conditioning', 'Equipment storage']
       }
     ],
-    Rules: [
+    achievements: [
       {
         title: 'Inter-College Table Tennis Championship',
         year: '2024',
@@ -287,7 +287,7 @@ const SportPage = () => {
   const tabs = [
     { id: 'about', label: 'About', icon: User },
     { id: 'facilities', label: 'Facilities', icon: Building },
-    { id: 'Rules', label: 'Rules', icon: Trophy },
+    { id: 'achievements', label: 'Achievements', icon: Trophy },
     { id: 'contact', label: 'Contact', icon: Phone },
     { id: 'gallery', label: 'Gallery', icon: Camera }
   ];
@@ -296,8 +296,8 @@ const SportPage = () => {
     switch (activeTab) {
       case 'about':
         return (
-          <div className="content-card">
-            <div className="section-header">
+          <div className="sport-content-card">
+            <div className="sport-section-header">
               <User />
               <h3>About {sport.title}</h3>
             </div>
@@ -305,13 +305,13 @@ const SportPage = () => {
               {sport.about.description}
             </p>
             
-            <div className="stats-grid">
+            <div className="sport-stats-grid">
               {sport.about.stats.map((stat, index) => (
-                <div key={index} className="stat-card">
-                  <div className="stat-number" style={{ color: stat.color }}>
+                <div key={index} className="sport-stat-card">
+                  <div className="sport-stat-number" style={{ color: stat.color }}>
                     {stat.number}
                   </div>
-                  <div className="stat-label">{stat.label}</div>
+                  <div className="sport-stat-label">{stat.label}</div>
                 </div>
               ))}
             </div>
@@ -320,23 +320,23 @@ const SportPage = () => {
       
       case 'facilities':
         return (
-          <div className="facilities-grid">
+          <div className="sport-facilities-grid">
             {sport.facilities.map((facility, index) => (
-              <div key={index} className="facility-card">
-                <div className="section-header">
+              <div key={index} className="sport-facility-card">
+                <div className="sport-section-header">
                   <Building />
                   <h3>{facility.name}</h3>
                 </div>
                 <p style={{ color: '#64748b', lineHeight: '1.6', marginBottom: '1rem' }}>
                   {facility.description}
                 </p>
-                <div className="facility-location">
+                <div className="sport-facility-location">
                   <span>📍</span>
                   {facility.location}
                 </div>
-                <div className="features-list">
+                <div className="sport-features-list">
                   {facility.features.map((feature, idx) => (
-                    <span key={idx} className="feature-tag">
+                    <span key={idx} className="sport-feature-tag">
                       {feature}
                     </span>
                   ))}
@@ -346,21 +346,21 @@ const SportPage = () => {
           </div>
         );
       
-      case 'Rules':
+      case 'achievements':
         return (
-          <div className="Rules-grid">
-            {sport.Rules.map((Rules, index) => (
-              <div key={index} className="Rules-card">
-                <div className="Rules-header">
-                  <div className="Rules-title-section">
+          <div className="sport-achievements-grid">
+            {sport.achievements.map((achievement, index) => (
+              <div key={index} className="sport-achievement-card">
+                <div className="sport-achievement-header">
+                  <div className="sport-achievement-title-section">
                     <Trophy />
-                    <h3 className="Rules-title">{Rules.title}</h3>
+                    <h3 className="sport-achievement-title">{achievement.title}</h3>
                   </div>
-                  <span className="Rules-year">{Rules.year}</span>
+                  <span className="sport-achievement-year">{achievement.year}</span>
                 </div>
-                <p className="Rules-description">{Rules.description}</p>
-                <span className={`level-badge ${Rules.level.toLowerCase()}`}>
-                  {Rules.level}
+                <p className="sport-achievement-description">{achievement.description}</p>
+                <span className={`sport-level-badge ${achievement.level.toLowerCase()}`}>
+                  {achievement.level}
                 </span>
               </div>
             ))}
@@ -369,31 +369,31 @@ const SportPage = () => {
       
       case 'contact':
         return (
-          <div className="contact-grid">
+          <div className="sport-contact-grid">
             {sport.contact.map((contact, index) => (
-              <div key={index} className="contact-card">
-                <div className="contact-header">
+              <div key={index} className="sport-contact-card">
+                <div className="sport-contact-header">
                   <User />
-                  <div className="contact-info">
-                    <h3 className="contact-name">{contact.name}</h3>
-                    <p className="contact-role">{contact.role}</p>
+                  <div className="sport-contact-info">
+                    <h3 className="sport-contact-name">{contact.name}</h3>
+                    <p className="sport-contact-role">{contact.role}</p>
                   </div>
                 </div>
-                <div className="contact-details">
-                  <div className="contact-item">
-                    <span>📧</span>
+                <div className="sport-contact-details">
+                  <div className="sport-contact-item">
+                    <span>✉️</span>
                     <a href={`mailto:${contact.email}`}>
                       {contact.email}
                     </a>
                   </div>
-                  <div className="contact-item">
+                  <div className="sport-contact-item">
                     <span>📞</span>
                     <a href={`tel:${contact.phone}`}>
                       {contact.phone}
                     </a>
                   </div>
                   {contact.location && (
-                    <div className="contact-item">
+                    <div className="sport-contact-item">
                       <span>📍</span>
                       <span style={{ color: '#64748b' }}>{contact.location}</span>
                     </div>
@@ -406,16 +406,16 @@ const SportPage = () => {
       
       case 'gallery':
         return (
-          <div className="gallery-grid">
+          <div className="sport-gallery-grid">
             {sport.gallery.map((item, index) => (
-              <div key={index} className="gallery-card">
-                <div className="gallery-image-placeholder">
+              <div key={index} className="sport-gallery-card">
+                <div className="sport-gallery-image-placeholder">
                   <Camera />
                 </div>
-                <div className="gallery-content">
-                  <h3 className="gallery-title">{item.title}</h3>
-                  <p className="gallery-description">{item.description}</p>
-                  <span className="gallery-date">{item.date}</span>
+                <div className="sport-gallery-content">
+                  <h3 className="sport-gallery-title">{item.title}</h3>
+                  <p className="sport-gallery-description">{item.description}</p>
+                  <span className="sport-gallery-date">{item.date}</span>
                 </div>
               </div>
             ))}
@@ -438,10 +438,10 @@ const SportPage = () => {
       </div>
 
       {/* Back button */}
-      <div className="back-button-container">
+      <div className="sport-back-button-container">
         <button
           onClick={() => navigate('/clubs')}
-          className="back-button"
+          className="sport-back-button"
         >
           <ArrowLeft size={20} />
           Back to Sports
@@ -449,16 +449,16 @@ const SportPage = () => {
       </div>
 
       {/* Navigation tabs */}
-      <div className="tabs-container">
-        <div className="tabs-wrapper">
-          <nav className="tabs-nav">
+      <div className="sport-tabs-container">
+        <div className="sport-tabs-wrapper">
+          <nav className="sport-tabs-nav">
             {tabs.map((tab) => {
               const Icon = tab.icon;
               return (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
+                  className={`sport-tab-button ${activeTab === tab.id ? 'active' : ''}`}
                 >
                   <Icon />
                   {tab.label}
@@ -470,7 +470,7 @@ const SportPage = () => {
       </div>
 
       {/* Content */}
-      <div className="content-container">
+      <div className="sport-content-container">
         {renderContent()}
       </div>
     </div>

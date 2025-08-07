@@ -301,47 +301,6 @@ const Home = ({ isLoaded }) => { // Removed setCurrentPage from props
     </div>
   );
 
-  const FacilitiesGrid = () => (
-    <div className="section">
-      <div className="container">
-        <h2 className="section-title">
-          Our <span className="text-gradient">Facilities</span>
-        </h2>
-        <div className="grid grid-3">
-          {facilities.map((facility) => {
-            const imgs = makeImages(facility.name);
-            return (
-              <div key={facility.id} className="card facility-card">
-                {imgs.length ? (
-                 <img
-                    src={imgs[0]} 
-                    alt={facility.name}
-                    className="facility-image"
-                  />
-                ) : (
-                  <div className="facility-image-placeholder"
-                    style={{
-                      background: `linear-gradient(135deg, ${facility.color}, ${facility.color}dd)`,
-                    }}
-                  >
-                    <span>{facility.icon}</span>
-                  </div>
-                )}
-                <h3>{facility.name}</h3>
-                <p>{facility.description}</p>
-              </div>
-            );
-          })}
-        </div>
-        <div className="text-center" style={{ marginTop: '3rem' }}>
-          {/* FIXED: Use navigate for routing */}
-          <button onClick={() => navigate('/gallery')} className="btn btn-secondary">
-            View More Photos
-          </button>
-        </div>
-      </div>
-    </div>
-  );
   
 const UpcomingEvents = () => (
   <section className="upcoming-events-section">
@@ -429,7 +388,6 @@ const UpcomingEvents = () => (
       <Details />
       <UpcomingEvents />
       <WhyChooseUs />
-      <FacilitiesGrid />
     </>
   );
 };
