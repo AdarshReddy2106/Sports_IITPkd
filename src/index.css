@@ -3,7 +3,9 @@
   padding: 0;
   box-sizing: border-box;
 }
-
+body {
+  overflow-x: hidden;
+}
 :root {
   /* Light theme colors */
   --bg-primary: #ffffff;
@@ -226,7 +228,7 @@ p {
   background: var(--bg-primary);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border-primary);
-  padding: 1rem 0;
+  padding: 1rem 0 0 0;
   position: relative;
   top: 0;
   z-index: 100;
