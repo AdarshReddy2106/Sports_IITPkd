@@ -30,7 +30,7 @@ const sportsData = {
         features: ['Synthetic flooring', 'Standard nets', 'Natural lighting', 'Equipment storage']
       }
     ],
-    achievements: [
+    Rules: [
       {
         title: 'Inter-College Badminton Championship',
         year: '2024',
@@ -90,7 +90,7 @@ const sportsData = {
         features: ['Sand flooring', 'Professional nets', 'Floodlights', 'Spectator seating']
       }
     ],
-    achievements: [
+    Rules: [
       {
         title: 'State Volleyball Championship',
         year: '2024',
@@ -130,7 +130,7 @@ const sportsData = {
         features: ['Wooden flooring', 'Professional hoops', 'LED lighting', 'Sound system']
       }
     ],
-    achievements: [
+    Rules: [
       {
         title: 'Regional Basketball Tournament',
         year: '2024',
@@ -170,7 +170,7 @@ const sportsData = {
         features: ['Turf wicket', 'Practice nets', 'Pavilion', 'Scoreboard']
       }
     ],
-    achievements: [
+    Rules: [
       {
         title: 'Inter-University Cricket Championship',
         year: '2024',
@@ -210,7 +210,7 @@ const sportsData = {
         features: ['Natural grass', 'Professional goals', 'Floodlights', 'Dugouts']
       }
     ],
-    achievements: [
+    Rules: [
       {
         title: 'State Football League',
         year: '2024',
@@ -250,7 +250,7 @@ const sportsData = {
         features: ['Professional tables', 'LED lighting', 'Air conditioning', 'Equipment storage']
       }
     ],
-    achievements: [
+    Rules: [
       {
         title: 'Inter-College Table Tennis Championship',
         year: '2024',
@@ -287,7 +287,7 @@ const SportPage = () => {
   const tabs = [
     { id: 'about', label: 'About', icon: User },
     { id: 'facilities', label: 'Facilities', icon: Building },
-    { id: 'achievements', label: 'Achievements', icon: Trophy },
+    { id: 'Rules', label: 'Rules', icon: Trophy },
     { id: 'contact', label: 'Contact', icon: Phone },
     { id: 'gallery', label: 'Gallery', icon: Camera }
   ];
@@ -346,21 +346,21 @@ const SportPage = () => {
           </div>
         );
       
-      case 'achievements':
+      case 'Rules':
         return (
-          <div className="achievements-grid">
-            {sport.achievements.map((achievement, index) => (
-              <div key={index} className="achievement-card">
-                <div className="achievement-header">
-                  <div className="achievement-title-section">
+          <div className="Rules-grid">
+            {sport.Rules.map((Rules, index) => (
+              <div key={index} className="Rules-card">
+                <div className="Rules-header">
+                  <div className="Rules-title-section">
                     <Trophy />
-                    <h3 className="achievement-title">{achievement.title}</h3>
+                    <h3 className="Rules-title">{Rules.title}</h3>
                   </div>
-                  <span className="achievement-year">{achievement.year}</span>
+                  <span className="Rules-year">{Rules.year}</span>
                 </div>
-                <p className="achievement-description">{achievement.description}</p>
-                <span className={`level-badge ${achievement.level.toLowerCase()}`}>
-                  {achievement.level}
+                <p className="Rules-description">{Rules.description}</p>
+                <span className={`level-badge ${Rules.level.toLowerCase()}`}>
+                  {Rules.level}
                 </span>
               </div>
             ))}
