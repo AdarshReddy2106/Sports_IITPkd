@@ -6,9 +6,17 @@
     box-shadow: var(--shadow-lg);
     border-radius: 12px;
     display: flex;
-    flex-direction: column; /* Stacks header, tabs, and content vertically */
+    flex-direction: column;
     gap: 2rem;
     border: 1px solid var(--border-primary);
+}
+
+[data-theme="dark"] .admin-panel-container {
+    background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 12px 35px rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,.06);
 }
 
 .admin-header h2 {
@@ -33,9 +41,18 @@
     transition: all 0.2s ease-in-out;
 }
 
+[data-theme="dark"] .admin-tabs button {
+    color: rgba(255, 255, 255, 0.7);
+}
+
 .admin-tabs button.active {
     background: var(--accent-primary);
     color: white;
+}
+
+[data-theme="dark"] .admin-tabs button.active {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: #0f172a;
 }
 
 .admin-tabs button:hover:not(.active) {
@@ -64,7 +81,6 @@
 
 
 .admin-panel-box {
-    /* flex property is now handled by column wrappers */
     background-color: var(--bg-primary);
     padding: 1.5rem;
     border-radius: 10px;
@@ -73,9 +89,22 @@
     transition: all 0.3s ease;
 }
 
+[data-theme="dark"] .admin-panel-box {
+    background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 12px 35px rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,.06);
+}
+
 .admin-panel-box:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-xl);
+}
+
+[data-theme="dark"] .admin-panel-box:hover {
+    transform: translateY(-8px) rotateX(2deg) rotateY(2deg);
+    box-shadow: 0 25px 50px rgba(0,0,0,.3), 0 0 0 1px rgba(255,255,255,.1);
 }
 
 .admin-panel-box h3 {

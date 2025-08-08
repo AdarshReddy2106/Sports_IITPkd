@@ -4,7 +4,11 @@
   color: var(--text-secondary);
   padding: 2rem 0 0 0;
   border-top: 1px solid var(--border-primary);
-  /* margin-top: 1rem; */
+}
+
+[data-theme="dark"] .footer-main {
+  background: #0f172a; /* Solid color instead of gradient for better contrast */
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* === Footer Content Layout === */
@@ -15,6 +19,10 @@
   gap: 3rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid var(--border-primary);
+}
+
+[data-theme="dark"] .footer-content {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* === Brand/Logo Section === */
@@ -32,10 +40,18 @@
   letter-spacing: 0.5px;
 }
 
+[data-theme="dark"] .footer-brand h3 {
+  color: #22d3ee; /* Using cyan from dark theme */
+}
+
 .footer-brand p {
   color: var(--text-tertiary);
   font-size: 1rem;
   line-height: 1.6;
+}
+
+[data-theme="dark"] .footer-brand p {
+  color: var(--text-secondary);
 }
 
 /* === Links Sections Layout === */
@@ -55,6 +71,10 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.8px;
+}
+
+[data-theme="dark"] .footer-links h4 {
+  color: var(--text-primary);
 }
 
 .footer-links ul {
@@ -86,6 +106,11 @@
   display: inline-block;
 }
 
+[data-theme="dark"] .footer-links a, 
+[data-theme="dark"] .footer-links button {
+  color: var(--text-secondary);
+}
+
 /* Subtle background glow effect */
 .footer-links a::before, 
 .footer-links button::before {
@@ -113,6 +138,14 @@
   background: rgba(var(--accent-primary-rgb, 59, 130, 246), 0.08);
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(var(--accent-primary-rgb, 59, 130, 246), 0.15);
+}
+
+[data-theme="dark"] .footer-links a:hover, 
+[data-theme="dark"] .footer-links button:hover {
+  color: #22d3ee;
+  background: rgba(34, 211, 238, 0.1);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(34, 211, 238, 0.2);
 }
 
 /* Shimmer effect on hover */
@@ -182,6 +215,10 @@
   gap: 1rem;
 }
 
+[data-theme="dark"] .footer-bottom {
+  color: var(--text-tertiary);
+}
+
 .footer-bottom-links {
   display: flex;
   gap: 0.5rem;
@@ -200,10 +237,11 @@
 }
 
 .footer-bottom button:hover {
-  color: var(--accent-primary);
-  background-color: var(--bg-tertiary);
+  color: #22d3ee;
+  background: rgba(34, 211, 238, 0.1);
 }
 
+/* Divider styles */
 .footer-bottom-divider {
   color: var(--text-tertiary);
   margin: 0 0.5rem;

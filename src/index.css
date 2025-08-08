@@ -23,25 +23,36 @@ body {
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --accent-primary-rgb: 237, 37, 78;
+  --accent-cyan: #22d3ee;
+  --accent-violet: #a78bfa;
+  --accent-rose: #fb7185;
 }
 
 [data-theme="dark"] {
-  /* Dark theme colors */
-  --bg-primary: #0f172a;
-  --bg-secondary: #011936;
-  --bg-tertiary: #334155;
+  /* Dark theme colors - Updated to match test3.html */
+  --bg-primary: #0f172a; /* slate-900 */
+  --bg-secondary: #1e1b4b; /* indigo-950 */
+  --bg-tertiary: #1e3a8a; /* blue-900 */
+  --bg-gradient: linear-gradient(to bottom right, #0f172a, #1e1b4b, #1e3a8a);
   --text-primary: #f8fafc;
   --text-secondary: #cbd5e1;
   --text-tertiary: #94a3b8;
-  --border-primary: #334155;
-  --border-secondary: #475569;
-  --accent-primary: #ed254e;
-  --accent-secondary: #f87171;
-  --accent-blue: #60a5fa;
+  --border-primary: rgba(255, 255, 255, 0.1);
+  --border-secondary: rgba(255, 255, 255, 0.15);
+  --accent-primary: #22d3ee; /* cyan-400 */
+  --accent-secondary: #a78bfa; /* violet-400 */
+  --accent-tertiary: #fb7185; /* rose-400 */
+  --glass-bg: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
+  --glass-border: rgba(255,255,255,.15);
+  --card-glow: 0 12px 35px rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,.06);
+  --accent-gradient: linear-gradient(to right, #22d3ee, #a78bfa);
+  --accent-gradient-alt: linear-gradient(to right, #a78bfa, #fb7185);
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
   --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.4), 0 8px 10px -6px rgb(0 0 0 / 0.4);
+  --accent-primary-rgb: 34, 211, 238;
 }
 
 html {
@@ -121,7 +132,7 @@ p {
   .section { padding: 3rem 0; }
 }
 
-/* Button Components */
+/* Button Components - Updated for gradient style */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -159,10 +170,22 @@ p {
   box-shadow: var(--shadow-md);
 }
 
+[data-theme="dark"] .btn-primary {
+  background: linear-gradient(135deg, #22d3ee, #a78bfa);
+  color: #0f172a;
+  box-shadow: 0 8px 20px rgba(0,0,0,.15);
+}
+
 .btn-primary:hover {
   background: linear-gradient(135deg, #0f766e, #047857);
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
+}
+
+[data-theme="dark"] .btn-primary:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(0,0,0,.2);
 }
 
 .btn-secondary {
@@ -171,26 +194,27 @@ p {
   box-shadow: var(--shadow-md);
 }
 
+[data-theme="dark"] .btn-secondary {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  backdrop-filter: blur(10px);
+}
+
 .btn-secondary:hover {
   background: linear-gradient(135deg, #dc2626, #b91c1c);
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
 }
 
-.btn-outline {
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(10px);
-}
-
-.btn-outline:hover {
+[data-theme="dark"] .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.3);
-  border-color: rgba(255, 255, 255, 0.5);
+  border-color: rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(0,0,0,.2);
 }
 
-/* Card Components */
+/* Card Components - Updated for glass effect */
 .card {
   background: var(--bg-secondary);
   border-radius: 1rem;
@@ -200,6 +224,14 @@ p {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
+}
+
+[data-theme="dark"] .card {
+  background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,.15);
+  box-shadow: 0 12px 35px rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,.06);
 }
 
 .card::before {
@@ -217,6 +249,11 @@ p {
 .card:hover {
   transform: translateY(-8px);
   box-shadow: var(--shadow-xl);
+}
+
+[data-theme="dark"] .card:hover {
+  transform: translateY(-8px) rotateX(5deg) rotateY(5deg);
+  box-shadow: 0 25px 50px rgba(0,0,0,.3), 0 0 0 1px rgba(255,255,255,.1);
 }
 
 .card:hover::before {
@@ -885,4 +922,43 @@ p {
   
   /* Remove all hamburger and mobile-specific styling from here 
      as they're now defined in MobileNav.css */
+}
+
+/* Adding glass card effect for all components in dark mode */
+[data-theme="dark"] .home-page {
+  background: transparent !important; 
+}
+
+[data-theme="dark"] .stats-section,
+[data-theme="dark"] .features-section,
+[data-theme="dark"] .facilities-section,
+[data-theme="dark"] .events-section {
+  background: transparent;
+}
+
+[data-theme="dark"] .upcoming-events-section {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Remove any conflicting glass card effects */
+[data-theme="dark"] .card,
+[data-theme="dark"] .stat-card,
+[data-theme="dark"] .facility-card,
+[data-theme="dark"] .value-card {
+  background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,.15);
+  box-shadow: 0 12px 35px rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,.06);
+}
+
+[data-theme="dark"] body {
+  background: var(--bg-gradient);
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+
+/* Fix for home page dark mode */
+[data-theme="dark"] .home-page {
+  background: transparent; /* Remove conflicting background */
 }

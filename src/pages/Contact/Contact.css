@@ -12,7 +12,7 @@
 
 /* Dark mode container */
 [data-theme="dark"] .contact-container {
-  background: linear-gradient(145deg, #0d0d0d, #1c1c1c);
+  background: var(--bg-gradient);
   color: #e5e7eb;
 }
 
@@ -96,18 +96,18 @@
 [data-theme="dark"] .contact-form-section,
 [data-theme="dark"] .contact-info-card,
 [data-theme="dark"] .social-section {
-  background: rgba(36, 45, 59, 0.9);
-  border: 1px solid #374151;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 12px 35px rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,.06);
 }
 
 /* Dark Mode: Hover effect */
 [data-theme="dark"] .contact-form-section:hover,
 [data-theme="dark"] .contact-info-card:hover,
 [data-theme="dark"] .social-section:hover {
-  transform: translateY(-6px);
-  border-color: #4b5563;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  transform: translateY(-6px) rotateX(2deg) rotateY(2deg);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 25px 50px rgba(0,0,0,.3), 0 0 0 1px rgba(255,255,255,.1);
 }
 
 .form-title,
@@ -151,9 +151,9 @@
 
 [data-theme="dark"] .form-input,
 [data-theme="dark"] .form-textarea {
-  background: #111827;
+  background: rgba(255, 255, 255, 0.1);
   color: #f8fafc;
-  border-color: #334155;
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
 .form-input::placeholder,

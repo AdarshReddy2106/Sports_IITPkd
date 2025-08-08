@@ -7,8 +7,8 @@
 
 [data-theme="dark"] {
   --glass-background: rgba(15, 23, 42, 0.3); /* Much more transparent for visible effect */
-  --glass-border: rgba(99, 102, 241, 0.2);
-  --glass-highlight: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-highlight: rgba(255, 255, 255, 0.06);
 }
 
 /* Main navbar container - fixed positioning for all pages by default */
@@ -46,6 +46,12 @@
   transition: all 0.3s ease;
   overflow: hidden;
   flex-wrap: nowrap;
+}
+
+[data-theme="dark"] .navbar-glass {
+  background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
+  border: 1px solid rgba(255,255,255,.1);
+  box-shadow: 0 12px 35px rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,.06);
 }
 
 /* Add hover effect to enhance glass appearance */
@@ -133,6 +139,11 @@
   flex-shrink: 0; /* Prevent button from shrinking */
 }
 
+[data-theme="dark"] .nav-link {
+  color: white;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
 .nav-link:hover {
   background: rgba(255, 255, 255, 0.1);
   transform: translateY(-1px);
@@ -140,6 +151,11 @@
 
 .nav-link.active {
   background: var(--accent-primary);
+  color: white;
+}
+
+[data-theme="dark"] .nav-link.active {
+  background: rgba(255, 255, 255, 0.2);
   color: white;
 }
 
@@ -157,6 +173,12 @@
   transition: all 0.3s ease;
   cursor: pointer;
   margin-left: 0.5rem;
+}
+
+[data-theme="dark"] .theme-toggle {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: white;
 }
 
 .theme-toggle:hover {

@@ -10,6 +10,10 @@
   min-height: 100vh;
 }
 
+[data-theme="dark"] .sports-programs-container {
+  background: var(--bg-gradient);
+}
+
 /* Header section with title and subtitle */
 .sports-programs-header {
   max-width: 750px;
@@ -57,7 +61,7 @@
 }
 
 .sport-card:hover {
-  transform: translateY(-8px);
+  transform: translateY(-8px) rotateX(5deg) rotateY(5deg);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
   border-color: rgba(255, 255, 255, 0.2);
 }

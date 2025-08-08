@@ -315,3 +315,38 @@
   }
 }
 
+[data-theme="dark"] .about-container {
+  background: var(--bg-gradient);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .about-title {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .about-title .accent {
+  color: #22d3ee; /* Use cyan from dark theme */
+}
+
+[data-theme="dark"] .about-paragraph {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .stat-item {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .stat-item:hover {
+  background: rgba(34, 211, 238, 0.2);
+  box-shadow: 0 12px 25px rgba(0,0,0,.25);
+}
+
+[data-theme="dark"] .stat-number {
+  color: #22d3ee;
+}
+
+[data-theme="dark"] .stat-label {
+  color: var(--text-secondary);
+}
+
