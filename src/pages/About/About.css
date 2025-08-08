@@ -325,7 +325,10 @@
 }
 
 [data-theme="dark"] .about-title .accent {
-  color: #22d3ee; /* Use cyan from dark theme */
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 [data-theme="dark"] .about-paragraph {

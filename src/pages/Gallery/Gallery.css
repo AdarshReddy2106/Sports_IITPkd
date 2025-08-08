@@ -32,12 +32,10 @@
 }
 
 .gallery-title .accent {
-  background: linear-gradient(135deg, #0d9488, #14b8a6, #06b6d4);
-  background-clip: text;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-size: 200% 200%;
-  animation: gradientShift 4s ease-in-out infinite;
+  background-clip: text;
 }
 
 @keyframes gradientShift {
