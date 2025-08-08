@@ -10,6 +10,7 @@ import {
   useUser,
   useClerk,
 } from '@clerk/clerk-react';
+import './Navbar.css'; // Import the navbar CSS
 
 const Navigation = ({ currentPage, setCurrentPage, isHomePage }) => {
   const { isDark, toggleTheme } = useTheme();
@@ -17,6 +18,21 @@ const Navigation = ({ currentPage, setCurrentPage, isHomePage }) => {
   const { signOut } = useClerk();
   const navigate = useNavigate();
   const [isAuthorizedAdmin, setIsAuthorizedAdmin] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  // Add scroll detection
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 100) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     if (isLoaded && user) {
@@ -53,9 +69,19 @@ const Navigation = ({ currentPage, setCurrentPage, isHomePage }) => {
   };
 
   return (
-    <nav className={`navbar ${isHomePage ? 'transparent' : ''}`}>
-      <div className="container navbar-content">
-        <div className="nav-links">
+    <nav className={`navbar ${isHomePage ? 'transparent' : ''} ${scrolled ? 'scrolled' : ''}`}>
+      <div className="navbar-glass">
+        {/* Brand Logo and Text */}
+        <div className="navbar-brand" onClick={() => handleNavigation('home')} style={{cursor: 'pointer'}}>
+          <div className="brand-logo">SC</div>
+          <div className="brand-text">
+            <div className="brand-title">Sports Council</div>
+            <div className="brand-subtitle">Play. Lead. Excel.</div>
+          </div>
+        </div>
+
+        {/* Navigation Links */}
+        <div className="navbar-links">
           {['Home', 'About', 'Clubs', 'Gallery', 'Calendar', 'Bookings', 'Contact'].map((item) => (
             <button
               key={item}
@@ -83,7 +109,9 @@ const Navigation = ({ currentPage, setCurrentPage, isHomePage }) => {
             </SignInButton>
           </SignedOut>
           <SignedIn>
-            <UserButton />
+            <div style={{ marginLeft: '0.5rem' }}>
+              <UserButton />
+            </div>
           </SignedIn>
           
           <button 

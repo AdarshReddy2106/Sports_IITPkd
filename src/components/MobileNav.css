@@ -1,0 +1,354 @@
+Mobile Navbar with Glass Effect
+:root {
+  --mobile-glass-background: rgba(255, 255, 255, 0.15); /* Increased transparency */
+  --mobile-glass-border: rgba(255, 255, 255, 0.2);
+  --mobile-glass-highlight: rgba(255, 255, 255, 0.25);
+  --mobile-nav-text: #0f172a;
+  --mobile-nav-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --mobile-active-bg: linear-gradient(135deg, #ed254e, #7c3aed);
+  --mobile-menu-bg: rgba(255, 255, 255, 0.8); /* More transparent for better effect */
+}
+
+[data-theme="dark"] {
+  --mobile-glass-background: rgba(15, 23, 42, 0.6); /* More transparent for better effect */
+  --mobile-glass-border: rgba(99, 102, 241, 0.2);
+  --mobile-glass-highlight: rgba(139, 92, 246, 0.15);
+  --mobile-nav-text: #f8fafc;
+  --mobile-nav-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --mobile-active-bg: linear-gradient(135deg, #ed254e, #7c3aed);
+  --mobile-menu-bg: rgba(15, 23, 42, 0.85); /* More transparent for better effect */
+}
+
+.mobile-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  transition: all 0.3s ease;
+  display: none;
+}
+
+/* Transparent style for homepage */
+.mobile-navbar.transparent {
+  position: absolute;
+  background: transparent;
+}
+
+.mobile-navbar.scrolled {
+  position: fixed;
+  background: var(--mobile-glass-background);
+}
+
+/* Mobile navbar header with improved glass effect */
+.mobile-navbar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background: var(--mobile-glass-background);
+  backdrop-filter: blur(16px); /* Increased blur */
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--mobile-glass-border);
+  box-shadow: var(--mobile-nav-shadow);
+}
+
+/* Logo styling for mobile - enhanced */
+.mobile-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+
+.mobile-brand-logo {
+  height: 2.5rem;
+  width: 2.5rem;
+  border-radius: 0.75rem;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  display: grid;
+  place-items: center;
+  color: white;
+  font-weight: 800;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.mobile-brand-logo::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transform: rotate(45deg);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%) rotate(45deg); }
+  100% { transform: translateX(100%) rotate(45deg); }
+}
+
+.mobile-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-brand-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--mobile-nav-text);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.mobile-brand-subtitle {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--accent-primary);
+  letter-spacing: 0.02em;
+}
+
+/* Controls container */
+.mobile-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Theme toggle button */
+.mobile-theme-toggle {
+  width: 2.25rem;
+  height: 2.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  background: var(--mobile-glass-background);
+  border: 1px solid var(--mobile-glass-border);
+  color: var(--mobile-nav-text);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.mobile-theme-toggle:hover {
+  background: var(--mobile-glass-highlight);
+  transform: scale(1.05);
+}
+
+/* Mobile menu toggle button */
+.mobile-navbar-toggle {
+  padding: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid var(--mobile-glass-border);
+  background: var(--mobile-glass-background);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.mobile-navbar-toggle:hover {
+  background: var(--mobile-glass-highlight);
+}
+
+/* Fixed hamburger icon styling - matching the index.css style */
+.hamburger {
+  position: relative;
+  width: 28px;
+  height: 3px;
+  background: var(--mobile-nav-text);
+  border-radius: 2px;
+  display: block;
+  transition: all 0.3s;
+  min-height: 3px;
+  min-width: 28px;
+}
+
+.hamburger::before,
+.hamburger::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 28px;
+  height: 3px;
+  background: var(--mobile-nav-text);
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+
+.hamburger::before {
+  top: -9px;
+}
+
+.hamburger::after {
+  top: 9px;
+}
+
+/* Open state animation */
+.hamburger.open {
+  background: transparent;
+}
+
+.hamburger.open::before {
+  top: 0;
+  transform: rotate(45deg);
+  background: #fff;
+  box-shadow: 0 0 8px 2px rgba(0,0,0,0.35);
+}
+
+.hamburger.open::after {
+  top: 0;
+  transform: rotate(-45deg);
+  background: #fff;
+  box-shadow: 0 0 8px 2px rgba(0,0,0,0.35);
+}
+
+/* Mobile dropdown menu */
+.mobile-navbar-menu {
+  display: none;
+  background: var(--mobile-menu-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--mobile-nav-shadow);
+  border-bottom: 1px solid var(--mobile-glass-border);
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: slideDown 0.3s ease forwards;
+}
+
+.mobile-navbar-menu.show {
+  display: flex;
+  flex-direction: column;
+  max-height: 100vh;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Auth button */
+.mobile-navbar-auth {
+  padding: 1.25rem;
+  border: none;
+  background: none;
+  text-align: left;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--mobile-nav-text);
+  border-bottom: 1px solid var(--mobile-glass-border);
+  transition: all 0.25s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.mobile-navbar-auth::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--mobile-glass-highlight), transparent);
+  transition: left 0.6s ease;
+}
+
+.mobile-navbar-auth:hover {
+  background: var(--mobile-glass-background);
+  padding-left: 1.75rem;
+}
+
+.mobile-navbar-auth:hover::before {
+  left: 100%;
+}
+
+/* Navigation links */
+.mobile-navbar-link {
+  padding: 1.25rem;
+  border: none;
+  background: none;
+  text-align: left;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--mobile-nav-text);
+  border-bottom: 1px solid var(--mobile-glass-border);
+  transition: all 0.25s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.mobile-navbar-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--mobile-glass-highlight), transparent);
+  transition: left 0.6s ease;
+}
+
+.mobile-navbar-link:hover {
+  background: var(--mobile-glass-background);
+  padding-left: 1.75rem;
+}
+
+.mobile-navbar-link:hover::before {
+  left: 100%;
+}
+
+.mobile-navbar-link.active {
+  background: var(--mobile-active-bg);
+  color: white;
+  font-weight: 600;
+}
+
+.mobile-navbar-link:last-child {
+  border-bottom: none;
+}
+
+/* Enhanced transparent navbar styles */
+.mobile-navbar.transparent .mobile-navbar-header {
+  background: rgba(0, 0, 0, 0.15);
+  border-bottom: none;
+}
+
+.mobile-navbar.transparent .mobile-brand-title {
+  color: white;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.mobile-navbar.transparent .mobile-brand-subtitle {
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.mobile-navbar.transparent .hamburger,
+.mobile-navbar.transparent .hamburger::before,
+.mobile-navbar.transparent .hamburger::after {
+  background: white;
+}
+
+/* Media queries to show mobile navbar only at smaller screens */
+@media (max-width: 886px) {
+  .mobile-navbar {
+    display: block;
+  }
+}

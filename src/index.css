@@ -225,22 +225,19 @@ p {
 
 /* Navigation - Transparent when on home page */
 .navbar {
-  background: var(--bg-primary);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--border-primary);
-  padding: 1rem 0 0 0;
-  position: relative;
-  top: 0;
-  z-index: 100;
-  transition: all 0.3s ease;
+  /* Remove all background properties from here */
+  background: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-bottom: none;
 }
 
 .navbar.transparent {
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.25), transparent);
-  backdrop-filter: blur(5px);
+  /* Remove all background properties from here */
+  background: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   border-bottom: none;
-  position: absolute;
-  width: 100%;
 }
 
 .navbar.transparent .nav-link {
@@ -876,173 +873,16 @@ p {
 
   .mobile-navbar {
     display: block;
-    background: var(--bg-primary);
-    border-bottom: 1px solid var(--border-primary);
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: var(--shadow-sm);
   }
   
   .mobile-navbar.transparent {
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.25), transparent);
-    backdrop-filter: blur(5px);
-    border-bottom: none;
     position: absolute;
     width: 100%;
   }
   
-  .mobile-navbar.transparent .mobile-navbar-toggle {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.2);
-  }
-  
-  .mobile-navbar.transparent .hamburger,
-  .mobile-navbar.transparent .hamburger::before,
-  .mobile-navbar.transparent .hamburger::after {
-    background: white;
-  }
-
-  .mobile-navbar-header {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end; /* Pushes content to the right */
-    padding: 1rem;
-  }
-
-  .mobile-navbar-toggle {
-    padding: 0.75rem;
-    border: 1px solid var(--text-secondary);
-    background: var(--bg-primary);
-    border-radius: 50%;
-    cursor: pointer;
-    transition: background 0.2s, border 0.2s;
-    margin-left: 1rem;
-    color: var(--text-primary);
-    width: 48px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: none;
-  }
-
-  .mobile-navbar-toggle:hover{
-    background: var(--accent-primary);
-    border: 1.5px solid var(--text-secondary);
-  }
-
-  .hamburger {
-    position: relative;
-    width: 28px;
-    height: 3px;
-    background: #fff;
-    border-radius: 2px;
-    display: block;
-    transition: all 0.3s;
-    /* Add this to ensure the middle line is always visible */
-    min-height: 3px;
-    min-width: 28px;
-  }
-
-  .hamburger,
-  .hamburger::before,
-  .hamburger::after {
-    display: block;
-    background: var(--text-primary);
-    height: 3px;
-    width: 28px;
-    border-radius: 2px;
-    position: relative;
-    transition: all 0.3s;
-    content: '';
-  }
-
-  .hamburger::before,
-  .hamburger::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    width: 28px;
-    height: 3px;
-    background: var(--text-primary);
-    border-radius: 2px;
-    transition: all 0.3s;
-  }
-
-  .hamburger::before {
-    top: -9px;
-  }
-
-  .hamburger::after {
-    top: 9px;
-  }
-
-  .hamburger.open {
-    background: transparent;
-  }
-
-  .hamburger.open::before {
-    top: 0;
-    transform: rotate(45deg);
-    background: #fff;
-    box-shadow: 0 0 8px 2px rgba(0,0,0,0.35);
-  }
-
-  .hamburger.open::after {
-    top: 0;
-    transform: rotate(-45deg);
-    background: #fff;
-    box-shadow: 0 0 8px 2px rgba(0,0,0,0.35);
-  }
-
-  .mobile-navbar-menu {
-    display: none;
-    flex-direction: column;
-    background: var(--bg-primary);
-    box-shadow: var(--shadow-md);
-    animation: fadeIn 0.3s;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .mobile-navbar-menu.show {
-    display: flex;
-  }
-
-  .mobile-navbar-auth{
-    border: none;
-    background: none;
-    text-align: left;
-    font-size: 1rem;
-    color: var(--text-secondary);
-    border-bottom: 1px solid var(--border-primary);
-    transition: background 0.2s, color 0.2s;
-    cursor: pointer;
-  }
-
-  .mobile-navbar-link {
-    padding: 1rem;
-    border: none;
-    background: none;
-    text-align: left;
-    font-size: 1rem;
-    color: var(--text-secondary);
-    border-bottom: 1px solid var(--border-primary);
-    transition: background 0.2s, color 0.2s;
-    cursor: pointer;
-  }
-
-  .mobile-navbar-link:last-child {
-    border-bottom: none;
-  }
-
-  .mobile-navbar-link.active,
-  .mobile-navbar-link:hover {
-    background: var(--accent-primary);
-    color: #fff;
-  }
+  /* Remove all hamburger and mobile-specific styling from here 
+     as they're now defined in MobileNav.css */
 }
