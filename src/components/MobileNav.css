@@ -206,13 +206,6 @@
   box-shadow: 0 0 8px 2px rgba(0,0,0,0.35);
 }
 
-/* Ensure visible in light mode transparent navbar */
-.mobile-navbar.transparent:not([data-theme="dark"]) .hamburger,
-.mobile-navbar.transparent:not([data-theme="dark"]) .hamburger::before,
-.mobile-navbar.transparent:not([data-theme="dark"]) .hamburger::after {
-  background: #0f172a;
-}
-
 .mobile-navbar-menu {
   display: none;
   background: var(--mobile-menu-bg);
@@ -292,25 +285,50 @@
   border-bottom: none;
 }
 
+/* === MODIFIED SECTION: Styles for Transparent Navbar on Homepage === */
+
+/* Set a subtle, dark overlay for the header bar */
 .mobile-navbar.transparent .mobile-navbar-header {
   background: rgba(0, 0, 0, 0.15);
   border-bottom: none;
+  box-shadow: none; /* No shadow when transparent */
 }
 
+/* Make brand text white for high contrast */
 .mobile-navbar.transparent .mobile-brand-title {
   color: white;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
-
 .mobile-navbar.transparent .mobile-brand-subtitle {
   color: rgba(255, 255, 255, 0.9);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
+/* Make control buttons transparent to blend with the header */
+.mobile-navbar.transparent .mobile-theme-toggle,
+.mobile-navbar.transparent .mobile-navbar-toggle {
+    background: transparent;
+    border: none;
+}
+
+/* Force icons inside buttons to be white for contrast */
+.mobile-navbar.transparent .mobile-theme-toggle {
+    color: white;
+}
+
+/* Ensure the hamburger icon lines are always white */
 .mobile-navbar.transparent .hamburger,
 .mobile-navbar.transparent .hamburger::before,
 .mobile-navbar.transparent .hamburger::after {
   background: white;
+}
+
+/*
+  FIX: Add this highly specific rule to ensure the middle bar
+  disappears when the menu is open on the transparent navbar.
+*/
+.mobile-navbar.transparent .hamburger.open {
+  background: transparent;
 }
 
 @media (max-width: 886px) {
@@ -318,4 +336,3 @@
     display: block;
   }
 }
-
