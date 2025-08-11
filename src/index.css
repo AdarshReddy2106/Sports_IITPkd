@@ -94,7 +94,9 @@ p {
 }
 
 .section {
-  padding: 1rem 0;
+  padding: 4rem 0;
+  position: relative;
+  overflow: hidden;
 }
 
 .section-title {
@@ -631,26 +633,6 @@ p {
   position: relative;
 }
 
-.stats-section {
-  padding: 4rem 0;
-  background: var(--bg-primary);
-}
-
-.features-section {
-  padding: 4rem 0;
-  background: var(--bg-secondary);
-}
-
-.facilities-section {
-  padding: 4rem 0;
-  background: var(--bg-primary);
-}
-
-.events-section {
-  padding: 4rem 0;
-  background: var(--bg-secondary);
-}
-
 /* Details */
 .home-stats {
   display: grid;
@@ -924,33 +906,8 @@ p {
      as they're now defined in MobileNav.css */
 }
 
-/* Adding glass card effect for all components in dark mode */
-[data-theme="dark"] .home-page {
-  background: transparent !important; 
-}
 
-[data-theme="dark"] .stats-section,
-[data-theme="dark"] .features-section,
-[data-theme="dark"] .facilities-section,
-[data-theme="dark"] .events-section {
-  background: transparent;
-}
-
-[data-theme="dark"] .upcoming-events-section {
-  background: rgba(255, 255, 255, 0.03);
-}
-
-/* Remove any conflicting glass card effects */
-[data-theme="dark"] .card,
-[data-theme="dark"] .stat-card,
-[data-theme="dark"] .facility-card,
-[data-theme="dark"] .value-card {
-  background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,.15);
-  box-shadow: 0 12px 35px rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,.06);
-}
+/* --- DARK THEME STYLES --- */
 
 [data-theme="dark"] body {
   background: var(--bg-gradient);
@@ -960,5 +917,48 @@ p {
 
 /* Fix for home page dark mode */
 [data-theme="dark"] .home-page {
-  background: transparent; /* Remove conflicting background */
+  background: transparent;
+}
+
+/* MODIFIED: General section styling for dark mode */
+[data-theme="dark"] .section {
+  /* The !important flag is used here to override inline styles from the React component */
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(13, 148, 136, 0.03) 50%, var(--bg-secondary) 100%) !important;
+}
+
+[data-theme="dark"] .section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 25% 25%, rgba(237, 37, 78, 0.08) 0%, transparent 45%),
+    radial-gradient(circle at 75% 75%, rgba(13, 148, 136, 0.08) 0%, transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Ensure section content is above the pseudo-element */
+.section .container {
+    position: relative;
+    z-index: 1;
+}
+
+[data-theme="dark"] .upcoming-events-section {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Adding glass card effect for all components in dark mode */
+[data-theme="dark"] .card,
+[data-theme="dark"] .stat-card,
+[data-theme="dark"] .facility-card,
+[data-theme="dark"] .value-card {
+  background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,.15);
+  box-shadow: 0 12px 35px rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,.06);
 }

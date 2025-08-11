@@ -1,6 +1,6 @@
 /* Base container */
 .contact-container {
-  background: linear-gradient(135deg, #e0f2fe, #bac7f9), url("https://www.transparenttextures.com/patterns/white-carbon.png");
+  background: white, url("https://www.transparenttextures.com/patterns/white-carbon.png");
   background-size: cover;
   background-blend-mode: overlay;
   color: #0f172a;

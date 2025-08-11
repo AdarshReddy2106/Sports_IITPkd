@@ -1,20 +1,17 @@
 /* Import a font for a closer match to the image */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 
-/* Main container for the entire section */
+/* --- Base (Light Theme) Styles --- */
+
 .sports-programs-container {
   font-family: 'Poppins', sans-serif;
-  background-color: #1a2332;
+  background-color: var(--bg-primary);
   padding: 60px 20px;
   text-align: center;
   min-height: 100vh;
+  transition: background-color 0.3s ease;
 }
 
-[data-theme="dark"] .sports-programs-container {
-  background: var(--bg-gradient);
-}
-
-/* Header section with title and subtitle */
 .sports-programs-header {
   max-width: 750px;
   margin: 0 auto 50px auto;
@@ -22,18 +19,17 @@
 
 .sports-programs-header h2 {
   font-size: clamp(2rem, 5vw, 2.5rem);
-  color: #ffffff;
+  color: var(--text-primary);
   font-weight: 700;
   margin-bottom: 1rem;
 }
 
 .sports-programs-header p {
   font-size: 1.1rem;
-  color: #94a3b8;
+  color: var(--text-secondary);
   line-height: 1.7;
 }
 
-/* Grid container for the cards */
 .sports-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -43,11 +39,10 @@
   padding: 0 10px;
 }
 
-/* Individual sport card */
 .sport-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  box-shadow: var(--shadow-md);
   border-radius: 20px;
   padding: 0;
   text-align: center;
@@ -61,15 +56,14 @@
 }
 
 .sport-card:hover {
-  transform: translateY(-8px) rotateX(5deg) rotateY(5deg);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--accent-blue);
 }
 
-/* Image container */
 .sport-image-container {
   height: 180px;
-  background: linear-gradient(135deg, var(--sport-color, #0d6efd), rgba(0, 0, 0, 0.3));
+  background: linear-gradient(135deg, var(--sport-color, #3b82f6), #a855f7);
   position: relative;
   display: flex;
   align-items: center;
@@ -88,7 +82,6 @@
   background: linear-gradient(135deg, rgba(0, 0, 0, 0.2), transparent);
 }
 
-/* Icon in the image */
 .sport-icon-wrapper {
   display: flex;
   align-items: center;
@@ -97,7 +90,7 @@
   height: 80px;
   background: rgba(255, 255, 255, 0.2);
   border-radius: 50%;
-  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   z-index: 2;
 }
 
@@ -108,36 +101,84 @@
   stroke-width: 1.5;
 }
 
-/* Card content */
 .sport-content {
   padding: 20px;
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.05);
+  background: transparent;
 }
 
 .sport-card h3 {
   font-size: 1.4rem;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--text-primary);
   margin-bottom: 0.5rem;
 }
 
 .sport-description {
-  color: #94a3b8;
+  color: var(--text-secondary);
   line-height: 1.5;
   font-size: 0.9rem;
-  display: none; /* Hide description to match the image design */
+  display: none;
 }
 
-/* Remove the learn more link styling since we'll make the whole card clickable */
 .learn-more-link {
   display: none;
 }
 
-/* Responsive adjustments */
+
+/* --- Dark Theme Styles --- */
+
+[data-theme="dark"] .sports-programs-container {
+  background: var(--bg-gradient);
+}
+
+[data-theme="dark"] .sports-programs-header h2 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .sports-programs-header p {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .sport-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: none;
+}
+
+[data-theme="dark"] .sport-card:hover {
+  transform: translateY(-8px) rotateX(5deg) rotateY(5deg);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .sport-icon-wrapper {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border: none;
+}
+
+[data-theme="dark"] .sport-icon-wrapper svg {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .sport-content {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .sport-card h3 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .sport-description {
+  color: #94a3b8;
+}
+
+/* Responsive adjustments (apply to both themes) */
 @media (max-width: 768px) {
   .sports-grid {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
