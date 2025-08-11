@@ -92,7 +92,7 @@ export const getBookingsByUserId = async (userId) => {
  * @returns {Promise<boolean>} True if the email was sent successfully, false otherwise.
  */
 export const sendBookingNotification = async (bookingDetails) => {
-    const API_ENDPOINT = 'http://localhost:2030/api/booking/send-email';
+    const API_ENDPOINT = 'https://contactapi-iit.vercel.app/api/booking/send-email';
     try {
         const response = await fetch(API_ENDPOINT, {
             method: 'POST',
