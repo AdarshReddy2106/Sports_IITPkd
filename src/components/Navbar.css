@@ -3,12 +3,14 @@
   --glass-background: rgba(255, 255, 255, 0.1); /* Increased transparency */
   --glass-border: rgba(255, 255, 255, 0.15);
   --glass-highlight: rgba(255, 255, 255, 0.2);
+  --navbar-text: #0f172a; /* Default text color for light mode */
 }
 
 [data-theme="dark"] {
   --glass-background: rgba(15, 23, 42, 0.3); /* Much more transparent for visible effect */
   --glass-border: rgba(255, 255, 255, 0.1);
   --glass-highlight: rgba(255, 255, 255, 0.06);
+  --navbar-text: #f8fafc; /* Text color for dark mode */
 }
 
 /* Main navbar container - fixed positioning for all pages by default */
@@ -92,7 +94,7 @@
 .brand-title {
   font-size: 1.25rem;
   font-weight: 800;
-  color: var(--brand-title);
+  color: var(--navbar-text); /* Use CSS variable for consistent theming */
   line-height: 1.2;
   letter-spacing: -0.01em;
   white-space: nowrap;
@@ -186,11 +188,38 @@
   transform: scale(1.05);
 }
 
+/* === MODIFIED SECTION: Transparent navbar styles for homepage === */
+
 /* Transparent navbar version (for homepage) */
 .navbar.transparent .navbar-glass {
   background: rgba(0, 0, 0, 0.1); /* Even more transparent */
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+}
+
+/* Make brand title white on transparent navbar (homepage) */
+.navbar.transparent .brand-title {
+  color: white;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Make brand subtitle white on transparent navbar (homepage) */
+.navbar.transparent .brand-subtitle {
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Make nav links white on transparent navbar (homepage) */
+.navbar.transparent .nav-link {
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Make theme toggle white on transparent navbar (homepage) */
+.navbar.transparent .theme-toggle {
+  color: white;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 /* Scrolled state for better visibility when scrolling */
@@ -199,6 +228,39 @@
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+/* When scrolled, revert to normal colors (override transparent styles) */
+.navbar.scrolled .brand-title {
+  color: var(--navbar-text);
+  text-shadow: none;
+}
+
+.navbar.scrolled .brand-subtitle {
+  color: var(--text-tertiary);
+  text-shadow: none;
+}
+
+.navbar.scrolled .nav-link {
+  color: var(--text-primary);
+  text-shadow: none;
+}
+
+[data-theme="dark"] .navbar.scrolled .nav-link {
+  color: white;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.navbar.scrolled .theme-toggle {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .navbar.scrolled .theme-toggle {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: white;
 }
 
 /* Responsive adjustments for navbar */
