@@ -92,7 +92,7 @@
 .brand-title {
   font-size: 1.25rem;
   font-weight: 800;
-  color: var(--text-primary);
+  color: var(--brand-title);
   line-height: 1.2;
   letter-spacing: -0.01em;
   white-space: nowrap;
