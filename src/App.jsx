@@ -15,7 +15,8 @@ import AdminDashboard from './pages/AdminDashboard';
 import Events from './pages/Events';
 import Clubs from './pages/Clubs/Clubs';
 import SportPage from './components/SportsPage';
-
+import Staff from './pages/People/staff';
+import CoreTeam from './pages/People/CoreTeam';
 // Theme Context
 const ThemeContext = createContext();
 
@@ -60,12 +61,12 @@ const AppContent = () => {
   const location = useLocation();
   const [currentPage, setCurrentPage] = useState('home');
   const [isLoading, setIsLoading] = useState(true);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 886);
 
   // Handle responsive design
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
+      setIsMobile(window.innerWidth <= 886);
     };
 
     window.addEventListener('resize', handleResize);
@@ -74,13 +75,13 @@ const AppContent = () => {
 
   // Update current page based on route
   useEffect(() => {
-    const path = location.pathname;
-    if (path === '/') {
+    const path = location.pathname.substring(1);
+    if (path === '') {
       setCurrentPage('home');
-    } else if (path.startsWith('/clubs/')) {
-      setCurrentPage('clubs');
+    } else if (path.startsWith('clubs')) {
+      setCurrentPage('clubs'); // Keep parent active for sport pages
     } else {
-      setCurrentPage(path.substring(1));
+      setCurrentPage(path);
     }
   }, [location]);
 
@@ -93,7 +94,7 @@ const AppContent = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const isHomePage = currentPage === 'home';
+  const isHomePage = location.pathname === '/';
 
   return (
     <>
@@ -125,6 +126,8 @@ const AppContent = () => {
             <Route path="/about" element={<About setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
             <Route path="/clubs" element={<Clubs setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
             <Route path="/clubs/:sportName" element={<SportPage setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
+            <Route path="/staff" element={<Staff setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
+            <Route path="/core-team" element={<CoreTeam setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
             <Route path="/gallery" element={<Gallery setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
             <Route path="/calendar" element={<Calendar setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
             <Route path="/events" element={<Events setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />

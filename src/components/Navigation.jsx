@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Sun, Moon } from 'lucide-react';
+import { Sun, Moon, ChevronDown } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../App';
 import {
@@ -10,7 +10,7 @@ import {
   useUser,
   useClerk,
 } from '@clerk/clerk-react';
-import './Navbar.css'; // Import the navbar CSS
+import './Navbar.css';
 
 const Navigation = ({ currentPage, setCurrentPage, isHomePage }) => {
   const { isDark, toggleTheme } = useTheme();
@@ -19,8 +19,8 @@ const Navigation = ({ currentPage, setCurrentPage, isHomePage }) => {
   const navigate = useNavigate();
   const [isAuthorizedAdmin, setIsAuthorizedAdmin] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  // REMOVED: JavaScript dropdown state - using pure CSS now
 
-  // Add scroll detection
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 100) {
@@ -45,14 +45,8 @@ const Navigation = ({ currentPage, setCurrentPage, isHomePage }) => {
         return;
       }
 
-      // Check admin authorization
-      const superAdminEmails = [
-        "102301018@smail.iitpkd.ac.in",
-        "122301042@smail.iitpkd.ac.in",
-      ];
-      const eventAdminEmails = [
-        "ace@iitpkd.ac.in",
-      ];
+      const superAdminEmails = ["102301018@smail.iitpkd.ac.in", "122301042@smail.iitpkd.ac.in"];
+      const eventAdminEmails = ["ace@iitpkd.ac.in"];
       
       const isAuthorized = superAdminEmails.includes(email) || eventAdminEmails.includes(email);
       setIsAuthorizedAdmin(isAuthorized);
@@ -68,10 +62,11 @@ const Navigation = ({ currentPage, setCurrentPage, isHomePage }) => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const isPeopleActive = currentPage === 'staff' || currentPage === 'core-team';
+
   return (
-    <nav className={`navbar ${isHomePage ? 'transparent' : ''} ${scrolled ? 'scrolled' : ''}`}>
+    <nav className={`navbar ${isHomePage && !scrolled ? 'transparent' : ''} ${scrolled ? 'scrolled' : ''}`}>
       <div className="navbar-glass">
-        {/* Brand Logo and Text */}
         <div className="navbar-brand" onClick={() => handleNavigation('home')} style={{cursor: 'pointer'}}>
           <div className="brand-logo">SC</div>
           <div className="brand-text">
@@ -80,9 +75,8 @@ const Navigation = ({ currentPage, setCurrentPage, isHomePage }) => {
           </div>
         </div>
 
-        {/* Navigation Links */}
         <div className="navbar-links">
-          {['Home', 'About', 'Clubs', 'Gallery', 'Calendar', 'Bookings', 'Contact'].map((item) => (
+          {['Home', 'About', 'Clubs'].map((item) => (
             <button
               key={item}
               onClick={() => handleNavigation(item.toLowerCase())}
@@ -92,7 +86,38 @@ const Navigation = ({ currentPage, setCurrentPage, isHomePage }) => {
             </button>
           ))}
           
-          {/* Show Admin Dashboard for authorized users */}
+          {/* SIMPLIFIED: Removed JavaScript event handlers, using pure CSS hover */}
+          <div className="nav-link-dropdown">
+            <button className={`nav-link ${isPeopleActive ? 'active' : ''}`}>
+              People <ChevronDown size={16} style={{ marginLeft: '4px' }} />
+            </button>
+            {/* SIMPLIFIED: Removed conditional class, using pure CSS */}
+            <div className="dropdown-menu">
+              <button 
+                onClick={() => handleNavigation('staff')} 
+                className={`dropdown-item ${currentPage === 'staff' ? 'active' : ''}`}
+              >
+                Staff
+              </button>
+              <button 
+                onClick={() => handleNavigation('core-team')} 
+                className={`dropdown-item ${currentPage === 'core-team' ? 'active' : ''}`}
+              >
+                Core Team
+              </button>
+            </div>
+          </div>
+
+          {['Gallery', 'Calendar', 'Bookings', 'Contact'].map((item) => (
+            <button
+              key={item}
+              onClick={() => handleNavigation(item.toLowerCase())}
+              className={`nav-link ${currentPage === item.toLowerCase() ? 'active' : ''}`}
+            >
+              {item}
+            </button>
+          ))}
+          
           {isLoaded && isAuthorizedAdmin && (
             <button
               onClick={() => handleNavigation('admindashboard')}
@@ -102,7 +127,6 @@ const Navigation = ({ currentPage, setCurrentPage, isHomePage }) => {
             </button>
           )}
           
-          {/* Clerk Auth UI */}
           <SignedOut>
             <SignInButton mode="modal">
               <button className="nav-link">Sign In</button>

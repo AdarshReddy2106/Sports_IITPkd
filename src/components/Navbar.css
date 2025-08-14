@@ -46,8 +46,9 @@
   align-items: center;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
-  overflow: hidden;
+  overflow: visible; /* CHANGED: Allow overflow for dropdowns */
   flex-wrap: nowrap;
+  position: relative; /* ADDED: For dropdown positioning context */
 }
 
 [data-theme="dark"] .navbar-glass {
@@ -116,7 +117,7 @@
   display: flex;
   align-items: center;
   gap: 0.1rem; /* Reduced gap */
-  overflow-x: auto; /* Allow horizontal scrolling if needed */
+  overflow: visible; /* CHANGED: Allow overflow for dropdowns */
   scrollbar-width: none; /* Hide scrollbar in Firefox */
   -ms-overflow-style: none; /* Hide scrollbar in IE/Edge */
   flex-wrap: nowrap; /* Ensure no wrapping */
@@ -139,6 +140,8 @@
   cursor: pointer;
   white-space: nowrap; /* Prevent text wrapping */
   flex-shrink: 0; /* Prevent button from shrinking */
+  display: flex;
+  align-items: center;
 }
 
 [data-theme="dark"] .nav-link {
@@ -195,6 +198,8 @@
   background: rgba(0, 0, 0, 0.1); /* Even more transparent */
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: none;
 }
 
 /* Make brand title white on transparent navbar (homepage) */
@@ -260,6 +265,131 @@
 [data-theme="dark"] .navbar.scrolled .theme-toggle {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+/* === FIXED DROPDOWN STYLES === */
+.nav-link-dropdown {
+  position: relative;
+  display: inline-block;
+  z-index: 10;
+}
+
+/* ADDED: Bridge element to prevent gap issues */
+.nav-link-dropdown::before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: transparent;
+  z-index: 9998;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 4px); /* CHANGED: Reduced gap */
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 160px;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  padding: 0.5rem;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.15s ease, visibility 0.15s ease, transform 0.15s ease; /* CHANGED: Faster, smoother transitions */
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  /* ADDED: Fallback background colors */
+  background: white;
+  border: 1px solid #e5e7eb;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transform: translateX(-50%) translateY(-5px); /* ADDED: Initial transform for animation */
+}
+
+[data-theme="dark"] .dropdown-menu {
+  background: #1f2937;
+  border: 1px solid #374151;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* CHANGED: Better hover states using CSS only */
+.nav-link-dropdown:hover .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0); /* CHANGED: Smooth slide down */
+}
+
+.dropdown-item {
+  padding: 0.6rem 1rem;
+  border-radius: 0.5rem;
+  color: var(--text-primary);
+  font-weight: 500;
+  transition: all 0.2s ease;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  /* ADDED: Fallback colors */
+  color: #374151;
+}
+
+[data-theme="dark"] .dropdown-item {
+  color: #f9fafb;
+}
+
+.dropdown-item:hover {
+  background: var(--bg-secondary);
+  color: var(--accent-primary);
+  /* ADDED: Fallback hover colors */
+  background: #f3f4f6;
+  color: #6366f1;
+}
+
+[data-theme="dark"] .dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #a78bfa;
+}
+
+.dropdown-item.active {
+  background: var(--accent-primary);
+  color: white;
+  /* ADDED: Fallback active colors */
+  background: #6366f1;
+  color: white;
+}
+
+[data-theme="dark"] .dropdown-item.active {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+/* ADDED: Transparent navbar dropdown styles */
+.navbar.transparent .dropdown-menu {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.navbar.transparent .dropdown-item {
+  color: #374151;
+}
+
+.navbar.transparent .dropdown-item:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: #6366f1;
+}
+
+.navbar.transparent .dropdown-item.active {
+  background: #6366f1;
   color: white;
 }
 

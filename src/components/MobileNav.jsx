@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Sun, Moon } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Sun, Moon, ChevronDown, ChevronUp } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from '../App';
 import {
   SignedIn,
@@ -39,6 +39,14 @@ const navLinks = [
   { name: 'Home', key: 'home' },
   { name: 'About', key: 'about' },
   { name: 'Clubs', key: 'clubs' },
+  {
+    name: 'People',
+    key: 'people',
+    subLinks: [
+      { name: 'Staff', key: 'staff' },
+      { name: 'Core Team', key: 'core-team' },
+    ],
+  },
   { name: 'Gallery', key: 'gallery' },
   { name: 'Calendar', key: 'calendar' },
   { name: 'Bookings', key: 'bookings' },
@@ -50,15 +58,11 @@ const MobileNav = ({ currentPage, setCurrentPage, isHomePage }) => {
   const { isDark, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState('');
 
-  // Add scroll detection
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      setScrolled(window.scrollY > 50);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -72,13 +76,17 @@ const MobileNav = ({ currentPage, setCurrentPage, isHomePage }) => {
       navigate(`/${key}`);
     }
     setOpen(false);
+    setOpenDropdown('');
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const handleDropdownToggle = (key) => {
+    setOpenDropdown(openDropdown === key ? '' : key);
+  };
+
   return (
-    <nav className={`mobile-navbar ${isHomePage ? 'transparent' : ''} ${scrolled ? 'scrolled' : ''}`}>
+    <nav className={`mobile-navbar ${isHomePage && !scrolled ? 'transparent' : ''} ${scrolled ? 'scrolled' : ''}`}>
       <div className="mobile-navbar-header">
-        {/* Brand Logo and Text - Enhanced */}
         <div className="mobile-brand" onClick={() => handleNav('home')} style={{cursor: 'pointer'}}>
           <div className="mobile-brand-logo">SC</div>
           <div className="mobile-brand-text">
@@ -108,15 +116,44 @@ const MobileNav = ({ currentPage, setCurrentPage, isHomePage }) => {
       
       <div className={`mobile-navbar-menu ${open ? 'show' : ''}`}>
         <ClerkAuth />
-        {navLinks.map(link => (
-          <button
-            key={link.key}
-            onClick={() => handleNav(link.key)}
-            className={`mobile-navbar-link ${currentPage === link.key ? 'active' : ''}`}
-          >
-            {link.name}
-          </button>
-        ))}
+        {navLinks.map(link => {
+          if (link.subLinks) {
+            const isDropdownActive = link.subLinks.some(sub => sub.key === currentPage);
+            return (
+              <div key={link.key} className="mobile-dropdown-container">
+                <button
+                  onClick={() => handleDropdownToggle(link.key)}
+                  className={`mobile-navbar-link dropdown-toggle ${isDropdownActive ? 'active' : ''}`}
+                >
+                  {link.name}
+                  {openDropdown === link.key ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                </button>
+                {openDropdown === link.key && (
+                  <div className="mobile-submenu">
+                    {link.subLinks.map(subLink => (
+                      <button
+                        key={subLink.key}
+                        onClick={() => handleNav(subLink.key)}
+                        className={`mobile-navbar-link sub-link ${currentPage === subLink.key ? 'active' : ''}`}
+                      >
+                        {subLink.name}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          }
+          return (
+            <button
+              key={link.key}
+              onClick={() => handleNav(link.key)}
+              className={`mobile-navbar-link ${currentPage === link.key ? 'active' : ''}`}
+            >
+              {link.name}
+            </button>
+          );
+        })}
       </div>
     </nav>
   );

@@ -36,6 +36,10 @@
 .mobile-navbar.scrolled {
   position: fixed;
   background: var(--mobile-glass-background);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--mobile-glass-border);
+  box-shadow: var(--mobile-nav-shadow);
 }
 
 .mobile-navbar-header {
@@ -43,11 +47,15 @@
   align-items: center;
   justify-content: space-between;
   padding: 1rem;
-  background: var(--mobile-glass-background);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--mobile-glass-border);
-  box-shadow: var(--mobile-nav-shadow);
+  transition: background 0.3s ease;
+}
+
+.mobile-navbar.scrolled .mobile-navbar-header {
+    background: var(--mobile-glass-background);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--mobile-glass-border);
+    box-shadow: var(--mobile-nav-shadow);
 }
 
 .mobile-brand {
@@ -102,6 +110,7 @@
   line-height: 1.2;
   letter-spacing: -0.01em;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  transition: color 0.3s ease;
 }
 
 .mobile-brand-subtitle {
@@ -109,6 +118,7 @@
   font-weight: 500;
   color: var(--accent-primary);
   letter-spacing: 0.02em;
+  transition: color 0.3s ease;
 }
 
 .mobile-controls {
@@ -136,11 +146,6 @@
   transform: scale(1.05);
 }
 
-/* Theme toggle visibility fix in light mode */
-[data-theme="light"] .mobile-theme-toggle {
-  color: #0f172a;
-}
-
 .mobile-navbar-toggle {
   padding: 0;
   width: 2.5rem;
@@ -153,6 +158,7 @@
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
+  z-index: 1001;
 }
 
 .mobile-navbar-toggle:hover {
@@ -285,51 +291,84 @@
   border-bottom: none;
 }
 
-/* === MODIFIED SECTION: Styles for Transparent Navbar on Homepage === */
-
-/* Set a subtle, dark overlay for the header bar */
+/* === TRANSPARENT NAVBAR STYLES === */
 .mobile-navbar.transparent .mobile-navbar-header {
   background: rgba(0, 0, 0, 0.15);
   border-bottom: none;
-  box-shadow: none; /* No shadow when transparent */
+  box-shadow: none;
 }
 
-/* Make brand text white for high contrast */
-.mobile-navbar.transparent .mobile-brand-title {
+.mobile-navbar.transparent .mobile-brand-title,
+.mobile-navbar.transparent .mobile-theme-toggle,
+.mobile-navbar.transparent .hamburger,
+.mobile-navbar.transparent .hamburger::before,
+.mobile-navbar.transparent .hamburger::after {
   color: white;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
+
 .mobile-navbar.transparent .mobile-brand-subtitle {
   color: rgba(255, 255, 255, 0.9);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-/* Make control buttons transparent to blend with the header */
 .mobile-navbar.transparent .mobile-theme-toggle,
 .mobile-navbar.transparent .mobile-navbar-toggle {
     background: transparent;
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Force icons inside buttons to be white for contrast */
-.mobile-navbar.transparent .mobile-theme-toggle {
-    color: white;
-}
-
-/* Ensure the hamburger icon lines are always white */
-.mobile-navbar.transparent .hamburger,
-.mobile-navbar.transparent .hamburger::before,
-.mobile-navbar.transparent .hamburger::after {
+.mobile-navbar.transparent .hamburger.open,
+.mobile-navbar.transparent .hamburger.open::before,
+.mobile-navbar.transparent .hamburger.open::after {
   background: white;
 }
-
-/*
-  FIX: Add this highly specific rule to ensure the middle bar
-  disappears when the menu is open on the transparent navbar.
-*/
 .mobile-navbar.transparent .hamburger.open {
-  background: transparent;
+  background: transparent !important;
 }
+
+
+/* === NEW DROPDOWN STYLES === */
+.mobile-dropdown-container .mobile-navbar-link {
+    border-bottom: 1px solid var(--mobile-glass-border);
+}
+.mobile-dropdown-container:last-child .mobile-navbar-link {
+    border-bottom: none;
+}
+
+.mobile-navbar-link.dropdown-toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.mobile-submenu {
+    padding-left: 1rem;
+    background: rgba(0,0,0,0.03);
+}
+
+[data-theme="dark"] .mobile-submenu {
+    background: rgba(255,255,255,0.03);
+}
+
+.mobile-navbar-link.sub-link {
+    border-bottom: none;
+    padding-left: 1.5rem;
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+}
+
+.mobile-navbar-link.sub-link:not(:last-child) {
+    border-bottom: 1px solid var(--mobile-glass-border);
+}
+
+.mobile-navbar-link.sub-link.active {
+    color: white !important;
+    font-weight: 500;
+}
+
 
 @media (max-width: 886px) {
   .mobile-navbar {
