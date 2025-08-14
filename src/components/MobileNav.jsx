@@ -14,6 +14,21 @@ import './MobileNav.css';
 
 const ClerkAuth = () => {
   const { openSignIn } = useClerk();
+  const { user, isLoaded } = useUser();
+  const { signOut } = useClerk();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isLoaded && user) {
+      const email = user?.primaryEmailAddress?.emailAddress || '';
+      if (!email.endsWith('iitpkd.ac.in')) {
+        alert('Access restricted to iitpkd.ac.in emails only');
+        signOut().then(() => {
+          navigate('/');
+        });
+      }
+    }
+  }, [isLoaded, user, signOut, navigate]);
 
   const handleSignInClick = () => {
     openSignIn(); 
