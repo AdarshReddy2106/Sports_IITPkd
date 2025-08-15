@@ -10,11 +10,6 @@ const sportsData = {
     subtitle: 'Excellence in Sports',
     about: {
       description: 'Our badminton program fosters athletic excellence and strategic thinking. With state-of-the-art courts and expert coaching, we develop players from beginners to competitive athletes. The sport emphasizes agility, precision, and mental toughness, making it one of our most popular programs.',
-      stats: [
-        { number: '45', label: 'Active Players', color: '#667eea' },
-        { number: '6', label: 'Teams', color: '#f59e0b' },
-        { number: '12', label: 'Tournaments Won', color: '#10b981' }
-      ]
     },
     facilities: [
       {
@@ -71,11 +66,6 @@ const sportsData = {
     subtitle: 'Excellence in Sports',
     about: {
       description: 'Our volleyball program promotes communication, coordination, and athletic excellence. With dedicated courts and experienced coaching staff, we build strong teams that compete at various levels.',
-      stats: [
-        { number: '32', label: 'Active Players', color: '#667eea' },
-        { number: '4', label: 'Teams', color: '#f59e0b' },
-        { number: '8', label: 'Tournaments Won', color: '#10b981' }
-      ]
     },
     facilities: [
       {
@@ -120,11 +110,6 @@ const sportsData = {
     subtitle: 'Excellence in Sports',
     about: {
       description: 'Dynamic team sport combining strategy, skill, and competitive spirit. Our basketball program develops both individual skills and team coordination.',
-      stats: [
-        { number: '28', label: 'Active Players', color: '#667eea' },
-        { number: '3', label: 'Teams', color: '#f59e0b' },
-        { number: '6', label: 'Tournaments Won', color: '#10b981' }
-      ]
     },
     facilities: [
       {
@@ -169,11 +154,6 @@ const sportsData = {
     subtitle: 'Excellence in Sports',
     about: {
       description: 'Traditional sport requiring technique, patience, and mental strength. Our cricket program focuses on developing all aspects of the game.',
-      stats: [
-        { number: '55', label: 'Active Players', color: '#667eea' },
-        { number: '5', label: 'Teams', color: '#f59e0b' },
-        { number: '15', label: 'Tournaments Won', color: '#10b981' }
-      ]
     },
     facilities: [
       {
@@ -218,11 +198,6 @@ const sportsData = {
     subtitle: 'Excellence in Sports',
     about: {
       description: 'The beautiful game that builds teamwork and athletic prowess. Our football program emphasizes skill development and tactical understanding.',
-      stats: [
-        { number: '42', label: 'Active Players', color: '#667eea' },
-        { number: '4', label: 'Teams', color: '#f59e0b' },
-        { number: '10', label: 'Tournaments Won', color: '#10b981' }
-      ]
     },
     facilities: [
       {
@@ -267,11 +242,6 @@ const sportsData = {
     subtitle: 'Excellence in Sports',
     about: {
       description: 'Quick reflexes and precision in this fast-paced indoor sport. Our table tennis program develops hand-eye coordination and strategic thinking.',
-      stats: [
-        { number: '25', label: 'Active Players', color: '#667eea' },
-        { number: '3', label: 'Teams', color: '#f59e0b' },
-        { number: '7', label: 'Tournaments Won', color: '#10b981' }
-      ]
     },
     facilities: [
       {
@@ -316,11 +286,6 @@ const sportsData = {
     subtitle: 'Excellence in Mind Sports',
     about: {
       description: 'Our chess program focuses on strategic thinking, mental fortitude, and analytical skills. Whether you\'re a beginner or an experienced player, our program offers opportunities for intellectual growth and competitive play in a supportive environment.',
-      stats: [
-        { number: '35', label: 'Active Players', color: '#667eea' },
-        { number: '3', label: 'Teams', color: '#f59e0b' },
-        { number: '8', label: 'Tournaments Won', color: '#10b981' }
-      ]
     },
     facilities: [
       {
@@ -377,11 +342,6 @@ const sportsData = {
     subtitle: 'Strength and Conditioning Excellence',
     about: {
       description: 'Our state-of-the-art gym facility offers comprehensive strength training and conditioning programs for all fitness levels. With modern equipment and expert guidance, we focus on proper technique, sustainable progress, and overall physical development.',
-      stats: [
-        { number: '200+', label: 'Regular Members', color: '#667eea' },
-        { number: '12', label: 'Training Programs', color: '#f59e0b' },
-        { number: '6', label: 'Professional Trainers', color: '#10b981' }
-      ]
     },
     facilities: [
       {
@@ -432,11 +392,6 @@ const sportsData = {
     subtitle: 'Track and Field Excellence',
     about: {
       description: 'Our athletics program covers track events, field events, and long-distance running, fostering speed, endurance, and athletic prowess. We train athletes for individual excellence and team competitions at various levels.',
-      stats: [
-        { number: '60', label: 'Active Athletes', color: '#667eea' },
-        { number: '8', label: 'Event Categories', color: '#f59e0b' },
-        { number: '20+', label: 'Medals Won', color: '#10b981' }
-      ]
     },
     facilities: [
       {
@@ -528,17 +483,6 @@ const SportPage = () => {
             <p style={{ color: '#64748b', lineHeight: '1.7', fontSize: '1.05rem', marginBottom: '2rem' }}>
               {sport.about.description}
             </p>
-            
-            <div className="sport-stats-grid">
-              {sport.about.stats.map((stat, index) => (
-                <div key={index} className="sport-stat-card">
-                  <div className="sport-stat-number" style={{ color: stat.color }}>
-                    {stat.number}
-                  </div>
-                  <div className="sport-stat-label">{stat.label}</div>
-                </div>
-              ))}
-            </div>
           </div>
         );
       

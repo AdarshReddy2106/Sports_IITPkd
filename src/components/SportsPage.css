@@ -190,40 +190,6 @@
   color: #1e293b;
 }
 
-/* About Section Stats */
-.sport-stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 24px;
-  margin-top: 32px;
-}
-
-.sport-stat-card {
-  text-align: center;
-  padding: 32px 20px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  transition: all 0.3s ease;
-}
-
-.sport-stat-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-}
-
-.sport-stat-number {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 8px;
-}
-
-.sport-stat-label {
-  font-weight: 500;
-  color: #64748b;
-  font-size: 1rem;
-}
-
 /* Facilities Cards */
 .sport-facilities-grid {
   display: grid;
@@ -584,11 +550,6 @@
     margin-bottom: 20px;
   }
   
-  .sport-stats-grid {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 16px;
-  }
-  
   .sport-stat-card {
     padding: 20px 16px;
   }
@@ -635,9 +596,5 @@
   
   .sport-section-header h3 {
     font-size: 1.3rem;
-  }
-  
-  .sport-stats-grid {
-    grid-template-columns: 1fr;
   }
 }
