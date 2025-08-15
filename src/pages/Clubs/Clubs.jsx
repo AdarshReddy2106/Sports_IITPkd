@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './Clubs.css';
 
 // Importing icons from lucide-react
-import { Zap, Target, Dribbble, Trophy, CircleDot, Gamepad2 } from 'lucide-react';
+import { Zap, Target, Dribbble, Trophy, CircleDot, Gamepad2, Crown, Dumbbell, Activity } from 'lucide-react';
 
 // Data for the sports programs
 const sportsData = [
@@ -48,6 +48,27 @@ const sportsData = [
     slug: 'table-tennis',
     description: 'Quick reflexes and precision in this fast-paced indoor sport.',
     color: '#06b6d4' // Cyan
+  },
+  {
+    icon: <Crown />,
+    title: 'Chess',
+    slug: 'chess',
+    description: 'Strategic board game developing critical thinking and mental fortitude.',
+    color: '#6366f1' // Indigo
+  },
+  {
+    icon: <Dumbbell />,
+    title: 'Gym',
+    slug: 'gym',
+    description: 'Modern fitness facilities for strength training and physical conditioning.',
+    color: '#ec4899' // Pink
+  },
+  {
+    icon: <Activity />,
+    title: 'Athletics',
+    slug: 'athletics',
+    description: 'Track and field events testing speed, endurance, and athletic prowess.',
+    color: '#f97316' // Orange-red
   }
 ];
 

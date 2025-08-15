@@ -270,6 +270,198 @@ const sportsData = {
     gallery: [
       { title: 'Tournament Action', description: 'Intense rally during championship', date: 'March 2024' }
     ]
+  },
+  chess: {
+    title: 'Chess',
+    subtitle: 'Excellence in Mind Sports',
+    about: {
+      description: 'Our chess program focuses on strategic thinking, mental fortitude, and analytical skills. Whether you\'re a beginner or an experienced player, our program offers opportunities for intellectual growth and competitive play in a supportive environment.',
+      stats: [
+        { number: '35', label: 'Active Players', color: '#667eea' },
+        { number: '3', label: 'Teams', color: '#f59e0b' },
+        { number: '8', label: 'Tournaments Won', color: '#10b981' }
+      ]
+    },
+    facilities: [
+      {
+        name: 'Chess Training Center',
+        description: 'Dedicated space for chess practice, training, and tournaments',
+        location: 'Academic Block - First Floor',
+        features: ['Digital chess boards', 'Chess clocks', 'Analysis software', 'Reference library']
+      },
+      {
+        name: 'Chess Club Room',
+        description: 'Casual space for friendly matches and chess discussions',
+        location: 'Student Center - Ground Floor',
+        features: ['Multiple chess sets', 'Comfortable seating', 'Strategy boards', 'Chess literature']
+      }
+    ],
+    achievements: [
+      {
+        title: 'Inter-University Chess Championship',
+        year: '2024',
+        description: 'First place in team category and individual board prizes',
+        level: 'State'
+      },
+      {
+        title: 'FIDE Rated Tournament',
+        year: '2023',
+        description: 'Three players achieved national ratings',
+        level: 'National'
+      },
+      {
+        title: 'College Chess League',
+        year: '2023',
+        description: 'Champions in the regional division',
+        level: 'Regional'
+      }
+    ],
+    contact: [
+      {
+        name: 'Prof. Ramesh Kumar',
+        role: 'Chess Coach',
+        email: 'ramesh.kumar@institute.edu',
+        phone: '+91 98765 43220',
+        location: 'Academic Block - Room 104'
+      },
+      {
+        name: 'Shreesh Amit',
+        role: 'Chess Secretary',
+        email: '112301046@smail.iitpkd.ac.in',
+        phone: '+91 98765 43221'
+      }
+    ],
+    gallery: [
+      { title: 'Annual Chess Tournament 2024', description: 'Finals of our annual chess competition', date: 'February 2024' },
+      { title: 'Chess Workshop', description: 'Strategy session with Grandmaster visit', date: 'January 2024' },
+      { title: 'Chess Team Selection', description: 'Qualifying rounds for university team', date: 'December 2023' }
+    ]
+  },
+  gym: {
+    title: 'Gym',
+    subtitle: 'Strength and Conditioning Excellence',
+    about: {
+      description: 'Our state-of-the-art gym facility offers comprehensive strength training and conditioning programs for all fitness levels. With modern equipment and expert guidance, we focus on proper technique, sustainable progress, and overall physical development.',
+      stats: [
+        { number: '200+', label: 'Regular Members', color: '#667eea' },
+        { number: '12', label: 'Training Programs', color: '#f59e0b' },
+        { number: '6', label: 'Professional Trainers', color: '#10b981' }
+      ]
+    },
+    facilities: [
+      {
+        name: 'Main Fitness Center',
+        description: 'Comprehensive fitness facility with strength and cardio equipment',
+        location: 'Sports Complex - First Floor',
+        features: ['Free weights section', 'Machine training area', 'Cardio zone', 'Functional training space']
+      },
+      {
+        name: 'Cross-Training Zone',
+        description: 'Dedicated space for functional fitness and high-intensity workouts',
+        location: 'Sports Complex - Ground Floor',
+        features: ['Olympic lifting platform', 'Pull-up stations', 'Battle ropes', 'Box jump platforms']
+      }
+    ],
+    achievements: [
+      {
+        title: 'University Strength Competition',
+        year: '2024',
+        description: 'Multiple medals across weight categories',
+        level: 'State'
+      },
+      {
+        title: 'Fitness Challenge Series',
+        year: '2023',
+        description: 'Overall champions in inter-college fitness challenge',
+        level: 'Regional'
+      }
+    ],
+    contact: [
+      {
+        name: 'Mr. Raj Singh',
+        role: 'Head Fitness Trainer',
+        email: 'raj.singh@institute.edu',
+        phone: '+91 98765 43222',
+        location: 'Sports Complex - Gym Office'
+      },
+      {
+        name: 'Siddharth Bharti',
+        role: 'Gym Secretary',
+        email: '132301033@smail.iitpkd.ac.in',
+        phone: '+91 98765 43223'
+      }
+    ],
+    gallery: [
+      { title: 'New Equipment Installation', description: 'Recent upgrades to our fitness facility', date: 'March 2024' },
+      { title: 'Strength Training Workshop', description: 'Technique and form workshop for beginners', date: 'February 2024' },
+      { title: 'Fitness Competition', description: 'Annual fitness challenge event', date: 'December 2023' }
+    ]
+  },
+  athletics: {
+    title: 'Athletics',
+    subtitle: 'Track and Field Excellence',
+    about: {
+      description: 'Our athletics program covers track events, field events, and long-distance running, fostering speed, endurance, and athletic prowess. We train athletes for individual excellence and team competitions at various levels.',
+      stats: [
+        { number: '60', label: 'Active Athletes', color: '#667eea' },
+        { number: '8', label: 'Event Categories', color: '#f59e0b' },
+        { number: '20+', label: 'Medals Won', color: '#10b981' }
+      ]
+    },
+    facilities: [
+      {
+        name: 'Athletic Track',
+        description: 'Standard 400m track with proper lane markings',
+        location: 'Sports Complex - Outdoor',
+        features: ['Synthetic track surface', 'Long jump pit', 'High jump area', 'Javelin/shot put field']
+      },
+      {
+        name: 'Indoor Training Facility',
+        description: 'All-weather facility for continuous training',
+        location: 'Sports Complex - First Floor',
+        features: ['Sprint track', 'Plyometric area', 'Technique training zone', 'Video analysis setup']
+      }
+    ],
+    achievements: [
+      {
+        title: 'University Athletics Championships',
+        year: '2024',
+        description: 'Gold medals in 400m, long jump, and 4x100m relay',
+        level: 'State'
+      },
+      {
+        title: 'National Inter-University Games',
+        year: '2023',
+        description: 'Silver medal in men\'s 800m and bronze in women\'s javelin',
+        level: 'National'
+      },
+      {
+        title: 'Cross Country Meet',
+        year: '2023',
+        description: 'Overall team championship',
+        level: 'Regional'
+      }
+    ],
+    contact: [
+      {
+        name: 'Coach Anand Kumar',
+        role: 'Head Athletics Coach',
+        email: 'anand.kumar@institute.edu',
+        phone: '+91 98765 43224',
+        location: 'Sports Complex - Track Office'
+      },
+      {
+        name: 'M Kishore',
+        role: 'Athletics Secretary',
+        email: '112201035@smail.iitpkd.ac.in',
+        phone: '+91 98765 43225'
+      }
+    ],
+    gallery: [
+      { title: 'Annual Athletics Meet 2024', description: 'Highlights from our flagship event', date: 'March 2024' },
+      { title: 'Sprint Training Session', description: 'Specialized coaching for sprinters', date: 'February 2024' },
+      { title: 'Cross-Country Competition', description: 'Team at the regional cross-country event', date: 'January 2024' }
+    ]
   }
 };
 
