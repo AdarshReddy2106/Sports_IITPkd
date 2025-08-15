@@ -15,7 +15,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import Events from './pages/Events';
 import Clubs from './pages/Clubs/Clubs';
 import SportPage from './components/SportsPage';
-import Staff from './pages/People/staff';
+import Staff from './pages/People/Staff';
 import CoreTeam from './pages/People/CoreTeam';
 import ProtectedRoute from './components/ProtectedRoute';
 
