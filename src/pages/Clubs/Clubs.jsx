@@ -5,8 +5,15 @@ import './Clubs.css';
 // Importing icons from lucide-react
 import { Zap, Target, Dribbble, Trophy, CircleDot, Gamepad2, Crown, Dumbbell, Activity } from 'lucide-react';
 
-// Data for the sports programs
+// Data for the sports programs - now alphabetically sorted by title
 const sportsData = [
+  {
+    icon: <Activity />,
+    title: 'Athletics',
+    slug: 'athletics',
+    description: 'Track and field events testing speed, endurance, and athletic prowess.',
+    color: '#f97316' // Orange-red
+  },
   {
     icon: <Zap />,
     title: 'Badminton',
@@ -15,18 +22,18 @@ const sportsData = [
     color: '#3b82f6' // Blue
   },
   {
-    icon: <Target />,
-    title: 'Volleyball',
-    slug: 'volleyball',
-    description: 'Team sport promoting communication, coordination, and athletic excellence.',
-    color: '#f59e0b' // Orange
-  },
-  {
     icon: <Dribbble />,
     title: 'Basketball',
     slug: 'basketball',
     description: 'Dynamic team sport combining strategy, skill, and competitive spirit.',
     color: '#ef4444' // Red
+  },
+  {
+    icon: <Crown />,
+    title: 'Chess',
+    slug: 'chess',
+    description: 'Strategic board game developing critical thinking and mental fortitude.',
+    color: '#6366f1' // Indigo
   },
   {
     icon: <Trophy />,
@@ -43,20 +50,6 @@ const sportsData = [
     color: '#8b5cf6' // Purple
   },
   {
-    icon: <Gamepad2 />,
-    title: 'Table Tennis',
-    slug: 'table-tennis',
-    description: 'Quick reflexes and precision in this fast-paced indoor sport.',
-    color: '#06b6d4' // Cyan
-  },
-  {
-    icon: <Crown />,
-    title: 'Chess',
-    slug: 'chess',
-    description: 'Strategic board game developing critical thinking and mental fortitude.',
-    color: '#6366f1' // Indigo
-  },
-  {
     icon: <Dumbbell />,
     title: 'Gym',
     slug: 'gym',
@@ -64,11 +57,18 @@ const sportsData = [
     color: '#ec4899' // Pink
   },
   {
-    icon: <Activity />,
-    title: 'Athletics',
-    slug: 'athletics',
-    description: 'Track and field events testing speed, endurance, and athletic prowess.',
-    color: '#f97316' // Orange-red
+    icon: <Gamepad2 />,
+    title: 'Table Tennis',
+    slug: 'table-tennis',
+    description: 'Quick reflexes and precision in this fast-paced indoor sport.',
+    color: '#06b6d4' // Cyan
+  },
+  {
+    icon: <Target />,
+    title: 'Volleyball',
+    slug: 'volleyball',
+    description: 'Team sport promoting communication, coordination, and athletic excellence.',
+    color: '#f59e0b' // Orange
   }
 ];
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, User, Building, Trophy, Phone, Camera } from 'lucide-react';
+import { ArrowLeft, User, Building, Trophy, Phone } from 'lucide-react';
 import '../components/SportsPage.css'; 
 
 // Sports data with detailed information
@@ -30,24 +30,24 @@ const sportsData = {
         features: ['Synthetic flooring', 'Standard nets', 'Natural lighting', 'Equipment storage']
       }
     ],
-    achievements: [
+    rules: [
       {
-        title: 'Inter-College Badminton Championship',
-        year: '2024',
-        description: 'First place in both men\'s and women\'s doubles categories',
-        level: 'State'
+        title: 'Court Dimensions & Equipment',
+        year: '',
+        description: 'Standard court size is 13.4m x 5.18m with a net height of 1.55m. Rackets and shuttlecocks must meet BWF standards.',
+        level: 'General'
       },
       {
-        title: 'Regional Youth Tournament',
-        year: '2023',
-        description: 'Multiple medals in singles and doubles events',
-        level: 'Regional'
+        title: 'Scoring System',
+        year: '',
+        description: 'Games are played to 21 points with rally scoring. A match is best of 3 games. At 20-all, a side must win by 2 clear points.',
+        level: 'Competition'
       },
       {
-        title: 'National University Games',
-        year: '2023',
-        description: 'Qualified for quarter-finals in team events',
-        level: 'National'
+        title: 'Service & Play Rules',
+        year: '',
+        description: 'Service must be underhand and below waist height. The shuttle must land diagonally opposite court. Let calls apply for service interruptions.',
+        level: 'General'
       }
     ],
     contact: [
@@ -64,11 +64,6 @@ const sportsData = {
         email: 'arjun.kumar@institute.edu',
         phone: '+91 98765 43211'
       }
-    ],
-    gallery: [
-      { title: 'Championship Victory 2024', description: 'Team celebrating state championship win', date: 'March 2024' },
-      { title: 'Training Session Highlights', description: 'Intensive training session with new recruits', date: 'February 2024' },
-      { title: 'Tournament Action', description: 'Intense match moments from regional tournament', date: 'January 2024' }
     ]
   },
   volleyball: {
@@ -90,12 +85,24 @@ const sportsData = {
         features: ['Sand flooring', 'Professional nets', 'Floodlights', 'Spectator seating']
       }
     ],
-    achievements: [
+    rules: [
       {
-        title: 'State Volleyball Championship',
-        year: '2024',
-        description: 'Second place in men\'s category',
-        level: 'State'
+        title: 'Court and Ball Specifications',
+        year: '',
+        description: 'The volleyball court measures 18m x 9m, divided by a net. The ball must be spherical, made of leather or synthetic material, and have a circumference of 65-67cm.',
+        level: 'General'
+      },
+      {
+        title: 'Scoring System',
+        year: '',
+        description: 'Matches are played best of 5 sets. A set is won by the first team to reach 25 points with a 2-point lead.',
+        level: 'Competition'
+      },
+      {
+        title: 'Service Rules',
+        year: '',
+        description: 'The server must hit the ball behind the end line and within the sidelines. The ball must go over the net and land in the opponent\'s court.',
+        level: 'General'
       }
     ],
     contact: [
@@ -106,9 +113,6 @@ const sportsData = {
         phone: '+91 98765 43212',
         location: 'Sports Complex - Room 102'
       }
-    ],
-    gallery: [
-      { title: 'Team Training', description: 'Daily practice session', date: 'March 2024' }
     ]
   },
   basketball: {
@@ -130,12 +134,24 @@ const sportsData = {
         features: ['Wooden flooring', 'Professional hoops', 'LED lighting', 'Sound system']
       }
     ],
-    achievements: [
+    rules: [
       {
-        title: 'Regional Basketball Tournament',
-        year: '2024',
-        description: 'Champions in inter-college category',
-        level: 'Regional'
+        title: 'Court and Ball Specifications',
+        year: '',
+        description: 'A basketball court is 28m x 15m, with a hoop at each end. The ball should be spherical, made of leather or synthetic material, with a circumference of 74.9-76.2cm for men and 72.4-73.7cm for women.',
+        level: 'General'
+      },
+      {
+        title: 'Scoring System',
+        year: '',
+        description: 'A field goal is worth two points, or three points if taken beyond the three-point line. Free throws are worth one point.',
+        level: 'Competition'
+      },
+      {
+        title: 'Dribbling and Passing Rules',
+        year: '',
+        description: 'Players must dribble the ball while moving. Passing the ball to teammates is essential for advancing towards the basket.',
+        level: 'General'
       }
     ],
     contact: [
@@ -146,9 +162,6 @@ const sportsData = {
         phone: '+91 98765 43213',
         location: 'Sports Complex - Room 103'
       }
-    ],
-    gallery: [
-      { title: 'Championship Game', description: 'Final moments of regional championship', date: 'February 2024' }
     ]
   },
   cricket: {
@@ -170,12 +183,24 @@ const sportsData = {
         features: ['Turf wicket', 'Practice nets', 'Pavilion', 'Scoreboard']
       }
     ],
-    achievements: [
+    rules: [
       {
-        title: 'Inter-University Cricket Championship',
-        year: '2024',
-        description: 'Winners in T20 format',
-        level: 'National'
+        title: 'Field and Equipment',
+        year: '',
+        description: 'A cricket field is typically 450-500ft long and 400-450ft wide, with a 22-yard long pitch in the center. The game requires a cricket ball, bats, and protective gear.',
+        level: 'General'
+      },
+      {
+        title: 'Scoring System',
+        year: '',
+        description: 'Runs are scored by batting pairs running between the wickets after hitting the ball. Boundaries score four (if the ball hits the ground first) or six runs (if the ball is hit over the boundary on the full).',
+        level: 'Competition'
+      },
+      {
+        title: 'Bowling and Batting Rules',
+        year: '',
+        description: 'The bowler must deliver the ball with one foot behind the popping crease. Batters must not obstruct the fielders and should hit the ball within the 15-degree arc in front of the wicket.',
+        level: 'General'
       }
     ],
     contact: [
@@ -186,9 +211,6 @@ const sportsData = {
         phone: '+91 98765 43214',
         location: 'Sports Complex - Room 104'
       }
-    ],
-    gallery: [
-      { title: 'Victory Celebration', description: 'Team celebrating championship win', date: 'March 2024' }
     ]
   },
   football: {
@@ -210,12 +232,24 @@ const sportsData = {
         features: ['Natural grass', 'Professional goals', 'Floodlights', 'Dugouts']
       }
     ],
-    achievements: [
+    rules: [
       {
-        title: 'State Football League',
-        year: '2024',
-        description: 'Runners-up in division A',
-        level: 'State'
+        title: 'Field and Ball Specifications',
+        year: '',
+        description: 'A standard football field is 100-110m long and 64-75m wide, with a goal at each end. The ball must be spherical, made of leather or another suitable material, with a circumference of 68-70cm.',
+        level: 'General'
+      },
+      {
+        title: 'Scoring System',
+        year: '',
+        description: 'A goal is scored when the entire ball crosses the goal line between the goalposts and under the crossbar.',
+        level: 'Competition'
+      },
+      {
+        title: 'Offside Rule',
+        year: '',
+        description: 'Players are in an offside position if they are nearer to the opponent\'s goal line than both the ball and the second-last opponent when the ball is played to them, unless they are in their own half of the field.',
+        level: 'General'
       }
     ],
     contact: [
@@ -226,9 +260,6 @@ const sportsData = {
         phone: '+91 98765 43215',
         location: 'Sports Complex - Room 105'
       }
-    ],
-    gallery: [
-      { title: 'League Match', description: 'Action from state league final', date: 'April 2024' }
     ]
   },
   'table-tennis': {
@@ -250,12 +281,24 @@ const sportsData = {
         features: ['Professional tables', 'LED lighting', 'Air conditioning', 'Equipment storage']
       }
     ],
-    achievements: [
+    rules: [
       {
-        title: 'Inter-College Table Tennis Championship',
-        year: '2024',
-        description: 'Gold in singles and doubles',
-        level: 'State'
+        title: 'Table and Equipment Specifications',
+        year: '',
+        description: 'A table tennis table is 2.74m long, 1.525m wide, and 76cm high. The ball must be 40mm in diameter and weigh 2.7g.',
+        level: 'General'
+      },
+      {
+        title: 'Scoring System',
+        year: '',
+        description: 'Games are played to 11 points, and a match is typically best of 5 or 7 games. Players switch serves every 2 points and switch sides after each game.',
+        level: 'Competition'
+      },
+      {
+        title: 'Service and Return Rules',
+        year: '',
+        description: 'The server must toss the ball vertically upwards at least 16cm and strike it behind the end line. The ball must be returned after one bounce on the receiver\'s side.',
+        level: 'General'
       }
     ],
     contact: [
@@ -266,9 +309,6 @@ const sportsData = {
         phone: '+91 98765 43216',
         location: 'Sports Complex - Room 106'
       }
-    ],
-    gallery: [
-      { title: 'Tournament Action', description: 'Intense rally during championship', date: 'March 2024' }
     ]
   },
   chess: {
@@ -330,11 +370,6 @@ const sportsData = {
         email: '112301046@smail.iitpkd.ac.in',
         phone: '+91 98765 43221'
       }
-    ],
-    gallery: [
-      { title: 'Annual Chess Tournament 2024', description: 'Finals of our annual chess competition', date: 'February 2024' },
-      { title: 'Chess Workshop', description: 'Strategy session with Grandmaster visit', date: 'January 2024' },
-      { title: 'Chess Team Selection', description: 'Qualifying rounds for university team', date: 'December 2023' }
     ]
   },
   gym: {
@@ -390,11 +425,6 @@ const sportsData = {
         email: '132301033@smail.iitpkd.ac.in',
         phone: '+91 98765 43223'
       }
-    ],
-    gallery: [
-      { title: 'New Equipment Installation', description: 'Recent upgrades to our fitness facility', date: 'March 2024' },
-      { title: 'Strength Training Workshop', description: 'Technique and form workshop for beginners', date: 'February 2024' },
-      { title: 'Fitness Competition', description: 'Annual fitness challenge event', date: 'December 2023' }
     ]
   },
   athletics: {
@@ -442,6 +472,14 @@ const sportsData = {
         level: 'Regional'
       }
     ],
+    rules: [
+      {
+        title: 'Table and Equipment Specifications',
+        year: '',
+        description: 'A table tennis table is 2.74m long, 1.525m wide, and 76cm high. The ball must be 40mm in diameter and weigh 2.7g.',
+        level: 'General'
+      }
+    ],
     contact: [
       {
         name: 'Coach Anand Kumar',
@@ -456,11 +494,6 @@ const sportsData = {
         email: '112201035@smail.iitpkd.ac.in',
         phone: '+91 98765 43225'
       }
-    ],
-    gallery: [
-      { title: 'Annual Athletics Meet 2024', description: 'Highlights from our flagship event', date: 'March 2024' },
-      { title: 'Sprint Training Session', description: 'Specialized coaching for sprinters', date: 'February 2024' },
-      { title: 'Cross-Country Competition', description: 'Team at the regional cross-country event', date: 'January 2024' }
     ]
   }
 };
@@ -479,9 +512,8 @@ const SportPage = () => {
   const tabs = [
     { id: 'about', label: 'About', icon: User },
     { id: 'facilities', label: 'Facilities', icon: Building },
-    { id: 'achievements', label: 'Achievements', icon: Trophy },
-    { id: 'contact', label: 'Contact', icon: Phone },
-    { id: 'gallery', label: 'Gallery', icon: Camera }
+    { id: sportName === 'athletics' ? 'achievements' : 'rules', label: sportName === 'athletics' ? 'Achievements' : 'Rules', icon: Trophy },
+    { id: 'contact', label: 'Contact', icon: Phone }
   ];
 
   const renderContent = () => {
@@ -559,6 +591,29 @@ const SportPage = () => {
           </div>
         );
       
+      case 'rules':
+        return (
+          <div className="sport-achievements-grid">
+            {sport.rules.map((rule, index) => (
+              <div key={index} className="sport-achievement-card">
+                <div className="sport-achievement-header">
+                  <div className="sport-achievement-title-section">
+                    <Trophy />
+                    <h3 className="sport-achievement-title">{rule.title}</h3>
+                  </div>
+                  {rule.year && (
+                    <span className="sport-achievement-year">{rule.year}</span>
+                  )}
+                </div>
+                <p className="sport-achievement-description">{rule.description}</p>
+                <span className={`sport-level-badge ${rule.level.toLowerCase()}`}>
+                  {rule.level}
+                </span>
+              </div>
+            ))}
+          </div>
+        );
+      
       case 'contact':
         return (
           <div className="sport-contact-grid">
@@ -590,24 +645,6 @@ const SportPage = () => {
                       <span style={{ color: '#64748b' }}>{contact.location}</span>
                     </div>
                   )}
-                </div>
-              </div>
-            ))}
-          </div>
-        );
-      
-      case 'gallery':
-        return (
-          <div className="sport-gallery-grid">
-            {sport.gallery.map((item, index) => (
-              <div key={index} className="sport-gallery-card">
-                <div className="sport-gallery-image-placeholder">
-                  <Camera />
-                </div>
-                <div className="sport-gallery-content">
-                  <h3 className="sport-gallery-title">{item.title}</h3>
-                  <p className="sport-gallery-description">{item.description}</p>
-                  <span className="sport-gallery-date">{item.date}</span>
                 </div>
               </div>
             ))}
