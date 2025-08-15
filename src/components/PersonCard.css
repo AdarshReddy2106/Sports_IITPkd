@@ -1,10 +1,10 @@
 .person-card {
-  background: var(--surface-background);
+  background: var(--bg-primary);
   border-radius: 1rem;
   overflow: hidden;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border-primary);
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -12,7 +12,7 @@
 
 .person-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-lg);
 }
 
 .person-image-container {
@@ -58,4 +58,34 @@
 
 .person-email:hover {
   color: var(--accent-primary-darker);
+}
+
+/* Dark mode styling */
+[data-theme="dark"] .person-card {
+  background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 12px 35px rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,.06);
+}
+
+[data-theme="dark"] .person-card:hover {
+  transform: translateY(-8px) rotateX(2deg) rotateY(2deg);
+  box-shadow: 0 25px 50px rgba(0,0,0,.3), 0 0 0 1px rgba(255,255,255,.1);
+}
+
+[data-theme="dark"] .person-name {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .person-title {
+  color: var(--accent-primary);
+}
+
+[data-theme="dark"] .person-email {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .person-email:hover {
+  color: var(--accent-cyan);
 }
