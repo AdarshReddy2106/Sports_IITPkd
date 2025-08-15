@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { useUser } from '@clerk/clerk-react';
+import { useUser, SignInButton } from '@clerk/clerk-react';
 import { supabase } from '../../../Js/supabase';
 import { createBooking, getBookingsByFacilityAndDate, getBookingsByUserId, sendBookingNotification } from '../../../Js/UserBookings';
 import './Bookings.css';
@@ -42,18 +42,36 @@ const Legend = () => (
 );
 
 const BookingModal = ({ slot, facility, date, onClose, onBookingSuccess }) => {
-    const { user } = useUser();
+    const { user, isSignedIn } = useUser();
     const [notes, setNotes] = useState('');
     const [participants, setParticipants] = useState(1);
     const [status, setStatus] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
+    // If not signed in, show a login prompt instead of the booking form
+    if (!isSignedIn) {
+        return (
+            <div className="modal-backdrop" onClick={onClose}>
+                <div className="modal-content" onClick={e => e.stopPropagation()}>
+                    <div className="modal-header">
+                        <h2>Login Required</h2>
+                        <button onClick={onClose} className="close-btn">&times;</button>
+                    </div>
+                    <div className="modal-body" style={{ textAlign: 'center' }}>
+                        <p style={{ marginBottom: '1.5rem' }}>Please sign in to book this facility.</p>
+                        <SignInButton mode="modal">
+                            <button className="submit-btn" style={{ width: 'auto', display: 'inline-block', margin: '0 auto' }}>
+                                Sign In to Continue
+                            </button>
+                        </SignInButton>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!user) {
-            setStatus('Please sign in to book a facility.');
-            return;
-        }
         setIsLoading(true);
         setStatus('Processing your booking...');
 
@@ -187,7 +205,7 @@ const UserBookingsList = ({ bookings, isLoading }) => {
 
 // --- Main Component ---
 const Bookings = () => {
-    const { user } = useUser();
+    const { user, isSignedIn } = useUser();
     const [currentDate, setCurrentDate] = useState(new Date());
     const [selectedSport, setSelectedSport] = useState('badminton');
     const [allBookings, setAllBookings] = useState([]);
@@ -220,19 +238,21 @@ const Bookings = () => {
         const dateString = currentDate.toISOString().split('T')[0];
         const facilityNames = selectedFacilities.map(f => f.name);
 
-        const [allBookingsRes, userBookingsRes] = await Promise.all([
-            getBookingsByFacilityAndDate(facilityNames, dateString),
-            user ? getBookingsByUserId(user.id) : Promise.resolve({ data: [] })
-        ]);
-
+        const allBookingsRes = await getBookingsByFacilityAndDate(facilityNames, dateString);
         if (allBookingsRes.error) console.error("Error fetching all bookings:", allBookingsRes.error);
         else setAllBookings(allBookingsRes.data || []);
         
-        if (userBookingsRes.error) console.error("Error fetching user bookings:", userBookingsRes.error);
-        else setUserBookings(userBookingsRes.data || []);
+        // Only fetch user bookings if the user is signed in
+        if (isSignedIn) {
+            const userBookingsRes = await getBookingsByUserId(user.id);
+            if (userBookingsRes.error) console.error("Error fetching user bookings:", userBookingsRes.error);
+            else setUserBookings(userBookingsRes.data || []);
+        } else {
+            setUserBookings([]);
+        }
         
         setIsLoading(false);
-    }, [currentDate, selectedSport, user]);
+    }, [currentDate, selectedSport, user, isSignedIn]);
 
     useEffect(() => {
         fetchData();
@@ -294,19 +314,36 @@ const Bookings = () => {
                 )}
             </div>
 
-            {/* New layout container */}
+            {/* Bottom layout container */}
             <div className="bottom-layout-container">
-                {/* Left Column */}
+                {/* Left Column - Only show user bookings if signed in */}
                 <div className="left-column">
-                    {user && (
+                    {isSignedIn ? (
                         <div className="user-bookings-section">
                             <UserBookingsList bookings={userBookings} isLoading={isLoading} />
+                        </div>
+                    ) : (
+                        <div className="user-bookings-section">
+                            <div className="info-card">
+                                <h3 className="info-title">My Bookings</h3>
+                                <p style={{ textAlign: 'center', margin: '1.5rem 0' }}>
+                                    Sign in to view and manage your bookings
+                                </p>
+                                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                    <SignInButton mode="modal">
+                                        <button className="submit-btn" style={{ width: 'auto' }}>
+                                            Sign In
+                                        </button>
+                                    </SignInButton>
+                                </div>
+                            </div>
                         </div>
                     )}
                 </div>
 
                 {/* Right Column */}
                 <div className="right-column">
+                    {/* Keep existing info-card and help-card unchanged */}
                     <div className="info-card">
                         <h3 className="info-title">Booking Information</h3>
                         <h4 className="info-title" style={{ marginTop: '2rem', marginBottom: '1rem' }}>Booking Policies</h4>

@@ -17,7 +17,6 @@ import Clubs from './pages/Clubs/Clubs';
 import SportPage from './components/SportsPage';
 import Staff from './pages/People/Staff';
 import CoreTeam from './pages/People/CoreTeam';
-import ProtectedRoute from './components/ProtectedRoute';
 
 // Theme Context
 const ThemeContext = createContext();
@@ -133,11 +132,7 @@ const AppContent = () => {
             <Route path="/gallery" element={<Gallery setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
             <Route path="/calendar" element={<Calendar setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
             <Route path="/events" element={<Events setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
-            <Route path="/bookings" element={
-              <ProtectedRoute>
-                <Bookings setCurrentPage={setCurrentPage} isLoaded={!isLoading} />
-              </ProtectedRoute>
-            } />
+            <Route path="/bookings" element={<Bookings setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
             <Route path="/contact" element={<Contact setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
             <Route path="/admindashboard" element={<AdminDashboard setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
             <Route path="/privacypolicy" element={<PrivacyPolicy setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
