@@ -4,7 +4,7 @@
   background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(13, 148, 136, 0.02) 50%, var(--bg-secondary) 100%);
   position: relative;
   overflow: hidden;
-  padding: 5rem 0;
+  padding: 2rem 0;
 }
 
 .upcoming-events-section::before {
@@ -228,6 +228,7 @@
   font-weight: 400;
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -355,7 +356,7 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .upcoming-events-section {
-    padding: 3rem 0;
+    padding: 1rem 0;
   }
   
   .upcoming-events-header h2 {
@@ -388,6 +389,7 @@
   .event-description {
     text-align: center;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
   }
   
   .event-meta {
@@ -401,7 +403,7 @@
 
 @media (max-width: 480px) {
   .upcoming-events-section {
-    padding: 2rem 0;
+    padding: 0.75rem 0;
   }
   
   .upcoming-events-header h2 {

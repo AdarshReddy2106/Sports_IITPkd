@@ -82,7 +82,7 @@ const Clubs = () => {
   return (
     <section className="sports-programs-container">
       <div className="sports-programs-header">
-        <h2>Our Sports Programs</h2>
+        <h2>Our Sports <span className="text-gradient">Programs</span></h2>
         <p>Explore our comprehensive range of sports facilities and programs designed to nurture athletic talent and promote physical excellence.</p>
       </div>
       <div className="sports-grid">

@@ -77,7 +77,7 @@ const CoreTeam = () => {
   return (
     <div className="core-team-page">
       <div className="page-header">
-        <h1>Core Team</h1>
+        <h1>Core <span className='text-gradient'>Team</span></h1>
         <p>The dedicated student-led team driving our sports initiatives.</p>
       </div>
 

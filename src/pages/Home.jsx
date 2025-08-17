@@ -228,7 +228,7 @@ const Home = ({ isLoaded }) => { // Removed setCurrentPage from props
   const WhyChooseUs = () => (
     <div className="section" style={{ background: 'var(--bg-primary)' }}>
       <div className="container">
-        <h2 className="section-title">Why Choose <span className="text-gradient">Us</span></h2>
+        <h2 className="home-section-title">Why Choose <span className="text-gradient">Us</span></h2>
         <div className="grid grid-3">
           <div className="card">
             <div

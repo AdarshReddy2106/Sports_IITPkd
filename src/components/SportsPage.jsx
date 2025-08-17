@@ -480,7 +480,7 @@ const SportPage = () => {
               <User />
               <h3>About {sport.title}</h3>
             </div>
-            <p style={{ color: '#64748b', lineHeight: '1.7', fontSize: '1.05rem', marginBottom: '2rem' }}>
+            <p>
               {sport.about.description}
             </p>
           </div>
@@ -495,7 +495,7 @@ const SportPage = () => {
                   <Building />
                   <h3>{facility.name}</h3>
                 </div>
-                <p style={{ color: '#64748b', lineHeight: '1.6', marginBottom: '1rem' }}>
+                <p>
                   {facility.description}
                 </p>
                 <div className="sport-facility-location">

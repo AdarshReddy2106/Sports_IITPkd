@@ -18,7 +18,7 @@
 }
 
 .sports-programs-header h2 {
-  font-size: clamp(2rem, 5vw, 2.5rem);
+  font-size: 3rem;
   color: var(--text-primary);
   font-weight: 700;
   margin-bottom: 1rem;

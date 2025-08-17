@@ -16,7 +16,7 @@ const Staff = () => {
   return (
     <div className="staff-page">
       <div className="page-header">
-        <h1>Our Staff</h1>
+        <h1>Our <span className="text-gradient">Staff</span></h1>
         <p>The guiding force behind the Sports Council.</p>
       </div>
       <div className="staff-grid">
