@@ -1,0 +1,161 @@
+/* Web Team Page - Main Container */
+.web-team-page {
+  margin: 0 auto;
+  padding: 60px 20px;
+  background: var(--bg-primary);
+}
+
+/* Header Styling */
+.page-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.page-header h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  background: var(--text-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.page-header p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Team Section Styling */
+.team-section {
+  margin-bottom: 60px;
+}
+
+.section-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 30px;
+  text-align: center;
+  position: relative;
+  padding-bottom: 12px;
+  /* Apply gradient to all section titles */
+  background: linear-gradient(135deg, var(--accent-blue), #22d3ee);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-blue), #22d3ee);
+  border-radius: 2px;
+}
+
+/* Team Grid Layout - Using Flexbox for better control */
+.team-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+}
+
+/* Each card will have a fixed width */
+.team-grid > * {
+  width: calc(33.333% - 20px);
+  min-width: 280px;
+  max-width: 350px;
+  margin-bottom: 10px;
+}
+
+/* Special styling for sections with few members */
+.team-grid.single-item {
+  justify-content: center;
+}
+
+.team-grid.three-items {
+  justify-content: center;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* For large screens - ensure 3 cards per row maximum */
+@media (min-width: 1201px) {
+  .team-grid > * {
+    width: calc(33.333% - 20px);
+    max-width: 350px;
+  }
+}
+
+/* For medium screens - 2 cards per row */
+@media (max-width: 1200px) and (min-width: 768px) {
+  .team-grid > * {
+    width: calc(50% - 15px);
+    max-width: 400px;
+  }
+  
+  /* Ensure two-item layouts maintain consistent sizing */
+  .team-grid.two-items > * {
+    width: calc(50% - 15px);
+    max-width: 350px;
+  }
+}
+
+/* For small screens - stack cards */
+@media (max-width: 767px) {
+  .web-team-page {
+    background: var(--bg-primary); /* Ensure background color is consistent */
+    padding: 40px 15px; /* Adjusted padding for better mobile appearance */
+  }
+  
+  .team-grid {
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    width: 100%; /* Full width container */
+  }
+  
+  .team-grid > *,
+  .team-grid.two-items > * {
+    width: 100%;
+    max-width: 300px; /* Reduced max-width for better mobile fit */
+    margin: 0 auto; /* Center the cards */
+  }
+  
+  .page-header h1 {
+    font-size: 2rem;
+  }
+  
+  .section-title {
+    font-size: 1.6rem;
+  }
+}
+
+/* Dark mode styling */
+[data-theme="dark"] .web-team-page {
+  background: var(--bg-gradient);
+}
+
+/* Adjust dark mode gradients to match light mode */
+[data-theme="dark"] .page-header h1 {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+[data-theme="dark"] .section-title {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+[data-theme="dark"] .section-title::after {
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-cyan));
+}

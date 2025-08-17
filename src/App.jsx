@@ -17,6 +17,7 @@ import Clubs from './pages/Clubs/Clubs';
 import SportPage from './components/SportsPage';
 import Staff from './pages/People/Staff';
 import CoreTeam from './pages/People/CoreTeam';
+import WebTeam from './pages/People/WebTeam';
 
 // Theme Context
 const ThemeContext = createContext();
@@ -129,6 +130,7 @@ const AppContent = () => {
             <Route path="/clubs/:sportName" element={<SportPage setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
             <Route path="/staff" element={<Staff setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
             <Route path="/core-team" element={<CoreTeam setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
+            <Route path="/web-team" element={<WebTeam setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
             <Route path="/gallery" element={<Gallery setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
             <Route path="/calendar" element={<Calendar setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />
             <Route path="/events" element={<Events setCurrentPage={setCurrentPage} isLoaded={!isLoading} />} />

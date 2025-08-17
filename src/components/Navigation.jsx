@@ -62,7 +62,7 @@ const Navigation = ({ currentPage, setCurrentPage, isHomePage }) => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const isPeopleActive = currentPage === 'staff' || currentPage === 'core-team';
+  const isPeopleActive = currentPage === 'staff' || currentPage === 'core-team' || currentPage === 'web-team';
 
   return (
     <nav className={`navbar ${isHomePage && !scrolled ? 'transparent' : ''} ${scrolled ? 'scrolled' : ''}`}>
@@ -104,6 +104,12 @@ const Navigation = ({ currentPage, setCurrentPage, isHomePage }) => {
                 className={`dropdown-item ${currentPage === 'core-team' ? 'active' : ''}`}
               >
                 Core Team
+              </button>
+              <button 
+                onClick={() => handleNavigation('web-team')} 
+                className={`dropdown-item ${currentPage === 'web-team' ? 'active' : ''}`}
+              >
+                Web Team
               </button>
             </div>
           </div>

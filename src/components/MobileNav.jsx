@@ -60,6 +60,7 @@ const navLinks = [
     subLinks: [
       { name: 'Staff', key: 'staff' },
       { name: 'Core Team', key: 'core-team' },
+      { name: 'Web Team', key: 'web-team' }, 
     ],
   },
   { name: 'Gallery', key: 'gallery' },
@@ -98,6 +99,9 @@ const MobileNav = ({ currentPage, setCurrentPage, isHomePage }) => {
   const handleDropdownToggle = (key) => {
     setOpenDropdown(openDropdown === key ? '' : key);
   };
+
+  // Update isPeopleActive to include web-team
+  const isPeopleActive = currentPage === 'staff' || currentPage === 'core-team' || currentPage === 'web-team';
 
   return (
     <nav className={`mobile-navbar ${isHomePage && !scrolled ? 'transparent' : ''} ${scrolled ? 'scrolled' : ''}`}>

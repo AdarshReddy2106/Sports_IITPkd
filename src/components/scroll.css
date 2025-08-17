@@ -18,6 +18,7 @@
 }
 
 .logo-track img {
+    border-radius: 50%;
     height: 125px; 
     margin: 0 30px; 
     vertical-align: middle;
