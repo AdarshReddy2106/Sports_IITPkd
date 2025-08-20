@@ -91,9 +91,9 @@ const BookingModal = ({ slot, facility, date, onClose, onBookingSuccess }) => {
         try {
             const result = await createBooking(bookingData);
             if (result) {
-                setStatus('Booking submitted! Sending notifications...');
+                setStatus('Booking...');
                 await sendBookingNotification(result);
-                setStatus('Booking successful! Waiting for confirmation.');
+                setStatus('Booking sent! Waiting for confirmation.');
                 setTimeout(() => {
                     onBookingSuccess();
                     onClose();

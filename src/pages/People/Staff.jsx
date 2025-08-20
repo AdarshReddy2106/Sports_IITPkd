@@ -4,10 +4,19 @@ import './Staff.css';
 
 const staffData = [
   {
-    name: 'name',
-    title: 'title',
-    email: 'email',
-    imageUrl: 'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?cs=srgb&dl=pexels-simon-robben-55958-614810.jpg&fm=jpg',
+    name: 'Mr.Renchu T',
+    title: 'Sports Officer',
+    imageUrl: '/public/Staff/renchu.png',
+  },
+  {
+    name: 'Deepak Rajendraprasad',
+    title: 'Dean Students',
+    imageUrl: '/public/Staff/rajendra.png',
+  },
+  {
+    name: 'Padmesh A',
+    title: 'Sports FA',
+    imageUrl: '/public/Staff/padmesh.png',
   },
   // Add more staff members here
 ];
