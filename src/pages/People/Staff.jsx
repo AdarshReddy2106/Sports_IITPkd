@@ -6,17 +6,17 @@ const staffData = [
   {
     name: 'Mr.Renchu T',
     title: 'Sports Officer',
-    imageUrl: '/public/Staff/renchu.png',
+    imageUrl: '/Staff/renchu.png',
   },
   {
     name: 'Deepak Rajendraprasad',
     title: 'Dean Students',
-    imageUrl: '/public/Staff/rajendra.png',
+    imageUrl: '/Staff/rajendra.png',
   },
   {
     name: 'Padmesh A',
     title: 'Sports FA',
-    imageUrl: '/public/Staff/padmesh.png',
+    imageUrl: '/Staff/padmesh.png',
   },
   // Add more staff members here
 ];
