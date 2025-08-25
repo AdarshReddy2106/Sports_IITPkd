@@ -60,6 +60,11 @@
   padding: 20px;
 }
 
+/* NEW: Wrapper for back button to fix hover flicker */
+.sport-back-button-wrapper {
+  display: inline-block;
+}
+
 .sport-back-button {
   display: inline-flex;
   align-items: center;
@@ -76,7 +81,8 @@
   cursor: pointer;
 }
 
-.sport-back-button:hover {
+/* MODIFIED: Hover is on the wrapper, transform is on the button */
+.sport-back-button-wrapper:hover .sport-back-button {
   background: rgba(255, 255, 255, 0.2);
   border-color: rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
@@ -151,6 +157,11 @@
   padding: 0 20px 60px;
 }
 
+/* NEW: Wrapper for cards to fix hover flicker */
+.sport-card-wrapper {
+  perspective: 1000px;
+}
+
 /* Content Cards */
 .sport-content-card {
   background: rgba(255, 255, 255, 0.95);
@@ -163,7 +174,8 @@
   transition: all 0.3s ease;
 }
 
-.sport-content-card:hover {
+/* MODIFIED: Hover is on the wrapper, transform is on the card */
+.sport-card-wrapper:hover .sport-content-card {
   transform: translateY(-4px);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
 }
@@ -203,6 +215,12 @@
   padding: 32px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.sport-card-wrapper:hover .sport-facility-card {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
 }
 
 .sport-facility-location {
@@ -247,6 +265,12 @@
   border-top: 1px solid rgba(255, 255, 255, 0.2);
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.sport-card-wrapper:hover .sport-achievement-card {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
 }
 
 .sport-achievement-header {
@@ -317,6 +341,12 @@
   padding: 32px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.sport-card-wrapper:hover .sport-contact-card {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
 }
 
 .sport-contact-header {
@@ -386,7 +416,7 @@
   transition: all 0.3s ease;
 }
 
-.sport-gallery-card:hover {
+.sport-card-wrapper:hover .sport-gallery-card {
   transform: translateY(-6px);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
 }
@@ -652,11 +682,12 @@
   box-shadow: 0 12px 35px rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,.06);
 }
 
-[data-theme="dark"] .sport-content-card:hover,
-[data-theme="dark"] .sport-facility-card:hover,
-[data-theme="dark"] .sport-achievement-card:hover,
-[data-theme="dark"] .sport-contact-card:hover,
-[data-theme="dark"] .sport-gallery-card:hover {
+/* MODIFIED: Hover selectors updated to target wrappers */
+[data-theme="dark"] .sport-card-wrapper:hover .sport-content-card,
+[data-theme="dark"] .sport-card-wrapper:hover .sport-facility-card,
+[data-theme="dark"] .sport-card-wrapper:hover .sport-achievement-card,
+[data-theme="dark"] .sport-card-wrapper:hover .sport-contact-card,
+[data-theme="dark"] .sport-card-wrapper:hover .sport-gallery-card {
   transform: translateY(-8px) rotateX(2deg) rotateY(2deg);
   box-shadow: 0 25px 50px rgba(0,0,0,.3), 0 0 0 1px rgba(255,255,255,.1);
 }

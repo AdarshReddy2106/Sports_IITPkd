@@ -851,14 +851,16 @@ const SportPage = () => {
     switch (activeTab) {
       case 'about':
         return (
-          <div className="sport-content-card">
-            <div className="sport-section-header">
-              <User />
-              <h3>About {sport.title}</h3>
+          <div className="sport-card-wrapper">
+            <div className="sport-content-card">
+              <div className="sport-section-header">
+                <User />
+                <h3>About {sport.title}</h3>
+              </div>
+              <p>
+                {sport.about.description}
+              </p>
             </div>
-            <p>
-              {sport.about.description}
-            </p>
           </div>
         );
       
@@ -866,24 +868,26 @@ const SportPage = () => {
         return (
           <div className="sport-facilities-grid">
             {sport.facilities.map((facility, index) => (
-              <div key={index} className="sport-facility-card">
-                <div className="sport-section-header">
-                  <Building />
-                  <h3>{facility.name}</h3>
-                </div>
-                <p>
-                  {facility.description}
-                </p>
-                <div className="sport-facility-location">
-                  <span>📍</span>
-                  {facility.location}
-                </div>
-                <div className="sport-features-list">
-                  {facility.features.map((feature, idx) => (
-                    <span key={idx} className="sport-feature-tag">
-                      {feature}
-                    </span>
-                  ))}
+              <div key={index} className="sport-card-wrapper">
+                <div className="sport-facility-card">
+                  <div className="sport-section-header">
+                    <Building />
+                    <h3>{facility.name}</h3>
+                  </div>
+                  <p>
+                    {facility.description}
+                  </p>
+                  <div className="sport-facility-location">
+                    <span>📍</span>
+                    {facility.location}
+                  </div>
+                  <div className="sport-features-list">
+                    {facility.features.map((feature, idx) => (
+                      <span key={idx} className="sport-feature-tag">
+                        {feature}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
             ))}
@@ -894,18 +898,20 @@ const SportPage = () => {
         return (
           <div className="sport-achievements-grid">
             {sport.achievements.map((achievement, index) => (
-              <div key={index} className="sport-achievement-card">
-                <div className="sport-achievement-header">
-                  <div className="sport-achievement-title-section">
-                    <Trophy />
-                    <h3 className="sport-achievement-title">{achievement.title}</h3>
+              <div key={index} className="sport-card-wrapper">
+                <div className="sport-achievement-card">
+                  <div className="sport-achievement-header">
+                    <div className="sport-achievement-title-section">
+                      <Trophy />
+                      <h3 className="sport-achievement-title">{achievement.title}</h3>
+                    </div>
+                    <span className="sport-achievement-year">{achievement.year}</span>
                   </div>
-                  <span className="sport-achievement-year">{achievement.year}</span>
+                  <p className="sport-achievement-description">{achievement.description}</p>
+                  <span className={`sport-level-badge ${achievement.level.toLowerCase()}`}>
+                    {achievement.level}
+                  </span>
                 </div>
-                <p className="sport-achievement-description">{achievement.description}</p>
-                <span className={`sport-level-badge ${achievement.level.toLowerCase()}`}>
-                  {achievement.level}
-                </span>
               </div>
             ))}
           </div>
@@ -913,92 +919,94 @@ const SportPage = () => {
       
       case 'rules':
         return (
-          <div className="sport-achievement-card badminton-rules-card">
-            {/* Special timing tables for badminton or gym */}
-            {(sportName === 'badminton' || sportName === 'gym') && (
-              <>
-                {/* First rule with timing table */}
-                <div className="sport-achievement-header">
-                  <div className="sport-achievement-title-section">
-                    <Trophy />
-                    <h3 className="sport-achievement-title">{sport.rules[0].title}</h3>
+          <div className="sport-card-wrapper">
+            <div className="sport-achievement-card badminton-rules-card">
+              {/* Special timing tables for badminton or gym */}
+              {(sportName === 'badminton' || sportName === 'gym') && (
+                <>
+                  {/* First rule with timing table */}
+                  <div className="sport-achievement-header">
+                    <div className="sport-achievement-title-section">
+                      <Trophy />
+                      <h3 className="sport-achievement-title">{sport.rules[0].title}</h3>
+                    </div>
                   </div>
-                </div>
-                {sport.rules[0].description && (
-                  <p className="sport-achievement-description">{sport.rules[0].description}</p>
-                )}
-                
-                {/* Timing table styled to match image */}
-                <div className="timing-table-container">
-                  <table className="badminton-timing-table">
-                    <thead>
-                      <tr>
-                        <th>Category</th>
-                        <th>Time</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {sport.rules[0].timingTable.map((slot, idx) => (
-                        <tr key={idx}>
-                          <td>{slot.category}</td>
-                          <td>{slot.time}</td>
+                  {sport.rules[0].description && (
+                    <p className="sport-achievement-description">{sport.rules[0].description}</p>
+                  )}
+                  
+                  {/* Timing table styled to match image */}
+                  <div className="timing-table-container">
+                    <table className="badminton-timing-table">
+                      <thead>
+                        <tr>
+                          <th>Category</th>
+                          <th>Time</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                
-                {/* Second timing table for gym */}
-                {sportName === 'gym' && (
-                  <>
-                    <div className="sport-achievement-header" style={{ marginTop: '20px' }}>
-                      <div className="sport-achievement-title-section">
-                        <Trophy />
-                        <h3 className="sport-achievement-title">{sport.rules[1].title}</h3>
-                      </div>
-                    </div>
-                    <div className="timing-table-container">
-                      <table className="badminton-timing-table">
-                        <thead>
-                          <tr>
-                            <th>Category</th>
-                            <th>Time</th>
+                      </thead>
+                      <tbody>
+                        {sport.rules[0].timingTable.map((slot, idx) => (
+                          <tr key={idx}>
+                            <td>{slot.category}</td>
+                            <td>{slot.time}</td>
                           </tr>
-                        </thead>
-                        <tbody>
-                          {sport.rules[1].timingTable.map((slot, idx) => (
-                            <tr key={idx}>
-                              <td>{slot.category}</td>
-                              <td>{slot.time}</td>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  
+                  {/* Second timing table for gym */}
+                  {sportName === 'gym' && (
+                    <>
+                      <div className="sport-achievement-header" style={{ marginTop: '20px' }}>
+                        <div className="sport-achievement-title-section">
+                          <Trophy />
+                          <h3 className="sport-achievement-title">{sport.rules[1].title}</h3>
+                        </div>
+                      </div>
+                      <div className="timing-table-container">
+                        <table className="badminton-timing-table">
+                          <thead>
+                            <tr>
+                              <th>Category</th>
+                              <th>Time</th>
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                          </thead>
+                          <tbody>
+                            {sport.rules[1].timingTable.map((slot, idx) => (
+                              <tr key={idx}>
+                                <td>{slot.category}</td>
+                                <td>{slot.time}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </>
+                  )}
+                </>
+              )}
+              
+              {/* Rules as bullet points for all sports */}
+              <div className="badminton-rules-list">
+                {/* For badminton and gym, skip the timing tables that are already displayed */}
+                {(sportName === 'badminton' || sportName === 'gym') ? 
+                  sport.rules.slice(sportName === 'gym' ? 2 : 1).map((rule, index) => (
+                    <div key={index} className="badminton-rule-item">
+                      <div className="badminton-rule-bullet">•</div>
+                      <div className="badminton-rule-text">{rule.title}</div>
                     </div>
-                  </>
-                )}
-              </>
-            )}
-            
-            {/* Rules as bullet points for all sports */}
-            <div className="badminton-rules-list">
-              {/* For badminton and gym, skip the timing tables that are already displayed */}
-              {(sportName === 'badminton' || sportName === 'gym') ? 
-                sport.rules.slice(sportName === 'gym' ? 2 : 1).map((rule, index) => (
-                  <div key={index} className="badminton-rule-item">
-                    <div className="badminton-rule-bullet">•</div>
-                    <div className="badminton-rule-text">{rule.title}</div>
-                  </div>
-                ))
-                :
-                // For all other sports, display all rules
-                sport.rules.map((rule, index) => (
-                  <div key={index} className="badminton-rule-item">
-                    <div className="badminton-rule-bullet">•</div>
-                    <div className="badminton-rule-text">{rule.title}</div>
-                  </div>
-                ))
-              }
+                  ))
+                  :
+                  // For all other sports, display all rules
+                  sport.rules.map((rule, index) => (
+                    <div key={index} className="badminton-rule-item">
+                      <div className="badminton-rule-bullet">•</div>
+                      <div className="badminton-rule-text">{rule.title}</div>
+                    </div>
+                  ))
+                }
+              </div>
             </div>
           </div>
         );
@@ -1007,33 +1015,35 @@ const SportPage = () => {
         return (
           <div className="sport-contact-grid">
             {sport.contact.map((contact, index) => (
-              <div key={index} className="sport-contact-card">
-                <div className="sport-contact-header">
-                  <User />
-                  <div className="sport-contact-info">
-                    <h3 className="sport-contact-name">{contact.name}</h3>
-                    <p className="sport-contact-role">{contact.role}</p>
-                  </div>
-                </div>
-                <div className="sport-contact-details">
-                  <div className="sport-contact-item">
-                    <span>✉️</span>
-                    <a href={`mailto:${contact.email}`}>
-                      {contact.email}
-                    </a>
-                  </div>
-                  <div className="sport-contact-item">
-                    <span>📞</span>
-                    <a href={`tel:${contact.phone}`}>
-                      {contact.phone}
-                    </a>
-                  </div>
-                  {contact.location && (
-                    <div className="sport-contact-item">
-                      <span>📍</span>
-                      <span style={{ color: '#64748b' }}>{contact.location}</span>
+              <div key={index} className="sport-card-wrapper">
+                <div className="sport-contact-card">
+                  <div className="sport-contact-header">
+                    <User />
+                    <div className="sport-contact-info">
+                      <h3 className="sport-contact-name">{contact.name}</h3>
+                      <p className="sport-contact-role">{contact.role}</p>
                     </div>
-                  )}
+                  </div>
+                  <div className="sport-contact-details">
+                    <div className="sport-contact-item">
+                      <span>✉️</span>
+                      <a href={`mailto:${contact.email}`}>
+                        {contact.email}
+                      </a>
+                    </div>
+                    <div className="sport-contact-item">
+                      <span>📞</span>
+                      <a href={`tel:${contact.phone}`}>
+                        {contact.phone}
+                      </a>
+                    </div>
+                    {contact.location && (
+                      <div className="sport-contact-item">
+                        <span>📍</span>
+                        <span style={{ color: '#64748b' }}>{contact.location}</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}
@@ -1057,13 +1067,15 @@ return (
       
       {/* Back button */}
       <div className="sport-back-button-container">
-        <button 
-          onClick={() => navigate('/clubs')} 
-          className="sport-back-button"
-        >
-          <ArrowLeft size={20} />
-          Back to Sports
-        </button>
+        <div className="sport-back-button-wrapper">
+          <button 
+            onClick={() => navigate('/clubs')} 
+            className="sport-back-button"
+          >
+            <ArrowLeft size={20} />
+            Back to Sports
+          </button>
+        </div>
     </div>
     
     {/* Navigation tabs */}
