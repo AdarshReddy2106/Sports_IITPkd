@@ -2,7 +2,18 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Clubs.css';
 
-// Importing icons from lucide-react
+// Import all logo images
+import athletics from '/Logos/1.png';
+import badminton from '/Logos/8.png';
+import basketball from '/Logos/2.png';
+import chess from '/Logos/9.png';
+import cricket from '/Logos/3.png';
+import football from '/Logos/4.png';
+import gym from '/Logos/6.png';
+import tableTennis from '/Logos/7.png';
+import volleyball from '/Logos/10.png';
+
+// Importing icons from lucide-react for fallback
 import { Zap, Target, Dribbble, Trophy, CircleDot, Gamepad2, Crown, Dumbbell, Activity } from 'lucide-react';
 
 // Data for the sports programs - now alphabetically sorted by title
@@ -11,64 +22,64 @@ const sportsData = [
     icon: <Activity />,
     title: 'Athletics',
     slug: 'athletics',
-    description: 'Track and field events testing speed, endurance, and athletic prowess.',
-    color: '#f97316' // Orange-red
+    color: '#f97316', // Orange-red
+    logoImg: athletics
   },
   {
     icon: <Zap />,
     title: 'Badminton',
     slug: 'badminton',
-    description: 'Fast-paced racket sport emphasizing agility, precision, and strategic play.',
-    color: '#3b82f6' // Blue
+    color: '#3b82f6', // Blue
+    logoImg: badminton
   },
   {
     icon: <Dribbble />,
     title: 'Basketball',
     slug: 'basketball',
-    description: 'Dynamic team sport combining strategy, skill, and competitive spirit.',
-    color: '#ef4444' // Red
+    color: '#ef4444', // Red
+    logoImg: basketball
   },
   {
     icon: <Crown />,
     title: 'Chess',
     slug: 'chess',
-    description: 'Strategic board game developing critical thinking and mental fortitude.',
-    color: '#6366f1' // Indigo
+    color: '#6366f1', // Indigo
+    logoImg: chess
   },
   {
     icon: <Trophy />,
     title: 'Cricket',
     slug: 'cricket',
-    description: 'Traditional sport requiring technique, patience, and mental strength.',
-    color: '#10b981' // Green
+    color: '#10b981', // Green
+    logoImg: cricket
   },
   {
     icon: <CircleDot />,
     title: 'Football',
     slug: 'football',
-    description: 'The beautiful game that builds teamwork and athletic prowess.',
-    color: '#8b5cf6' // Purple
+    color: '#8b5cf6', // Purple
+    logoImg: football
   },
   {
     icon: <Dumbbell />,
     title: 'Gym',
     slug: 'gym',
-    description: 'Modern fitness facilities for strength training and physical conditioning.',
-    color: '#ec4899' // Pink
+    color: '#ec4899', // Pink
+    logoImg: gym
   },
   {
     icon: <Gamepad2 />,
     title: 'Table Tennis',
     slug: 'table-tennis',
-    description: 'Quick reflexes and precision in this fast-paced indoor sport.',
-    color: '#06b6d4' // Cyan
+    color: '#06b6d4', // Cyan
+    logoImg: tableTennis
   },
   {
     icon: <Target />,
     title: 'Volleyball',
     slug: 'volleyball',
-    description: 'Team sport promoting communication, coordination, and athletic excellence.',
-    color: '#f59e0b' // Orange
+    color: '#f59e0b', // Orange
+    logoImg: volleyball
   }
 ];
 
@@ -90,7 +101,6 @@ const Clubs = () => {
           <article 
             key={index} 
             className="sport-card" 
-            style={{ '--sport-color': sport.color }}
             onClick={() => handleSportClick(sport.slug)}
             role="button"
             tabIndex={0}
@@ -101,13 +111,24 @@ const Clubs = () => {
             }}
           >
             <div className="sport-image-container">
-              <div className="sport-icon-wrapper">
-                {sport.icon}
-              </div>
+              {sport.logoImg ? (
+                <img 
+                  src={sport.logoImg} 
+                  alt={`${sport.title}`} 
+                  className="sport-logo"
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    e.target.nextSibling.style.display = 'flex';
+                  }}
+                />
+              ) : (
+                <div className="sport-icon-wrapper">
+                  {sport.icon}
+                </div>
+              )}
             </div>
             <div className="sport-content">
               <h3>{sport.title}</h3>
-              <p className="sport-description">{sport.description}</p>
             </div>
           </article>
         ))}
