@@ -147,11 +147,13 @@ const Gallery = () => {
             {galleryImages.map((item) => {
               const imageCount = getAvailableImages(item).length;
               return (
-                <div key={item.id} className={`gallery-item ${item.colorClass || 'teal'}`} onClick={() => openModal(item)} role="button" tabIndex={0} aria-label={`View ${item.title} gallery`} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(item); } }}>
-                  {renderImageStack(item)}
-                  <div className="gallery-content">
-                    <h3 className="gallery-item-title">{item.title}</h3>
-                    <p className="gallery-item-category">{item.category}{imageCount > 1 && (<span style={{ opacity: 0.7, marginLeft: '0.5rem' }}>• {imageCount} photos</span>)}</p>
+                <div key={item.id} className="gallery-item-wrapper" onClick={() => openModal(item)} role="button" tabIndex={0} aria-label={`View ${item.title} gallery`} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(item); } }}>
+                  <div className={`gallery-item ${item.colorClass || 'teal'}`}>
+                    {renderImageStack(item)}
+                    <div className="gallery-content">
+                      <h3 className="gallery-item-title">{item.title}</h3>
+                      <p className="gallery-item-category">{item.category}{imageCount > 1 && (<span style={{ opacity: 0.7, marginLeft: '0.5rem' }}>• {imageCount} photos</span>)}</p>
+                    </div>
                   </div>
                 </div>
               );

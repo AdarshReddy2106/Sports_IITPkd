@@ -20,15 +20,15 @@ const About = () => {
             
             <div className="about-stats">
               <div className="stat-item">
-                <div className="stat-number">15+</div>
+                <div className="stat-number">10+</div>
                 <div className="stat-label">Years of Excellence</div>
               </div>
               <div className="stat-item">
-                <div className="stat-number">50+</div>
+                <div className="stat-number">10+</div>
                 <div className="stat-label">Expert Coaches</div>
               </div>
               <div className="stat-item">
-                <div className="stat-number">10k+</div>
+                <div className="stat-number">1000+</div>
                 <div className="stat-label">Athletes Trained</div>
               </div>
             </div>

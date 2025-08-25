@@ -441,6 +441,163 @@
   font-weight: 500;
 }
 
+/* Timing Table */
+.timing-table-container {
+  margin: 15px 0;
+  overflow-x: auto;
+  width: 100%;
+}
+
+.timing-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 15px;
+  border: 1px solid #e2e8f0;
+  background: white;
+}
+
+.timing-table th, 
+.timing-table td {
+  border: 1px solid #e2e8f0;
+  padding: 10px 15px;
+  text-align: left;
+}
+
+.timing-table th {
+  background-color: #f8fafc;
+  font-weight: 600;
+  color: #334155;
+}
+
+.timing-table tbody tr:nth-child(even) {
+  background-color: #f8fafc;
+}
+
+.timing-table tbody tr:hover {
+  background-color: #f1f5f9;
+}
+
+/* Badminton timing table styling to match the image */
+.badminton-timing-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 15px 0;
+  background-color: #1e293b;
+  color: white;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.badminton-timing-table th,
+.badminton-timing-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border: none;
+}
+
+.badminton-timing-table th {
+  background-color: #1e293b;
+  font-weight: 500;
+  color: white;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.badminton-timing-table td {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.badminton-timing-table tr:nth-child(odd) {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Bullet point style for rules */
+.sport-rule-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.sport-rule-bullet {
+  margin-right: 10px;
+  font-size: 18px;
+  line-height: 24px;
+  color: #334155;
+}
+
+.sport-rule-content {
+  flex: 1;
+}
+
+.sport-rule-title {
+  margin: 0;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+  color: #334155;
+}
+
+.sport-rule-description {
+  margin: 5px 0 0;
+  font-size: 14px;
+  color: #64748b;
+}
+
+/* Dark mode table styles */
+[data-theme="dark"] .timing-table {
+  background-color: #1e293b;
+  border-color: #334155;
+  color: white;
+}
+
+[data-theme="dark"] .timing-table th, 
+[data-theme="dark"] .timing-table td {
+  border-color: #334155;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+[data-theme="dark"] .timing-table th {
+  background-color: rgba(0, 0, 0, 0.2);
+  color: white;
+}
+
+[data-theme="dark"] .timing-table tbody tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .timing-table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Badminton rules list styling */
+.badminton-rules-list {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.badminton-rule-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 1.5;
+}
+
+.badminton-rule-bullet {
+  color: #667eea;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  flex-shrink: 0;
+}
+
+.badminton-rule-text {
+  color: #64748b;
+}
+
+[data-theme="dark"] .badminton-rule-text {
+  color: rgba(255, 255, 255, 0.8);
+}
+
 /* Dark mode enhancements */
 [data-theme="dark"] .sport-page {
   background: var(--bg-gradient);

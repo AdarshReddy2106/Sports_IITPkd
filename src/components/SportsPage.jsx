@@ -13,36 +13,98 @@ const sportsData = {
     },
     facilities: [
       {
-        name: 'Indoor Badminton Court A',
+        name: 'Indoor Badminton Court ',
         description: 'Professional-grade court with competition lighting and ventilation',
-        location: 'Sports Complex - Ground Floor',
-        features: ['Wooden flooring', 'Professional nets', 'LED lighting', 'Air conditioning']
+        location: 'Agora Auditorium',
+        features: ['Professional nets', 'LED lighting', 'Air conditioning']
       },
       {
-        name: 'Indoor Badminton Court B',
-        description: 'Training court perfect for practice sessions and skill development',
-        location: 'Sports Complex - Ground Floor',
-        features: ['Synthetic flooring', 'Standard nets', 'Natural lighting', 'Equipment storage']
+        name: 'Hostel Outdoor Courts',
+        location: 'Malhar, Saveri Hostels - Ground Floor',
+        features: ['Standard nets', 'Natural lighting', 'Equipment']
       }
     ],
     rules: [
       {
-        title: 'Court Dimensions & Equipment',
-        year: '',
-        description: 'Standard court size is 13.4m x 5.18m with a net height of 1.55m. Rackets and shuttlecocks must meet BWF standards.',
-        level: 'General'
+        title: 'Timing Slots for Agora Badminton Court',
+        description: 'The badminton court is available during the following time slots:',
+        timingTable: [
+          { category: 'Common', time: '6.00 am to 09.00 am and 8.30 pm to 10.00 pm' },
+          { category: 'PhD and Institute employees', time: '4.30 pm to 6.00 pm' },
+          { category: 'Institute Team practice and NSO Class', time: '6.00 pm to 8.30 pm' }
+        ]
       },
       {
-        title: 'Scoring System',
-        year: '',
-        description: 'Games are played to 21 points with rally scoring. A match is best of 3 games. At 20-all, a side must win by 2 clear points.',
-        level: 'Competition'
+        title: 'Only Members of IIT Palakkad community having valid identity card, will have access to the Badminton court.',
+        description: '',
       },
       {
-        title: 'Service & Play Rules',
-        year: '',
-        description: 'Service must be underhand and below waist height. The shuttle must land diagonally opposite court. Let calls apply for service interruptions.',
-        level: 'General'
+        title: 'Institute employees who participate in inter-IIT events or use the sports facilities must pay a gymkhana fee of INR 250 per month.',
+        description: '',
+      },
+      {
+        title: 'Courts should be used only for playing Badminton.',
+        description: '',
+      },
+      {
+        title: 'Courts would be available on a first come-first serve basis.',
+        description: '',
+      },
+      {
+        title: 'Vacation of the court is to be done for pre-reserved events.',
+        description: '',
+      },
+      {
+        title: 'One player can play for a maximum of 30 minutes if other players are waiting to play.',
+        description: '',
+      },
+      {
+        title: 'Women\'s Hostel court is reserved for females.',
+        description: '',
+      },
+      {
+        title: 'Sports Rigs are compulsory for everyone. In case of improper attire, entry to the courts will be denied.',
+        description: '',
+      },
+      {
+        title: 'Players should wear clean, non-marking gum sole shoes in the court.',
+        description: '',
+      },
+      {
+        title: 'Institute Badminton team will be given priority for the team practice.',
+        description: '',
+      },
+      {
+        title: 'Lights will be switched off by 2200hrs. To use them after 2200hrs, prior permission from Sports Office is compulsory.',
+        description: '',
+      },
+      {
+        title: 'Issued equipment should be used properly and returned after use without any damage.',
+        description: '',
+      },
+      {
+        title: 'Damage to the courts or equipment would imply a strict disciplinary action and/or fine against the offender.',
+        description: '',
+      },
+      {
+        title: 'Disposing of the trash is to be done in proper receptacles.',
+        description: '',
+      },
+      {
+        title: 'Eatables are not allowed on the courts.',
+        description: '',
+      },
+      {
+        title: 'For getting sports equipment, students need to enter his/her details in a logbook corresponding to their hostel (available with security or hostel supervisor), submit their ID and get the equipment\'s, they can collect ID as soon they return the equipment.',
+        description: '',
+      },
+      {
+        title: 'Above-mentioned rules are not exhaustive, and Institute is free to modify/amend/delete/add new rules.',
+        description: '',
+      },
+      {
+        title: 'Non-compliance of the above-mentioned rules would invite strict disciplinary action. Decision of the Institute would be final.',
+        description: '',
       }
     ],
     contact: [
@@ -77,22 +139,64 @@ const sportsData = {
     ],
     rules: [
       {
-        title: 'Court and Ball Specifications',
-        year: '',
-        description: 'The volleyball court measures 18m x 9m, divided by a net. The ball must be spherical, made of leather or synthetic material, and have a circumference of 65-67cm.',
-        level: 'General'
+        title: 'Only Members of IIT Palakkad community having valid identity card, will have access to the Volleyball court.',
+        description: '',
       },
       {
-        title: 'Scoring System',
-        year: '',
-        description: 'Matches are played best of 5 sets. A set is won by the first team to reach 25 points with a 2-point lead.',
-        level: 'Competition'
+        title: 'Institute employees who participate in inter-IIT events or use the sports facilities must pay a gymkhana fee of INR 250 per month.',
+        description: '',
       },
       {
-        title: 'Service Rules',
-        year: '',
-        description: 'The server must hit the ball behind the end line and within the sidelines. The ball must go over the net and land in the opponent\'s court.',
-        level: 'General'
+        title: 'Courts should be used only for playing Volleyball.',
+        description: '',
+      },
+      {
+        title: 'Volleyball Courts would be available on a first come-first serve basis.',
+        description: '',
+      },
+      {
+        title: 'Vacation of the Volleyball court is to be done for pre-reserved events.',
+        description: '',
+      },
+      {
+        title: 'Sports Rigs are compulsory for everyone. In case of improper attire, entry to the Volleyball courts shall be denied.',
+        description: '',
+      },
+      {
+        title: 'Institute Volleyball team will be given priority for the team practice.',
+        description: '',
+      },
+      {
+        title: 'Flood lights will be switched off by 2300hrs. To use them after 2300hrs, prior permission from Sports Office is compulsory.',
+        description: '',
+      },
+      {
+        title: 'Issued equipment should be used properly and returned after use without any damage.',
+        description: '',
+      },
+      {
+        title: 'Damage to the courts or equipment would imply a strict disciplinary action and/or fine against the offender.',
+        description: '',
+      },
+      {
+        title: 'Disposing of the trash is to be done in proper receptacles.',
+        description: '',
+      },
+      {
+        title: 'Eatables are not allowed on the courts.',
+        description: '',
+      },
+      {
+        title: 'For getting sports equipment, students need to enter his/her details in a logbook corresponding to their hostel (available with security or hostel supervisor), submit their ID and get the equipment\'s, they can collect ID as soon they return the equipment.',
+        description: '',
+      },
+      {
+        title: 'Above-mentioned rules are not exhaustive, and Institute is free to modify/amend/delete/add new rules.',
+        description: '',
+      },
+      {
+        title: 'Non-compliance of the above-mentioned rules would invite strict disciplinary action. Decision of the Institute would be final.',
+        description: '',
       }
     ],
     contact: [
@@ -121,22 +225,64 @@ const sportsData = {
     ],
     rules: [
       {
-        title: 'Court and Ball Specifications',
-        year: '',
-        description: 'A basketball court is 28m x 15m, with a hoop at each end. The ball should be spherical, made of leather or synthetic material, with a circumference of 74.9-76.2cm for men and 72.4-73.7cm for women.',
-        level: 'General'
+        title: 'Only Members of IIT Palakkad community having valid identity card, will have access to the Basketball court.',
+        description: '',
       },
       {
-        title: 'Scoring System',
-        year: '',
-        description: 'A field goal is worth two points, or three points if taken beyond the three-point line. Free throws are worth one point.',
-        level: 'Competition'
+        title: 'Institute employees who participate in inter-IIT events or use the sports facilities must pay a gymkhana fee of INR 250 per month.',
+        description: '',
       },
       {
-        title: 'Dribbling and Passing Rules',
-        year: '',
-        description: 'Players must dribble the ball while moving. Passing the ball to teammates is essential for advancing towards the basket.',
-        level: 'General'
+        title: 'Courts should be used only for playing Basketball.',
+        description: '',
+      },
+      {
+        title: 'Vacation of the court is to be done for pre-reserved events.',
+        description: '',
+      },
+      {
+        title: 'Sports Rigs are compulsory for everyone. In case of improper attire, entry to the courts shall be denied.',
+        description: '',
+      },
+      {
+        title: 'Players should wear clean, non-marking shoes in the court.',
+        description: '',
+      },
+      {
+        title: 'Institute Basket team will be given priority for the team practice.',
+        description: '',
+      },
+      {
+        title: 'Flood lights will be switched off by 2300hrs. To use them after 2300hrs, prior permission from Sports Office is compulsory.',
+        description: '',
+      },
+      {
+        title: 'Issued equipment should be used properly and returned after use without any damage.',
+        description: '',
+      },
+      {
+        title: 'Damage to the courts or equipment would imply a strict disciplinary action and/or fine against the offender.',
+        description: '',
+      },
+      {
+        title: 'Disposing of the trash is to be done in proper receptacles.',
+        description: '',
+      },
+      {
+        title: 'Eatables are not allowed on the courts.',
+        description: '',
+      },
+      {
+        title: 'For getting sports equipment, students need to enter his/her details in a logbook corresponding to their hostel (available with security or hostel supervisor), submit their ID and get the equipment\'s, they can collect ID as soon they return the equipment.',
+        description: '',
+      },
+      {
+        title: 'Above-mentioned rules are not exhaustive, and Institute is free to modify/amend/delete/add new rules.',
+        description: '',
+      },
+      {
+        title: 'Non-compliance of the above-mentioned rules would invite strict disciplinary action. Decision of the Sports Committee would be final.',
+        description: '',
       }
     ],
     contact: [
@@ -165,22 +311,84 @@ const sportsData = {
     ],
     rules: [
       {
-        title: 'Field and Equipment',
-        year: '',
-        description: 'A cricket field is typically 450-500ft long and 400-450ft wide, with a 22-yard long pitch in the center. The game requires a cricket ball, bats, and protective gear.',
-        level: 'General'
+        title: 'Only Members of IIT Palakkad community having valid identity card, will have access to the Cricket Ground.',
+        description: '',
       },
       {
-        title: 'Scoring System',
-        year: '',
-        description: 'Runs are scored by batting pairs running between the wickets after hitting the ball. Boundaries score four (if the ball hits the ground first) or six runs (if the ball is hit over the boundary on the full).',
-        level: 'Competition'
+        title: 'Institute employees who participate in inter-IIT events or use the sports facilities must pay a gymkhana fee of INR 250 per month.',
+        description: '',
       },
       {
-        title: 'Bowling and Batting Rules',
-        year: '',
-        description: 'The bowler must deliver the ball with one foot behind the popping crease. Batters must not obstruct the fielders and should hit the ball within the 15-degree arc in front of the wicket.',
-        level: 'General'
+        title: 'To use any of the main pitches, prior permission from the Cricket club or Sports Office is mandatory.',
+        description: '',
+      },
+      {
+        title: 'Morning /Evening walkers/joggers are allowed on the ground but restricted to circumference only.',
+        description: '',
+      },
+      {
+        title: 'For organizing cricket event/tournament, approval from Sports Office should be taken.',
+        description: '',
+      },
+      {
+        title: 'Person using the ground shall have proper kit (which includes sport shoes, white/ team jerseys, equipment).',
+        description: '',
+      },
+      {
+        title: 'Cricket ground would be available on a first come-first serve basis.',
+        description: '',
+      },
+      {
+        title: 'Vacation of the ground is to be done for pre-reserved events.',
+        description: '',
+      },
+      {
+        title: 'Usage of any ball other than leather is strictly prohibited in main pitches.',
+        description: '',
+      },
+      {
+        title: 'usage of ground is prohibited during the maintenance hours or when the ground is wet.',
+        description: '',
+      },
+      {
+        title: 'Ground will remain shut during monsoon until otherwise notified.',
+        description: '',
+      },
+      {
+        title: 'Issued equipment should be used properly and returned after use without any damage.',
+        description: '',
+      },
+      {
+        title: 'Damage to the ground or equipment would imply a strict disciplinary action and/or fine against the offender.',
+        description: '',
+      },
+      {
+        title: 'Institute Cricket team will be given priority for the team practice.',
+        description: '',
+      },
+      {
+        title: 'Flood lights will be switched off by 2300hrs. To use them after 2300hrs, prior permission from Sports Office is compulsory.',
+        description: '',
+      },
+      {
+        title: 'Disposing of the trash is to be done in proper receptacles.',
+        description: '',
+      },
+      {
+        title: 'Eatables are not allowed on the ground.',
+        description: '',
+      },
+      {
+        title: 'For getting sports equipment, students need to enter his/her details in a logbook corresponding to their hostel (available with security or hostel supervisor), submit their ID and get the equipment\'s, they can collect ID as soon they return the equipment.',
+        description: '',
+      },
+      {
+        title: 'Above-mentioned rules are not exhaustive, and Institute is free to modify/amend/delete/add new rules.',
+        description: '',
+      },
+      {
+        title: 'Non-compliance of the above-mentioned rules would invite strict disciplinary action. Decision of the Sports Committee would be final.',
+        description: '',
       }
     ],
     contact: [
@@ -209,22 +417,60 @@ const sportsData = {
     ],
     rules: [
       {
-        title: 'Field and Ball Specifications',
-        year: '',
-        description: 'A standard football field is 100-110m long and 64-75m wide, with a goal at each end. The ball must be spherical, made of leather or another suitable material, with a circumference of 68-70cm.',
-        level: 'General'
+        title: 'Only Members of IIT Palakkad community having valid identity card, will have access to the Football Field.',
+        description: '',
       },
       {
-        title: 'Scoring System',
-        year: '',
-        description: 'A goal is scored when the entire ball crosses the goal line between the goalposts and under the crossbar.',
-        level: 'Competition'
+        title: 'Institute employees who participate in inter-IIT events or use the sports facilities must pay a gymkhana fee of INR 250 per month.',
+        description: '',
       },
       {
-        title: 'Offside Rule',
-        year: '',
-        description: 'Players are in an offside position if they are nearer to the opponent\'s goal line than both the ball and the second-last opponent when the ball is played to them, unless they are in their own half of the field.',
-        level: 'General'
+        title: 'Ground should be used only for playing Football.',
+        description: '',
+      },
+      {
+        title: 'Sports Rigs are compulsory for everyone. In case of improper attire, entry to the courts shall be denied.',
+        description: '',
+      },
+      {
+        title: 'Institute Football team will be given priority for the team practice.',
+        description: '',
+      },
+      {
+        title: 'Vacation of the ground is to be done for pre-reserved events.',
+        description: '',
+      },
+      {
+        title: 'Issued equipment should be used properly and returned after use without any damage.',
+        description: '',
+      },
+      {
+        title: 'Damage to the ground or equipment would imply a strict disciplinary action and/or fine against the offender.',
+        description: '',
+      },
+      {
+        title: 'Flood lights will be switched off by 2300hrs. To use them after 2300hrs, prior permission from Sports Office is compulsory.',
+        description: '',
+      },
+      {
+        title: 'Disposing of the trash is to be done in proper receptacles.',
+        description: '',
+      },
+      {
+        title: 'Eatables are not allowed on the ground.',
+        description: '',
+      },
+      {
+        title: 'For getting sports equipment, students need to enter his/her details in a logbook corresponding to their hostel (available with security or hostel supervisor), submit their ID and get the equipment\'s, they can collect ID as soon they return the equipment.',
+        description: '',
+      },
+      {
+        title: 'Above-mentioned rules are not exhaustive, and Institute is free to modify/amend/delete/add new rules.',
+        description: '',
+      },
+      {
+        title: 'Non-compliance of the above-mentioned rules would invite strict disciplinary action. Decision of the Sports Committee would be final.',
+        description: '',
       }
     ],
     contact: [
@@ -253,22 +499,60 @@ const sportsData = {
     ],
     rules: [
       {
-        title: 'Table and Equipment Specifications',
-        year: '',
-        description: 'A table tennis table is 2.74m long, 1.525m wide, and 76cm high. The ball must be 40mm in diameter and weigh 2.7g.',
-        level: 'General'
+        title: 'Only Members of IIT Palakkad community having valid identity card, will have access to the Table Tennis Arena.',
+        description: '',
       },
       {
-        title: 'Scoring System',
-        year: '',
-        description: 'Games are played to 11 points, and a match is typically best of 5 or 7 games. Players switch serves every 2 points and switch sides after each game.',
-        level: 'Competition'
+        title: 'Institute employees who participate in inter-IIT events or use the sports facilities must pay a gymkhana fee of INR 250 per month.',
+        description: '',
       },
       {
-        title: 'Service and Return Rules',
-        year: '',
-        description: 'The server must toss the ball vertically upwards at least 16cm and strike it behind the end line. The ball must be returned after one bounce on the receiver\'s side.',
-        level: 'General'
+        title: 'TT Table should be used only for playing Table Tennis.',
+        description: '',
+      },
+      {
+        title: 'TT Tables are available on a first come-first serve basis.',
+        description: '',
+      },
+      {
+        title: 'Sports Rigs are compulsory for everyone. In case of improper attire, entry to the courts shall be denied.',
+        description: '',
+      },
+      {
+        title: 'Institute Table Tennis team will be given priority for the team practice.',
+        description: '',
+      },
+      {
+        title: 'Vacation of the TT Table is to be done for pre-reserved events.',
+        description: '',
+      },
+      {
+        title: 'Issued equipment should be used properly and returned after use without any damage.',
+        description: '',
+      },
+      {
+        title: 'Damage to the table or equipment would imply a strict disciplinary action and/or fine against the offender.',
+        description: '',
+      },
+      {
+        title: 'Disposing of the trash is to be done in proper receptacles.',
+        description: '',
+      },
+      {
+        title: 'Eatables are not allowed on the ground.',
+        description: '',
+      },
+      {
+        title: 'For getting sports equipment, students need to enter his/her details in a logbook corresponding to their hostel (available with security or hostel supervisor), submit their ID and get the equipment\'s, they can collect ID as soon they return the equipment.',
+        description: '',
+      },
+      {
+        title: 'Above-mentioned rules are not exhaustive, and Institute is free to modify/amend/delete/add new rules.',
+        description: '',
+      },
+      {
+        title: 'Non-compliance of the above-mentioned rules would invite strict disciplinary action. Decision of the Institute would be final.',
+        description: '',
       }
     ],
     contact: [
@@ -357,6 +641,99 @@ const sportsData = {
         features: ['Olympic lifting platform', 'Pull-up stations', 'Battle ropes', 'Box jump platforms']
       }
     ],
+    rules: [
+      {
+        title: 'Timing slots for Kedaram Gym is as follows:',
+        description: '',
+        timingTable: [
+          { category: 'Common', time: '6.00 am to 10.00 am and 5 pm to 10 pm' }
+        ]
+      },
+      {
+        title: 'Timing slots for Malhar Gym is as follows:',
+        description: '',
+        timingTable: [
+          { category: 'Common', time: '6.00 am to 10.00 am and 6 pm to 10 pm' },
+          { category: 'Faculty Member/ Staff/ Students (Women)', time: '5.00 pm to 6.00 pm' }
+        ]
+      },
+      {
+        title: 'Only Members of IIT Palakkad community having valid identity card, will have access to the Gym.',
+        description: '',
+      },
+      {
+        title: 'Institute employees who participate in inter-IIT events or use the sports facilities must pay a gymkhana fee of INR 250 per month.',
+        description: '',
+      },
+      {
+        title: 'Entry and exit times must be entered in the logbook.',
+        description: '',
+      },
+      {
+        title: 'All gym users are advised to seek medical consultation and clearance before embarking on any exercise programs. Be sure to always integrate warm-ups, stretching, and cooling- down into your program. This will reduce your risk of injury by increasing your blood flow and preparing your muscles for the workout. Proper use of all machines & free weights is important not only to work your muscles correctly, but also to prevent injury.',
+        description: '',
+      },
+      {
+        title: 'NO sandals, boots, slippers, open-toed shoes, or bare feet are permitted.',
+        description: '',
+      },
+      {
+        title: 'Sports attire is mandatory for all gym users. Entry will be denied to those not dressed appropriately. Sleeveless clothing is strictly prohibited to maintain hygiene standards.',
+        description: '',
+      },
+      {
+        title: 'The management & gym staff on duty reserve the right to decide on the suitability of the sporting attire worn by gym users. Dry, closed-top athletic shoes must be worn at all times.',
+        description: '',
+      },
+      {
+        title: 'Outside footwear is strictly prohibited on the treadmills or any other machines so bring along a proper gym shoe for your workout.',
+        description: '',
+      },
+      {
+        title: 'A personal towel must be used at all times. Gym users are not allowed to share towels. Please bring your own towel and wipe your sweat off the seats or machines that you have used. Other users wish to use the seats or/and machines in the gym without your sweat. Wear clean and dry clothes while working out.',
+        description: '',
+      },
+      {
+        title: 'Do not monopolize the machines. Cardio machines are restricted to 15 minutes per use during peak hours. All other equipment shall be shared among gym users at all times.',
+        description: '',
+      },
+      {
+        title: 'Do not slam, drop, clang, or throw dumbbells or free weights on the floor when you are finished.',
+        description: '',
+      },
+      {
+        title: 'Do not leave equipment lying around so someone could trip over it. Replace equipment to its original state and location after use.',
+        description: '',
+      },
+      {
+        title: 'No bags are allowed in the gym',
+        description: '',
+      },
+      {
+        title: 'No equipment shall be moved from its original place.',
+        description: '',
+      },
+      {
+        title: 'Damage to the equipment would imply a strict disciplinary action and fine against the offender.',
+        description: '',
+      },
+      {
+        title: 'Eatables are not allowed inside the Gym.',
+        description: '',
+      },
+      {
+        title: 'Please dispose off the trash in proper receptacles.',
+        description: '',
+      },
+      {
+        title: 'Above-mentioned rules are not exhaustive, and Institute is free to modify/amend/delete/add new rules.',
+        description: '',
+      },
+      {
+        title: 'Non-compliance of the above-mentioned rules would invite strict disciplinary action. Decision of the Institute would be final.',
+        description: '',
+      }
+    ],
     achievements: [
       {
         title: 'University Strength Competition',
@@ -432,7 +809,6 @@ const sportsData = {
         title: 'Table and Equipment Specifications',
         year: '',
         description: 'A table tennis table is 2.74m long, 1.525m wide, and 76cm high. The ball must be 40mm in diameter and weigh 2.7g.',
-        level: 'General'
       }
     ],
     contact: [
@@ -537,24 +913,93 @@ const SportPage = () => {
       
       case 'rules':
         return (
-          <div className="sport-achievements-grid">
-            {sport.rules.map((rule, index) => (
-              <div key={index} className="sport-achievement-card">
+          <div className="sport-achievement-card badminton-rules-card">
+            {/* Special timing tables for badminton or gym */}
+            {(sportName === 'badminton' || sportName === 'gym') && (
+              <>
+                {/* First rule with timing table */}
                 <div className="sport-achievement-header">
                   <div className="sport-achievement-title-section">
                     <Trophy />
-                    <h3 className="sport-achievement-title">{rule.title}</h3>
+                    <h3 className="sport-achievement-title">{sport.rules[0].title}</h3>
                   </div>
-                  {rule.year && (
-                    <span className="sport-achievement-year">{rule.year}</span>
-                  )}
                 </div>
-                <p className="sport-achievement-description">{rule.description}</p>
-                <span className={`sport-level-badge ${rule.level.toLowerCase()}`}>
-                  {rule.level}
-                </span>
-              </div>
-            ))}
+                {sport.rules[0].description && (
+                  <p className="sport-achievement-description">{sport.rules[0].description}</p>
+                )}
+                
+                {/* Timing table styled to match image */}
+                <div className="timing-table-container">
+                  <table className="badminton-timing-table">
+                    <thead>
+                      <tr>
+                        <th>Category</th>
+                        <th>Time</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {sport.rules[0].timingTable.map((slot, idx) => (
+                        <tr key={idx}>
+                          <td>{slot.category}</td>
+                          <td>{slot.time}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                
+                {/* Second timing table for gym */}
+                {sportName === 'gym' && (
+                  <>
+                    <div className="sport-achievement-header" style={{ marginTop: '20px' }}>
+                      <div className="sport-achievement-title-section">
+                        <Trophy />
+                        <h3 className="sport-achievement-title">{sport.rules[1].title}</h3>
+                      </div>
+                    </div>
+                    <div className="timing-table-container">
+                      <table className="badminton-timing-table">
+                        <thead>
+                          <tr>
+                            <th>Category</th>
+                            <th>Time</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {sport.rules[1].timingTable.map((slot, idx) => (
+                            <tr key={idx}>
+                              <td>{slot.category}</td>
+                              <td>{slot.time}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </>
+                )}
+              </>
+            )}
+            
+            {/* Rules as bullet points for all sports */}
+            <div className="badminton-rules-list">
+              {/* For badminton and gym, skip the timing tables that are already displayed */}
+              {(sportName === 'badminton' || sportName === 'gym') ? 
+                sport.rules.slice(sportName === 'gym' ? 2 : 1).map((rule, index) => (
+                  <div key={index} className="badminton-rule-item">
+                    <div className="badminton-rule-bullet">•</div>
+                    <div className="badminton-rule-text">{rule.title}</div>
+                  </div>
+                ))
+                :
+                // For all other sports, display all rules
+                sport.rules.map((rule, index) => (
+                  <div key={index} className="badminton-rule-item">
+                    <div className="badminton-rule-bullet">•</div>
+                    <div className="badminton-rule-text">{rule.title}</div>
+                  </div>
+                ))
+              }
+            </div>
           </div>
         );
       
@@ -600,32 +1045,32 @@ const SportPage = () => {
     }
   };
 
-  return (
-    <div className="sport-page">
-      {/* Header */}
-      <div className="sport-header">
-        <div className="sport-header-content">
-          <h1>{sport.title}</h1>
-          <p>{sport.subtitle}</p>
+return (
+  <div className="sport-page">
+    {/* Header */}
+    <div className="sport-header">
+      <div className="sport-header-content">
+        <h1>{sport.title}</h1>
+        <p>{sport.subtitle}</p>
         </div>
       </div>
-
+      
       {/* Back button */}
       <div className="sport-back-button-container">
-        <button
-          onClick={() => navigate('/clubs')}
+        <button 
+          onClick={() => navigate('/clubs')} 
           className="sport-back-button"
         >
           <ArrowLeft size={20} />
           Back to Sports
         </button>
-      </div>
-
-      {/* Navigation tabs */}
-      <div className="sport-tabs-container">
-        <div className="sport-tabs-wrapper">
-          <nav className="sport-tabs-nav">
-            {tabs.map((tab) => {
+    </div>
+    
+    {/* Navigation tabs */}
+    <div className="sport-tabs-container">
+      <div className="sport-tabs-wrapper">
+        <nav className="sport-tabs-nav">
+          {tabs.map((tab) => {
               const Icon = tab.icon;
               return (
                 <button
@@ -638,15 +1083,15 @@ const SportPage = () => {
                 </button>
               );
             })}
-          </nav>
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="sport-content-container">
-        {renderContent()}
+        </nav>
       </div>
     </div>
+
+    {/* Content */}
+    <div className="sport-content-container">
+      {renderContent()}
+    </div>
+  </div>
   );
 };
 

@@ -4,11 +4,6 @@ import './Staff.css';
 
 const staffData = [
   {
-    name: 'Mr.Renchu T',
-    title: 'Sports Officer',
-    imageUrl: '/Staff/renchu.png',
-  },
-  {
     name: 'Deepak Rajendraprasad',
     title: 'Dean Students',
     imageUrl: '/Staff/rajendra.png',
@@ -17,6 +12,10 @@ const staffData = [
     name: 'Padmesh A',
     title: 'Sports FA',
     imageUrl: '/Staff/padmesh.png',
+  },{
+    name: 'Mr.Renchu T',
+    title: 'Sports Officer',
+    imageUrl: '/Staff/renchu.png',
   },
   // Add more staff members here
 ];
